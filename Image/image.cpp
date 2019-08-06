@@ -1,71 +1,79 @@
 #include "image.h"
 
-IPL::Image::Image(int rows, int cols, PixType pix_type)
+IPL::_BaseArray::_BaseArray(int size)
 {
-	switch (pix_type)
+	_size = size;
+	_Data = malloc(_size);
+//#ifdef _DEBUG
+//	std::cout << "_BaseArray data: " << (void*)_Data << std::endl;
+//#endif
+}
+
+IPL::_BaseArray::_BaseArray(const _BaseArray &rhs)
+{
+	_size = rhs._size;
+	_Data = malloc(_size);
+	memcpy(_Data, rhs._Data, _size);
+}
+
+IPL::_BaseArray::_BaseArray(_BaseArray &&rhs)
+{
+	_size = rhs._size;
+	_Data = rhs._Data;
+
+	rhs._size = 0;
+	rhs._Data = nullptr;
+}
+
+IPL::_BaseArray::~_BaseArray()
+{
+	if (_Data)
 	{
-	case IPL::NONE:
-		break;
-
-	case IPL::IPL_8UC1:
-		_pointer_array = new Array2D<unsigned char>(rows, cols);
-		_pix_type_size = sizeof(unsigned char);
-		break;
-
-	case IPL::IPL_64FC1:
-		_pointer_array = new Array2D<double>(rows, cols);
-		_pix_type_size = sizeof(double);
-		break;
-
-	default:
-		break;
+		free(_Data);
+		_Data = nullptr;
 	}
-	
 }
 
-IPL::Image::Image(const Image &img)
+IPL::_BaseArray& IPL::_BaseArray::operator=(const _BaseArray &rhs)
 {
-	_pointer_array->SetRows(img.Rows());
-	_pointer_array->SetCols(img.Cols());
-	memcpy(_pointer_array->Data(), img.Data(), img.Rows()*img.Cols()*img._pix_type_size);
-}
-
-IPL::Image::Image(Image &&img)
-{
-	_pointer_array->SetRows(img.Rows());
-	_pointer_array->SetCols(img.Cols());
-	_pointer_array->SetData(img.Data());
-
-	img._pointer_array->SetRows(0);
-	img._pointer_array->SetCols(0);
-	img._pointer_array->SetData(nullptr);
-}
-
-IPL::Image::~Image()
-{
-	if (_pointer_array)
-		delete _pointer_array;
-
-	
-}
-
-int IPL::Image::Rows() const
-{
-	return _pointer_array->Rows();
-}
-
-int IPL::Image::Cols() const
-{
-	return _pointer_array->Cols();
-}
-
-IPL::Image& IPL::Image::operator=(const Image &img)
-{
-	if (_pointer_array)
+	// 自赋值
+	if (_Data == rhs._Data)
 	{
-		delete _pointer_array;
+		return *this;
 	}
 
-	
+	// 先释放已有内存
+	if (_Data)
+	{
+		free(_Data);
+	}
+
+	// 拷贝赋值
+	_size = rhs._size;
+	_Data = malloc(_size);
+	memcpy(_Data, rhs._Data, _size);
+	return *this;
 }
 
+IPL::_BaseArray& IPL::_BaseArray::operator=(_BaseArray &&rhs)
+{
+	// 自赋值
+	if (_Data == rhs._Data)
+	{
+		return *this;
+	}
+
+	// 先释放已有内存
+	if (_Data)
+	{
+		free(_Data);
+	}
+
+	// 移动赋值
+	_size = rhs._size;
+	_Data = rhs._Data;
+
+	rhs._size = 0;
+	rhs._Data = nullptr;
+	return *this;
+}

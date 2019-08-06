@@ -10,273 +10,134 @@
 
 NAMESPACE_BEGIN
 
-class _BaseArray2D {
+class _BaseArray 
+{
 public:
-	_BaseArray2D() {}
-	_BaseArray2D(int rows, int cols) :_rows(rows), _cols(cols) {}
+	// 默认构造
+	explicit _BaseArray() { _Data = nullptr; _size = 0; };
+	explicit _BaseArray(int size);
 
-	virtual int Rows()const
-	{
-		return _rows;
-	}
+	// 拷贝构造
+	_BaseArray(const _BaseArray &rhs);
 
-	virtual int Cols()const
-	{
-		return _cols;
-	}
-	virtual int SetRows(int rows)
-	{
-		_rows = rows;
-	}
+	// 移动构造
+	_BaseArray(_BaseArray &&rhs);
 
-	virtual int SetCols(int cols)
-	{
-		_cols = cols;
-	}
+	// 拷贝赋值
+	virtual _BaseArray& operator=(const _BaseArray &rhs);
 
-	void* Data()
-	{
-		return _Data;
-	}
-	virtual int SetData(void* data)
-	{
-		_Data = data;
-	}
+	// 移动赋值
+	virtual _BaseArray& operator=( _BaseArray &&rhs);
 
-	virtual ~_BaseArray2D() {}
+	virtual ~_BaseArray();
 
-protected:
-	int _rows = 0;
-	int _cols = 0;
-	void *_Data = nullptr;
+//protected:
+	void *_Data;
+	int _size;
 
 };
 
-// 二维矩阵类
-template<typename T = double>
-class Array2D:public _BaseArray2D
+template<typename T>
+class Array2D :public _BaseArray
 {
 public:
-
-
-	Array2D(std::vector<std::vector<T>> vec, T pixel_value = T{})
+	Array2D() = delete;
+	// 构造函数
+	Array2D(int rows, int cols, T t = T{})
+		:_rows(rows),_cols(cols), _BaseArray(rows*cols * sizeof(T))
 	{
-		assert(vec.size() > 0 && vec[0].size() > 0);
-		_rows = vec.size();
-		_cols = vec[0].size();
+//#ifdef _DEBUG
+//		std::cout << "Array2D data: " << _BaseArray::_Data << std::endl;
+//#endif
 
-		_Data = new T[_rows*_cols]{ };
-		for (int i = 0; i < _rows*_cols; i++)
-		{
-			_Data[i] = pixel_value;
+		// 初始化数组数据
+		T* tmp = (T*)(_Data);
+		for (int i = 0; i < _rows*_cols; i++){
+			tmp[i] = t;
 		}
+
+
+
 	}
-	
-	Array2D(int rows, int cols, T pixel_value = T{})
-		:_BaseArray2D(rows,cols)
-	{
-		assert((rows > 0) && (cols > 0));
-		_Data = new T[_rows*_cols]{ };
-		for (int i = 0; i < rows*cols; i++)
-		{
-			((T*)_Data)[i] = pixel_value;
-		}
-	}
-	
+
 	// 拷贝构造
-	Array2D(const Array2D&rhs)
+	Array2D(const Array2D &rhs)
+		:_BaseArray(rhs)
 	{
 		_rows = rhs._rows;
 		_cols = rhs._cols;
-		_Data = new T[_rows*_cols]{};
-		memcpy(_Data, rhs._Data, sizeof(T)*_rows*_cols);
-
+		
 	}
-	
+
 	// 移动构造
 	Array2D(Array2D &&rhs)
+		:_BaseArray(std::move(rhs))
 	{
 		_rows = rhs._rows;
 		_cols = rhs._cols;
-		_Data = rhs._Data;
 
 		rhs._rows = 0;
 		rhs._cols = 0;
-		rhs._Data = nullptr;
+		
 	}
 
 	// 拷贝赋值
-	virtual Array2D& operator=(const Array2D&rhs)
+	Array2D& operator=(const Array2D &rhs)
 	{
-		// 自赋值
-		if (_Data == rhs._Data)
-			return *this;
-
-		if (_Data)
-		{
-			delete[] _Data;
-		}
-
 		_rows = rhs._rows;
 		_cols = rhs._cols;
-		_Data = new T[_rows*_cols]{};
-		memcpy(_Data, rhs._Data, sizeof(T)*_rows*_cols);
-
+		_BaseArray::operator=(rhs);
 		return *this;
 	}
 
 	// 移动赋值
-
-	virtual Array2D& operator=(Array2D &&rhs)
+	Array2D& operator=(Array2D &&rhs)
 	{
-		// 自赋值
-		if (_Data == rhs._Data)
-			return *this;
-
-		if (_Data)
-		{
-			delete[] _Data;
-		}
-
 		_rows = rhs._rows;
 		_cols = rhs._cols;
-		_Data = rhs._Data;
+		_BaseArray::operator=(std::move(rhs));
 
 		rhs._rows = 0;
 		rhs._cols = 0;
-		rhs._Data = nullptr;
-
 		return *this;
 	}
 
-	// 析构
-	virtual ~Array2D()
-	{
-		auto p = ((T*)_Data);
-		if (p)
-			delete[] p;
-	}
-
 public:
-	virtual T Pixel(int row, int col)const
+	int Rows()const { return _rows; }
+	int Cols()const { return _cols; }
+	const T* operator[](int i)const
 	{
-		return ((T*)_Data)[row*_cols + col];
+		const T* tmp = (const T*)(_Data);
+		return tmp + i * _cols;
 	}
 
-	// 重载运算符
-	virtual T* operator[](size_t i)
+	T* operator[](int i)
 	{
-		return &((T*)_Data)[i*_cols];
-	}
-	virtual const T* operator[](size_t i)const
-	{
-		return (T*)(&((T*)_Data)[i*_cols]);
+		T* tmp = (T*)(_Data);
+		return tmp + i * _cols;
 	}
 
-
-	virtual void Print()const
+	void Print()const
 	{
-		std::cout << "Data address: " << _Data << std::endl;
+		std::cout << typeid(*this).name() << std::endl;
 		for (int i = 0; i < _rows; i++)
 		{
 			for (int j = 0; j < _cols; j++)
 			{
-				std::cout << Pixel(i, j) << " ";
+				std::cout << (*this)[i][j] << " ";
 			}
 			std::cout << std::endl;
 		}
 	}
-
-	
-	
-};
-
-template<typename T>
-class Iterator
-{
-public:
-	Iterator(T*p):_p(p) {}
-
-	T* operator++() // 前增量，只有一个括号
-	{
-		_p += 1;
-		return _p;
-	}
-
-	T* operator++(int) // 后增量，括号里面有一个int类型
-	{
-		T* tmp = _p;
-		_p += 1;
-		return tmp;
-	}
-
-	bool operator==(const Iterator& it)
-	{
-		return (_p == it._p);
-	}
-	bool operator!=(const Iterator& it)
-	{
-		return !(_p == it._p);
-	}
-	T& operator*()
-	{
-		return *_p;
-	}
-	const T& operator*()const
-	{
-		return *_p;
-	}
-
 private:
-	T *_p;
+
+
+protected:
+	int _rows;
+	int _cols;
 };
 
 
-enum PixType {
-	NONE, IPL_8UC1, IPL_64FC1
-};
-
-
-class Image
-{
-
-public:
-	// 默认构造
-	Image() = default;
-	Image(int rows, int cols, PixType pix_type);
-
-	// 拷贝构造
-	Image(const Image &img);
-
-	// 移动构造
-	Image(Image &&img);
-
-	// 拷贝赋值
-	Image& operator=(const Image &img);
-
-	// 移动赋值
-	Image& operator=(Image &&img);
-
-	int Rows()const;
-	int Cols()const;
-
-	void* Data()const
-	{
-		return _pointer_array->Data();
-	}
-
-	virtual ~Image();
-	
-
-private:
-	
-private:
-	PixType _pix_type = NONE;
-	_BaseArray2D *_pointer_array = nullptr;
-	size_t _pix_type_size = 1;
-
-
-};
 
 NAMESPACE_END
 #endif//__IMAGE_H__
