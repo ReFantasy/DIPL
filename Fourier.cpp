@@ -59,7 +59,7 @@ std::vector<std::complex<double>> Fourier::DFT(const std::vector<double> &array_
 	return array_out;
 }
 
-std::vector<double> Fourier::IDFT(const std::vector<std::complex<double>> &array_in, std::vector<std::complex<double>> *pout_media)
+std::vector<double> Fourier::IDFT(const std::vector<std::complex<double>> &array_in, std::vector<std::complex<double>> *pout_media)const
 {
 	int M = array_in.size();
 	std::vector<double> array_out(M, 0);
@@ -123,7 +123,7 @@ vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>> &array
 	return array_out;
 }
 
-vector<vector<double>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media)
+vector<vector<double>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media)const
 {
 	vector<vector<double>> array_out;
 

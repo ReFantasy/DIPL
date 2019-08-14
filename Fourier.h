@@ -43,7 +43,7 @@ public:
 	// 参数1：需要进行逆变换的一维复数向量
 	// 参数2：一维复数向量的指针，用于返回逆变换的中间计算结果,如果不需要可以传递空参数
 	// 输出 ：一维浮点数据向量，即傅里叶逆变换的结果
-	vector<double> IDFT(const vector<complex<double>> &array_in, vector<complex<double>> *pout_media = nullptr);
+	vector<double> IDFT(const vector<complex<double>> &array_in, vector<complex<double>> *pout_media = nullptr)const;
 
 
 	// 功能：二维离散傅里叶变换
@@ -56,7 +56,7 @@ public:
 	// 参数1：需要进行逆变换的二维复数向量
 	// 参数2：二维复数向量的指针，用于返回逆变换的中间计算结果,如果不需要可以传递空参数
 	// 输出 ：二维浮点数据向量，即傅里叶逆变换的结果
-	vector<vector<double>> IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media = nullptr);
+	vector<vector<double>> IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media = nullptr)const;
 
 
 
