@@ -23,16 +23,6 @@ double Eulerform::Thet() const
 	return std::arg(_com);
 }
 
-
-Fourier::Fourier()
-{
-}
-
-
-Fourier::~Fourier()
-{
-}
-
 const std::complex<double>& Eulerform::GetComplex() const
 {
 	return _com;
@@ -40,17 +30,26 @@ const std::complex<double>& Eulerform::GetComplex() const
 
 
 
-std::vector<std::complex<double>> Fourier::fourier(const std::vector<double> &array_in) const
-{
-	int count = array_in.size();
-	std::vector<std::complex<double>> array_out(count, std::complex<double>{});
 
-	for (int i = 0; i < count; i++)
+Fourier::Fourier()
+{
+}
+
+Fourier::~Fourier()
+{
+}
+
+std::vector<std::complex<double>> Fourier::DFT(const std::vector<double> &array_in) const
+{
+	int M = array_in.size();
+	std::vector<std::complex<double>> array_out(M, std::complex<double>{});
+
+	for (int i = 0; i < M; i++)
 	{
 		std::complex<double> tmp;
-		for (int j = 0; j < count; j++)
+		for (int j = 0; j < M; j++)
 		{
-			Eulerform el(1, -2.0*PI*i*j / count);
+			Eulerform el(1, -2.0*PI*i*j / M);
 			tmp += (array_in[j] * el.GetComplex());
 		}
 		array_out[i] = tmp;
@@ -59,7 +58,7 @@ std::vector<std::complex<double>> Fourier::fourier(const std::vector<double> &ar
 	return array_out;
 }
 
-std::vector<double> Fourier::InversionFourier(const std::vector<std::complex<double>> &array_in, std::vector<std::complex<double>> *pout_media)
+std::vector<double> Fourier::IDFT(const std::vector<std::complex<double>> &array_in, std::vector<std::complex<double>> *pout_media)
 {
 	int M = array_in.size();
 	std::vector<double> array_out(M, 0);
