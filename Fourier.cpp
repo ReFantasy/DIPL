@@ -111,7 +111,7 @@ vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>> &array
 			{
 				for (int y = 0; y < N; y++)
 				{
-					Eulerform el(1, -2.0*PI*(u*x/M+v*y/N));
+					Eulerform el(1, -2.0*PI*(u*x/(double)M+v*y/(double)N));
 					tmp += (array_in[x][y] * el.GetComplex());
 				}
 			}
@@ -125,11 +125,48 @@ vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>> &array
 
 vector<vector<double>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media)const
 {
-	vector<vector<double>> array_out;
+	assert(array_in.size() > 0);
+	assert(array_in[0].size() > 0);
+
+	int M = array_in.size();
+	int N = array_in[0].size();
 
 
+	vector<vector<double>> array_out(M, vector<double>(N, 0));
+	vector<vector<complex<double>>> array_out_com(M, vector<complex<double>>(N, complex<double>()));
 
+	for (int x = 0; x < M; x++)
+	{
+		for (int y = 0; y < N; y++)
+		{
+			complex<double> tmp;
 
+			for (int u = 0; u < M; u++)
+			{
+				for (int v = 0; v < N; v++)
+				{
+					Eulerform el(1, 2.0*PI*(u*x / (double)M + v * y / (double)N));
+					tmp += (array_in[u][v] * el.GetComplex());
+				}
+			}
+
+			array_out_com[x][y] = { tmp.real() / M / N, tmp.imag() / M / N };
+
+		}
+	}
+
+	if (pout_media)
+	{
+		*pout_media = array_out_com;
+	}
+
+	for (int x = 0; x < M; x++)
+	{
+		for (int y = 0; y < N; y++)
+		{
+			array_out[x][y] = array_out_com[x][y].real();
+		}
+	}
 
 
 	return array_out;
