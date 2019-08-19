@@ -123,7 +123,8 @@ vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>> &array
 	return array_out;
 }
 
-vector<vector<double>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media)const
+vector<vector<double>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in,
+	vector<vector<complex<double>>> *pout_media)const
 {
 	assert(array_in.size() > 0);
 	assert(array_in[0].size() > 0);

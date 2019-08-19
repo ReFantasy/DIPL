@@ -7,7 +7,7 @@ using std::vector;
 using std::complex;
 
 #ifdef _DEBUG
-#include <iostream>
+ #include <iostream>
 #endif
 
 #define PI 3.141592653589793
@@ -58,9 +58,9 @@ public:
 	// 输出 ：二维浮点数据向量，即傅里叶逆变换的结果
 	vector<vector<double>> IDFT(const vector<vector<complex<double>>> &array_in, vector<vector<complex<double>>> *pout_media = nullptr)const;
 
-
-
 };
+
+
 
 #endif//__FOURIER_H__
 
