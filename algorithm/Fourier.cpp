@@ -167,7 +167,7 @@ vector<vector<complex<double>>> Fourier::DFT(const vector<vector<complex<double>
 	 *  离散傅里叶变换的优化版本 公式：数字图像处理第三版 P187
 	 *
 	 */
-	std::cout << "----------------------------" << std::endl;
+
 	assert(array_in.size() > 0);
 	assert(array_in[0].size() > 0);
 
@@ -242,7 +242,7 @@ vector<vector<complex<double>>> Fourier::IDFT(const vector<vector<complex<double
 	 *  离散傅里叶逆变换的优化版本 公式：数字图像处理第三版 P187
 	 *
 	 */
-	std::cout << "----------------------------" << std::endl;
+
 	assert(array_in.size() > 0);
 	assert(array_in[0].size() > 0);
 
