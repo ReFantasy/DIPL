@@ -26,11 +26,7 @@ public:
 private:
 	std::complex<double> _com;
 };
-struct Complex
-{
-	double re = 0;
-	double im = 0;
-};
+
 class Fourier
 {
 	
