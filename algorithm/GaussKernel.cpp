@@ -1,4 +1,4 @@
-#include "GaussKernel.h"
+﻿#include "GaussKernel.h"
 
 
 std::vector<double> GenGaussianKernel(int size, double sigma, double a)

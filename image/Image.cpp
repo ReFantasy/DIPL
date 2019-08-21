@@ -1,4 +1,4 @@
-#include "Image.h"
+ï»¿#include "Image.h"
 
 #include "Image.h"
 
@@ -10,16 +10,16 @@ cv::Mat FourierFilter::operator()(const Mat &src, std::function<Complex2D(Comple
 	int cols = src.cols;
 	auto src_data = ImageData(src);
 
-	// ¸µÀïÒ¶±ä»»
+	// å‚…é‡Œå¶å˜æ¢
 	_src_fourier_res = fourier.DFT(src_data);
 
-	// ÆµÂÊÓòÂË²¨
+	// é¢‘çŽ‡åŸŸæ»¤æ³¢
 	_dst_fourier_res = op(_src_fourier_res);
 
-	// ·µ»Ø¿Õ¼äÓò
+	// è¿”å›žç©ºé—´åŸŸ
 	auto _dst_data = fourier.IDFT(_dst_fourier_res);
 
-	// Êä³öÍ¼Ïñ
+	// è¾“å‡ºå›¾åƒ
 	auto dst_image_data = ConvertToImage(_dst_data);
 	return Out8UC1(dst_image_data);
 
