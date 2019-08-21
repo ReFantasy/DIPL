@@ -7,54 +7,52 @@
 #define __IMAGE_H__
 #include <vector>
 #include <string>
+#include "../algorithm/Fourier.h"
+#include "../algorithm/GaussKernel.h"
 #include "opencv2/opencv.hpp"
 using namespace cv;
 using namespace std;
 
-class Image
+constexpr int N = 4;
+class Gauss
 {
+	using Complex2D = vector<vector<std::complex<double>>>;
 public:
-	Image(vector<vector<double>> data) :_data(data) {}
+	Gauss() = default;
+	Gauss(int rows, int cols, double A, double sigma_x, double sigma_y);
+	void SetKernel(const vector<vector<double>> &gauss_array);
+	vector<vector<std::complex<double>>> operator()(const vector<vector<std::complex<double>>> &fourier);
 
-	Image(const Image &img)
-	{
-		_data = img._data;
-	}
-	Image(Image &&img)
-	{
-		_data = std::move(img._data);
-	}
-	Image& operator=(const Image &img)
-	{
-		_data = img._data;
-	}
-	Image& operator=(Image &&img)
-	{
-		_data = std::move(img._data);
-	}
-	~Image() {}
-
-	vector<double>& operator[](int index);
-	const vector<double>& operator[](int index)const;
-
-	int Rows()const;
-	int Cols()const;
-
-	vector<vector<double>>& GetData() { return _data; }
-
-	const vector<vector<double>>& GetData()const { return _data; }
 private:
-	vector<vector<double>> _data;
+	vector<vector<double>> _gauss_array;
+	
+};
+// ∏µ¿Ô“∂¬À≤®
+class FourierFilter
+{
+	using Complex2D = vector<vector<std::complex<double>>>;
+	struct default_op
+	{
+		Complex2D operator()(const Complex2D &op)
+		{
+			return op;
+		}
+	};
+public:
+	FourierFilter() = default;
+	Mat operator()(const Mat &src, std::function<Complex2D(Complex2D)> op = default_op{});
+
+private:
+	vector<vector<double>> ImageData(const Mat &img);
+	vector<vector<double>> ConvertToImage(const Complex2D&);
+	Mat Out8UC1(const vector<vector<double>> &d);
+
+private:
+	Fourier fourier;
+	vector<vector<std::complex<double>>> _src_fourier_res;
+	vector<vector<std::complex<double>>> _dst_fourier_res;
 
 };
-
-Image Mat2Image(const Mat &img);
-
-Mat Image2Mat(const Image &image, int image_type);
-
-Image ReadImage(const string name);
-void ShowImage(const string &name,const Image &img, bool is_normalized = false);
-
 
 
 #endif//__IMAGE_H__

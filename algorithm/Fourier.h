@@ -3,6 +3,7 @@
 
 #include <complex>
 #include <vector>
+#include <functional>
 using std::vector;
 using std::complex;
 
@@ -42,7 +43,7 @@ public:
 
 
 	// 功能 ：一维离散傅里叶逆变换
-	// 参数1：需要进行逆变换的一维复数向量
+	// 参数 ：需要进行逆变换的一维复数向量
 	// 输出 ：一维浮点数据向量，即傅里叶逆变换的结果
 	vector<complex<double>> IDFT(const vector<complex<double>> &array_in)const;
 
@@ -61,6 +62,8 @@ public:
 	vector<vector<complex<double>>> IDFT(const vector<vector<complex<double>>> &array_in)const;
 
 };
+
+
 
 
 

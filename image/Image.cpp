@@ -1,98 +1,108 @@
 #include "Image.h"
 
-Image Mat2Image(const Mat &_img)
+#include "Image.h"
+
+cv::Mat FourierFilter::operator()(const Mat &src, std::function<Complex2D(Complex2D)> op)
 {
-	Mat img;
-	assert(_img.channels() == 1);
+	assert(src.type() == CV_8UC1);
 
-	if (_img.type() != CV_64FC1)
-	{
-		_img.convertTo(img, CV_64FC1, 1 / 255.0);
-		img *= 255;
-	}
+	int rows = src.rows;
+	int cols = src.cols;
+	auto src_data = ImageData(src);
 
-	vector<vector<double>> v(img.rows, vector<double>(img.cols, 0));
+	// ∏µ¿Ô“∂±‰ªª
+	_src_fourier_res = fourier.DFT(src_data);
+
+	// ∆µ¬ ”Ú¬À≤®
+	_dst_fourier_res = op(_src_fourier_res);
+
+	// ∑µªÿø’º‰”Ú
+	auto _dst_data = fourier.IDFT(_dst_fourier_res);
+
+	//  ‰≥ˆÕºœÒ
+	auto dst_image_data = ConvertToImage(_dst_data);
+	return Out8UC1(dst_image_data);
+
+}
+
+vector<vector<double>> FourierFilter::ImageData(const Mat &img)
+{
+	vector<vector<double>> src_data(img.rows, vector<double>(img.cols, 0));
 	for (int i = 0; i < img.rows; i++)
 	{
 		for (int j = 0; j < img.cols; j++)
 		{
-			double * p = (double*)(img.data);
-			p += (i*img.cols + j);
-			v[i][j] = *p;
+			src_data[i][j] = img.data[i*img.cols + j]*pow(-1, i+j);
 		}
 	}
 
-	return v;
+	return src_data;
 }
 
-Mat Image2Mat(const Image &image, int image_type)
+vector<vector<double>> FourierFilter::ConvertToImage(const Complex2D &dst_fourier)
 {
-	Mat mat(image.Rows(), image.Cols(), CV_64FC1);
-	for (int i = 0; i < image.Rows(); i++)
+	int rows = dst_fourier.size();
+	int cols = dst_fourier[0].size();
+
+	vector<vector<double>> dst_data(rows, vector<double>(cols, 0));
+	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < image.Cols(); j++)
+		for (int j = 0; j < cols; j++)
 		{
-			double * p = (double*)(mat.data);
-			p += (i*mat.cols + j);
-
-			*p = image[i][j];
+			dst_data[i][j] = dst_fourier[i][j].real()*pow(-1, i + j);
 		}
 	}
 
-	return mat;
+	return dst_data;
 }
 
-Image ReadImage(const string name)
+cv::Mat FourierFilter::Out8UC1(const vector<vector<double>> &d)
 {
-	Mat img = imread(name, 0);
-	return Mat2Image(img);
-}
+	int rows = d.size();
+	int cols = d[0].size();
 
-void ShowImage(const string &name, const Image &img, bool is_normalized )
-{
-	Mat mat(img.Rows(), img.Cols(), CV_8UC1);
-
-	for (int i = 0; i < img.Rows(); i++)
+	Mat dst(rows, cols, CV_8UC1);
+	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < img.Cols(); j++)
+		for (int j = 0; j < cols; j++)
 		{
-			mat.data[i*img.Cols()+j] = std::round(img[i][j]);
+			double tmp = 0;
+
+			tmp = d[i][j];
+			tmp = (tmp > 255 ? 255 : tmp);
+			tmp = (tmp < 0 ? 0 : tmp);
+			dst.data[i*cols+j] =tmp;
 		}
 	}
 
-	imshow(name, mat);
+	return dst;
 }
 
-vector<double>& Image::operator[](int index)
+Gauss::Gauss(int rows, int cols, double A, double sigma_x, double sigma_y)
 {
-	return _data[index];
+	_gauss_array = GenGaussianKernel(rows, cols, A, sigma_x, sigma_y);
 }
 
-const vector<double>& Image::operator[](int index) const
+void Gauss::SetKernel(const vector<vector<double>> &gauss_array)
 {
-	return _data[index];
+	_gauss_array = gauss_array;
 }
 
-int Image::Rows() const
+vector<vector<std::complex<double>>> Gauss::operator()(const vector<vector<std::complex<double>>> &fourier)
 {
-	if (_data.size() > 0)
+	int rows = fourier.size();
+	int cols = fourier[0].size();
+
+	vector<vector<std::complex<double>>> tmp(rows, vector<std::complex<double>>(cols, 0));
+
+	for (int i = 0; i < rows; i++)
 	{
-		return _data.size();
+		for (int j = 0; j < cols; j++)
+		{
+			tmp[i][j] = _gauss_array[i][j] * fourier[i][j];
+		}
 	}
-	else
-	{
-		return 0;
-	}
+
+	return tmp;
 }
 
-int Image::Cols() const
-{
-	if (Rows() > 0)
-	{
-		return _data[0].size();
-	}
-	else
-	{
-		return 0;
-	}
-}
