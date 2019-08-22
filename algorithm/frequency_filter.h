@@ -65,7 +65,7 @@ namespace IPL
 		double _y;
 	};
 
-	/** \brief Compute the distance between two points.
+    /** \brief Compute the distance between two points.
      *  \param[in] p1 the first point
      *  \param[in] p2 the second point
      *  \return the distance between p1 and p2
