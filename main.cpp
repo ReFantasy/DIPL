@@ -10,6 +10,7 @@
 #include <share.h>
 #include "Timer.h"
 
+
 using namespace std;
 using namespace cv;
 
@@ -40,59 +41,27 @@ using Complex2D = vector<vector<std::complex<double>>>;
 
 int main()
 {
-	//Timer timer;
-	//Fourier fourier;
-	//Rand<double> _rand(1, 10);
+	Timer timer;
+	IPL::Fourier fourier;
+	Rand<double> _rand(1, 10);
 
-	//Mat src = imread("dog.jpg", 0);
-	//vector<vector<double>> vec_src(src.rows, vector<double>(src.cols, 0));
-	//for (int i = 0; i < src.rows; i++)
-	//	for (int j = 0; j < src.cols; j++)
-	//		vec_src[i][j] = src.data[i*src.cols + j];
+	Mat src = imread("6.tif", 0);
+	vector<vector<double>> vec_src(src.rows, vector<double>(src.cols, 0));
+	for (int i = 0; i < src.rows; i++)
+		for (int j = 0; j < src.cols; j++)
+			vec_src[i][j] = src.data[i*src.cols + j];
 
-	//
-	//// 自定义卷积核
-	//Mat kernel = (Mat_<float>(3, 3, 1));
-	//kernel.at<float>(1, 1) = -8;
-	//cout << kernel << endl;
+	// geneate filter kernel
+	auto kernel = IPL::GHPF(src.rows, src.cols, 160);
 
-	//// 空间域滤波
-	//Mat spatial;
-	//filter2D(src, spatial, -1, kernel);
-	//imshow("空间域滤波", spatial);
+	IPL::Filter filter;
+	filter.SetKernel(kernel);
+	IPL::FourierFilter fourier_filter;
 
+	Mat dst = fourier_filter(src, filter);
 
-	//// 扩展模板
-	//vector<vector<double>> kernelp(src.rows, vector<double>(src.cols, 0));
-	//for (int i = 0; i < 3; i++)
-	//	for (int j = 0; j < 3; j++)
-	//		kernelp[i][j] = 1;
-	//kernelp[1][1] = -8;
-
-	//// 转到频率域
-	//auto p1 = fourier.DFT(vec_src);
-	//auto p2 = fourier.DFT(kernelp);
-	//auto p3 = p1;
-	//for (int i = 0; i < src.rows; i++)
-	//	for (int j = 0; j < src.cols; j++)
-	//		p3[i][j] = p1[i][j] * p2[i][j];
-
-	//// 返回空间域
-	//auto p4 = fourier.IDFT(p3);
-	//Mat dst(src.rows,src.cols,CV_8UC1);
-	//for (int i = 0; i < src.rows; i++)
-	//	for (int j = 0; j < src.cols; j++)
-	//	{
-	//		double tmp = p4[i][j].real();
-	//		tmp = tmp > 255 ? 255 : tmp;
-	//		tmp = tmp < 0 ? 0 : tmp;
-	//		dst.data[i*src.cols + j] = tmp;
-	//	}
-	//imshow("频率域滤波", dst);
-
-	//imshow("差值", spatial - dst);
-
-
+	
+	imshow("dst", dst);
 
 	
 
@@ -117,7 +86,7 @@ int MyFourier(Mat image)
 		}
 	}
 
-	Fourier fourier;
+	IPL::Fourier fourier;
 	auto dft_img = fourier.DFT(img);
 
 	// 频谱
