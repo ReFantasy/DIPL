@@ -80,7 +80,7 @@ cv::Mat FourierFilter::Out8UC1(const vector<vector<double>> &d)
 
 Gauss::Gauss(int rows, int cols, double A, double sigma_x, double sigma_y)
 {
-	_gauss_array = GenGaussianKernel(rows, cols, A, sigma_x, sigma_y);
+	_gauss_array = GLPF(rows, cols, A, sigma_x, sigma_y);
 }
 
 void Gauss::SetKernel(const vector<vector<double>> &gauss_array)

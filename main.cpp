@@ -40,28 +40,59 @@ using Complex2D = vector<vector<std::complex<double>>>;
 
 int main()
 {
-	Timer timer;
-	Fourier fourier;
-	Rand<double> _rand(1, 10);
+	//Timer timer;
+	//Fourier fourier;
+	//Rand<double> _rand(1, 10);
 
-	Mat src = imread("5.tif", 0);
-	
-	
-	FourierFilter fourier_filter;
-	// 生成高斯核
-	auto kern = GenGaussianKernel(src.rows, src.cols, 17, 17, 1);
+	//Mat src = imread("dog.jpg", 0);
+	//vector<vector<double>> vec_src(src.rows, vector<double>(src.cols, 0));
+	//for (int i = 0; i < src.rows; i++)
+	//	for (int j = 0; j < src.cols; j++)
+	//		vec_src[i][j] = src.data[i*src.cols + j];
+
+	//
+	//// 自定义卷积核
+	//Mat kernel = (Mat_<float>(3, 3, 1));
+	//kernel.at<float>(1, 1) = -8;
+	//cout << kernel << endl;
+
+	//// 空间域滤波
+	//Mat spatial;
+	//filter2D(src, spatial, -1, kernel);
+	//imshow("空间域滤波", spatial);
 
 
-	Gauss gauss;
-	gauss.SetKernel(kern);
-	Mat dst = fourier_filter(src, gauss);
-	
+	//// 扩展模板
+	//vector<vector<double>> kernelp(src.rows, vector<double>(src.cols, 0));
+	//for (int i = 0; i < 3; i++)
+	//	for (int j = 0; j < 3; j++)
+	//		kernelp[i][j] = 1;
+	//kernelp[1][1] = -8;
 
-	imshow("src", src);
-	imshow("dst", dst);
+	//// 转到频率域
+	//auto p1 = fourier.DFT(vec_src);
+	//auto p2 = fourier.DFT(kernelp);
+	//auto p3 = p1;
+	//for (int i = 0; i < src.rows; i++)
+	//	for (int j = 0; j < src.cols; j++)
+	//		p3[i][j] = p1[i][j] * p2[i][j];
+
+	//// 返回空间域
+	//auto p4 = fourier.IDFT(p3);
+	//Mat dst(src.rows,src.cols,CV_8UC1);
+	//for (int i = 0; i < src.rows; i++)
+	//	for (int j = 0; j < src.cols; j++)
+	//	{
+	//		double tmp = p4[i][j].real();
+	//		tmp = tmp > 255 ? 255 : tmp;
+	//		tmp = tmp < 0 ? 0 : tmp;
+	//		dst.data[i*src.cols + j] = tmp;
+	//	}
+	//imshow("频率域滤波", dst);
+
+	//imshow("差值", spatial - dst);
 
 
-	
 
 	
 

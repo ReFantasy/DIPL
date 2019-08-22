@@ -1,7 +1,7 @@
 ﻿#include "GaussKernel.h"
 
 
-std::vector<double> GenGaussianKernel(int size, double sigma, double a)
+std::vector<double> GLPF(int size, double sigma, double a)
 {
 	int centre = size / 2;
 	std::vector<double> kernel(size, 0);
@@ -15,7 +15,7 @@ std::vector<double> GenGaussianKernel(int size, double sigma, double a)
 	return kernel;
 }
 
-std::vector<std::vector<double>> GenGaussianKernel(int rows, int cols, double sigma_x, double sigma_y, double A)
+std::vector<std::vector<double>> GLPF(int rows, int cols, double sigma_x, double sigma_y, double A)
 {
 	std::vector<std::vector<double>> kernel(rows, std::vector<double>(cols, 0));
 

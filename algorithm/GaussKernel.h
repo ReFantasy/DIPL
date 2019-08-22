@@ -1,13 +1,8 @@
 ﻿/************************************************************************************************
  *
  *  
- *  Definition gaussian function:
+ *  Gaussian pass filter
  *
- *     f(x) = a*e^( -(x-b)^2/(2*c^2) )                               // one-dimensional
- *
- *   f(x,y) = A*e^(-( (x-a)^2/(2*sigmax^2)+(y-b)^2/(x*sigmay^2) ) )  // two-dimension
- *
- *  More details:  https://blog.csdn.net/jorg_zhao/article/details/52687448
  *
  ***********************************************************************************************/
 #ifndef __GAUSSKERNEL_H__
@@ -15,18 +10,20 @@
 #include <vector>
 
 /* 
- * generate one-dimensional gaussian kernel
+ * generate one-dimensional gaussian low pass filter
+ * define: f(x) = a*e^( -(x-b)^2/(2*c^2) )
  *
  * param[in] size the length of gaussian kernel
  * param[in] sigma the width of gaussian bell
  * param[in] a the amplitude of gaussian kernel
  *
  */
-std::vector<double> GenGaussianKernel(int size, double sigma, double a);
+std::vector<double> GLPF(int size, double sigma, double a = 1);
 
 
 /*
- * generate two-dimensional gaussian kernel
+ * generate two-dimensional gaussian low pass filter
+ * define: f(x,y) = A*e^(-( (x-a)^2/(2*sigmax^2)+(y-b)^2/(x*sigmay^2) ) )
  *
  * param[in] rows the height of gaussian kernel
  * param[in] cols the width of gaussian kernel
@@ -35,7 +32,7 @@ std::vector<double> GenGaussianKernel(int size, double sigma, double a);
  * param[in] sigma_y the width of gaussian bell in the y direction
  *
  */
-std::vector<std::vector<double>> GenGaussianKernel(int rows,int cols, double sigma_x, double sigma_y, double A);
+std::vector<std::vector<double>> GLPF(int rows,int cols, double sigma_x, double sigma_y, double A = 1);
 
 
 
