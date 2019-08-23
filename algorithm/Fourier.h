@@ -15,28 +15,6 @@ using std::complex;
 
 namespace IPL
 {
-	// 欧拉公式
-	// thet 单位为弧度
-	class Eulerform
-	{
-	public:
-		Eulerform(const std::complex<double> &com);
-		Eulerform(double mul, double thet);
-		double Mul()const;
-		double Thet()const;
-		const std::complex<double>& GetComplex()const;
-
-	private:
-		std::complex<double> _com;
-	};
-
-
-	/** \brief check n = pow(2,k), k=1,2,3...
-	 *  \param[in] n value to be checked
-	 *  \return if n = pow(2,k),return true, or false
-	 */
-	bool Is2Power(int n);
-
 	class Fourier
 	{
 
@@ -113,6 +91,30 @@ namespace IPL
 		vector<vector<complex<double>>> IFFT(const vector<vector<complex<double>>> &array_in)const;
 
 	};
+
+
+	// 欧拉公式
+	// thet 单位为弧度
+	class Eulerform
+	{
+	public:
+		Eulerform(const std::complex<double> &com);
+		Eulerform(double mul, double thet);
+		double Mul()const;
+		double Thet()const;
+		const std::complex<double>& GetComplex()const;
+
+	private:
+		std::complex<double> _com;
+	};
+
+
+	/** \brief check n = pow(2,k), k=1,2,3...
+	 *  \param[in] n value to be checked
+	 *  \return if n = pow(2,k),return true, or false
+	 */
+	bool Is2Power(int n);
+	int Nearst2Power(int n);
 
 
 }

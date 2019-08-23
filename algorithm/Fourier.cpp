@@ -488,4 +488,40 @@ namespace IPL
 		return false;
 	}
 
+	int Nearst2Power(int n)
+	{
+		int max_bits = sizeof(int) * 8;
+		vector<int> table(max_bits, 0);
+
+		int bit = 0x1;
+		for (int i = 0; i < max_bits; i++)
+		{
+			table[i] = bit;
+			bit <<= 1;
+		}
+
+		
+
+
+		vector<int> distance(max_bits, 0);
+		for (int i = 0; i < max_bits; i++)
+		{
+			distance[i] = abs(table[i] - n);
+		}
+
+		int index = 0;
+		int minv = distance[0];
+		for (int i = 1; i < max_bits; i++)
+		{
+			if (minv > distance[i])
+			{
+				minv = distance[i];
+				index = i;
+			}
+		}
+
+		return table[index];
+
+	}
+
 }

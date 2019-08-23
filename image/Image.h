@@ -15,34 +15,14 @@ using namespace std;
 
 namespace IPL
 {
-
-
-	class Filter
-	{
-		using Complex2D = vector<vector<std::complex<double>>>;
-	public:
-		Filter() = default;
-		void SetKernel(const vector<vector<double>> &gauss_array);
-		vector<vector<std::complex<double>>> operator()(const vector<vector<std::complex<double>>> &fourier);
-
-	private:
-		vector<vector<double>> _gauss_array;
-
-	};
 	// 傅里叶滤波
 	class FourierFilter
 	{
 		using Complex2D = vector<vector<std::complex<double>>>;
-		struct default_op
-		{
-			Complex2D operator()(const Complex2D &op)
-			{
-				return op;
-			}
-		};
+		
 	public:
 		FourierFilter() = default;
-		Mat operator()(const Mat &src, std::function<Complex2D(Complex2D)> op = default_op{});
+		Mat operator()(const Mat &src, const vector<vector<double>> &gauss, int ft_type = 0);
 
 	private:
 		vector<vector<double>> ImageData(const Mat &img);
@@ -53,6 +33,8 @@ namespace IPL
 		Fourier fourier;
 		vector<vector<std::complex<double>>> _src_fourier_res;
 		vector<vector<std::complex<double>>> _dst_fourier_res;
+
+		vector<vector<std::complex<double>>> filter(const vector<vector<std::complex<double>>> &fourier, const vector<vector<double>> &gauss);
 
 	};
 

@@ -33,198 +33,70 @@ std::ostream& operator<<(std::ostream &os, const std::complex<double> &cd)
 }
 
 int OpencvFourier(Mat img);
-int MyFourier(Mat image);
-
-//std::vector<std::complex<double>> _FFT(const std::vector<std::complex<double>> &in)
-//{
-//	std::vector<std::complex<double>> out(in.size(), std::complex<double>{0,0});
-//
-//	int K = in.size() / 2;
-//	if (K > 1)
-//	{
-//		std::vector<std::complex<double>> even(K, std::complex<double>{0,0});
-//		std::vector<std::complex<double>> odd(K, std::complex<double>{0, 0});
-//		for (int i = 0; i < in.size(); i += 2)
-//		{
-//			even[i / 2] = in[i];
-//			odd[i / 2] = in[i + 1];
-//		}
-//
-//		auto even_fourier = std::move(_FFT(even));
-//		auto odd_fourier = std::move(_FFT(odd));
-//
-//
-//
-//		std::vector<std::complex<double>> W_2k_u(K, std::complex<double>{0, 0});
-//		for (int i = 0; i < K; i++)
-//		{
-//			IPL::Eulerform e(1, -2.0*PI*i / 2 / K);
-//			W_2k_u[i] = odd_fourier[i] * e.GetComplex();
-//		}
-//
-//		for (int i = 0; i < K; i++)
-//		{
-//			out[i] = even_fourier[i] + W_2k_u[i];
-//		}
-//		for (int i = 0; i < K; i++)
-//		{
-//			out[i + K] = even_fourier[i] - W_2k_u[i];
-//		}
-//	}
-//	else
-//	{
-//		assert(K == 1);
-//		std::complex<double> even0 = in[0];
-//		std::complex<double> odd0 = in[1];
-//		out[0] = even0 + odd0;
-//		out[1] = even0 - odd0;
-//	}
-//
-//	return out;
-//}
 
 
-
+// 傅里叶滤波示例
+void FourierFilterExampel(const Mat &src);
 
 int main()
 {
-	Timer timer;
-	IPL::Fourier fourier;
-	Rand<double> _rand(1, 10);
-
-	//Mat src = imread("6.tif", 0);
-	//vector<vector<double>> vec_src(src.rows, vector<double>(src.cols, 0));
-	//for (int i = 0; i < src.rows; i++)
-	//	for (int j = 0; j < src.cols; j++)
-	//		vec_src[i][j] = src.data[i*src.cols + j];
-
-	//// geneate filter kernel
-	//auto kernel = IPL::GHPF(src.rows, src.cols, 160);
-
-	//IPL::Filter filter;
-	//filter.SetKernel(kernel);
-	//IPL::FourierFilter fourier_filter;
-	//
-	//Mat dst = fourier_filter(src, filter);
-
-	//
-	//imshow("dst", dst);
-
-	int n = 512;
-	vector<vector<complex<double>>> In(n, vector<complex<double>>(n, complex<double>(0,0)));
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			In[i][j]._Val[0] = _rand();
-			In[i][j]._Val[1] = _rand();
-		}
-	}
-	
-
-
-	auto out = In;
-
-	timer.ReSet();
-	out = fourier.FFT(In);
-	cout << timer.Elapse() << endl;
-	//Print(out);
-
-	cout << endl<<"-----------------------" << endl;
-
-	timer.Start();
-	auto res = fourier.DFT(In);
-	cout << timer.Elapse() << endl;
-	//Print(res);
-
-
-
-	
-	
-
+	Mat src = imread("6.tif", 0);
+	FourierFilterExampel(src);
 	
 	waitKey();
 	system("pause");
 	return 0;
 }
 
-int MyFourier(Mat image)
+void FourierFilterExampel(const Mat &src)
 {
-	Mat src;
-	cvtColor(image, src, CV_BGR2GRAY);
-	int rows = src.rows;
-	int cols = src.cols;
-	vector<vector<double>> img(rows, vector<double>(cols, 0));
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			img[i][j] = src.data[i*cols + j] * pow(-1, i + j);
-		}
-	}
+	assert(src.type() == CV_8UC1);
 
-	IPL::Fourier fourier;
-	auto dft_img = fourier.DFT(img);
+	// 初始化变量和数据
+	Timer timer;
+	Rand<double> _rand(1, 10);
+	IPL::FourierFilter fourier_filter;
 
-	// 频谱
-	Mat dst(rows, cols, CV_32FC1);
-	vector<vector<double>> pu(rows, vector<double>(cols, 0));
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			pu[i][j] = std::abs(dft_img[i][j]);
+	
+	// ------------------------------------- FFT ---------------------------------------
+	cout << "快速傅里变换" << endl;
+	Mat src_fft;
+	src.copyTo(src_fft);
+	int old_rows = src_fft.rows;
+	int old_cols = src_fft.cols;
+	// 寻找最佳图像尺寸
+	int optimal_rows = IPL::Nearst2Power(src_fft.rows);
+	int optimal_cols = IPL::Nearst2Power(src_fft.cols);
+	resize(src_fft, src_fft, { optimal_cols,optimal_rows });
 
-		}
-	}
+	// 生成滤波核
+	auto kernel_fft = IPL::GHPF(src_fft.rows, src_fft.cols, 160);
+
+	timer.Start();
+	Mat fft = fourier_filter(src_fft, kernel_fft);
+	cout << "fft: " << timer.Elapse()<<" milliseconds" << endl;
+
+	resize(fft, fft, { old_cols,old_rows });
+	imshow("fft", fft);
+
+	cout << endl;
 
 
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			double tmp = 1 + log(abs(pu[i][j]));
-			if (tmp > 255)
-				tmp = 255;
-			if (tmp < 0)
-				tmp = 0;
-			pu[i][j] = tmp;
-		}
-	}
 
-	// 归一化
-	double minv = 0;
-	double maxv = 0;
-	for (auto&e : pu)
-		for (auto &i : e)
-		{
-			maxv = (i > maxv ? i : maxv);
-			minv = (minv < i ? minv : i);
-		}
-	for (auto&e : pu)
-		for (auto &i : e)
-		{
-			i -= minv;
-		}
-	for (auto&e : pu)
-		for (auto &i : e)
-		{
-			i /= (maxv - minv);
-			i *= 255;
-		}
-
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)
-		{
-			src.data[i*cols + j] = pu[i][j];
-		}
-	}
-
-	imshow("MyFourier", src);
-	waitKey(1);
-	return 0;
+	// ------------------------------------- DFT ---------------------------------------
+	cout << "离散傅里叶变换" << endl;
+	Mat src_dft;
+	src.copyTo(src_dft);
+	// 生成滤波核
+	auto kernel_dft = IPL::GHPF(src_dft.rows, src_dft.cols, 160);
+	timer.ReSet();
+	Mat dft = fourier_filter(src_dft, kernel_dft, 1);
+	cout << "dft: " << timer.Elapse() << " milliseconds" << endl;
+	imshow("dft", dft);
+	
 }
+
+
 
 int OpencvFourier(Mat img)
 {
@@ -237,7 +109,7 @@ int OpencvFourier(Mat img)
 	Mat src_gray;
 	cvtColor(src, src_gray, CV_RGB2GRAY);//灰度图像做傅里叶变换
 
-	int m = getOptimalDFTSize(src_gray.rows);//2,3,5的倍数有更高效率的傅里叶转换
+	int m = getOptimalDFTSize(src_gray.rows); //2,3,5的倍数有更高效率的傅里叶转换
 	int n = getOptimalDFTSize(src_gray.cols);
 
 	Mat dst;

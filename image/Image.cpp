@@ -4,26 +4,53 @@ namespace IPL
 
 
 
-	cv::Mat FourierFilter::operator()(const Mat &src, std::function<Complex2D(Complex2D)> op)
+	cv::Mat FourierFilter::operator()(const Mat &src, const vector<vector<double>> &gauss, int ft_type)
 	{
 		assert(src.type() == CV_8UC1);
 
-		int rows = src.rows;
-		int cols = src.cols;
-		auto src_data = ImageData(src);
+		// FFT
+		if (ft_type == 0)
+		{
 
-		// 傅里叶变换
-		_src_fourier_res = fourier.DFT(src_data);
+			int rows = src.rows;
+			int cols = src.cols;
+			auto src_data = ImageData(src);
 
-		// 频率域滤波
-		_dst_fourier_res = op(_src_fourier_res);
+			// 傅里叶变换
+			_src_fourier_res = fourier.FFT(src_data);
 
-		// 返回空间域
-		auto _dst_data = fourier.IDFT(_dst_fourier_res);
+			// 频率域滤波
+			_dst_fourier_res = filter(_src_fourier_res, gauss);
 
-		// 输出图像
-		auto dst_image_data = ConvertToImage(_dst_data);
-		return Out8UC1(dst_image_data);
+			// 返回空间域
+			auto _dst_data = fourier.IFFT(_dst_fourier_res);
+
+			// 输出图像
+			auto dst_image_data = ConvertToImage(_dst_data);
+			auto res =  Out8UC1(dst_image_data);
+
+			return res;
+		}
+		// DFT
+		else
+		{
+			int rows = src.rows;
+			int cols = src.cols;
+			auto src_data = ImageData(src);
+
+			// 傅里叶变换
+			_src_fourier_res = fourier.DFT(src_data);
+
+			// 频率域滤波
+			_dst_fourier_res = filter(_src_fourier_res, gauss);
+
+			// 返回空间域
+			auto _dst_data = fourier.IDFT(_dst_fourier_res);
+
+			// 输出图像
+			auto dst_image_data = ConvertToImage(_dst_data);
+			return Out8UC1(dst_image_data);
+		}
 
 	}
 
@@ -81,12 +108,8 @@ namespace IPL
 	}
 
 
-	void Filter::SetKernel(const vector<vector<double>> &gauss_array)
-	{
-		_gauss_array = gauss_array;
-	}
-
-	vector<vector<std::complex<double>>> Filter::operator()(const vector<vector<std::complex<double>>> &fourier)
+	vector<vector<std::complex<double>>> FourierFilter::filter(const vector<vector<std::complex<double>>> &fourier,
+		const vector<vector<double>> &gauss)
 	{
 		int rows = fourier.size();
 		int cols = fourier[0].size();
@@ -97,11 +120,13 @@ namespace IPL
 		{
 			for (int j = 0; j < cols; j++)
 			{
-				tmp[i][j] = _gauss_array[i][j] * fourier[i][j];
+				tmp[i][j] = gauss[i][j] * fourier[i][j];
 			}
 		}
 
 		return tmp;
+	
 	}
 
+	
 }
