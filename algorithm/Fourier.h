@@ -33,7 +33,7 @@ namespace IPL
 
 	/** \brief check n = pow(2,k), k=1,2,3...
 	 *  \param[in] n value to be checked
-	 *  \return if n = n = pow(2,k),return true, or false
+	 *  \return if n = pow(2,k),return true, or false
 	 */
 	bool Is2Power(int n);
 
