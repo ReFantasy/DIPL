@@ -30,6 +30,13 @@ namespace IPL
 		std::complex<double> _com;
 	};
 
+
+	/** \brief check n = pow(2,k), k=1,2,3...
+	 *  \param[in] n value to be checked
+	 *  \return if n = n = pow(2,k),return true, or false
+	 */
+	bool Is2Power(int n);
+
 	class Fourier
 	{
 
@@ -57,11 +64,53 @@ namespace IPL
 		vector<vector<complex<double>>> DFT(const vector<vector<complex<double>>> &array_in)const;
 
 
-
 		// 功能 ：二维离散傅里叶逆变换
 		// 参数 ：需要进行逆变换的二维复数向量
 		// 输出 ：二维浮点数据向量，即傅里叶逆变换的结果
 		vector<vector<complex<double>>> IDFT(const vector<vector<complex<double>>> &array_in)const;
+
+
+
+		/** \brief One dimensional fast Fourier transform
+		 *  \param[in] array_in one-dimensional complex vector
+		 *  \return one-dimensional complex vector
+		 */
+		vector<complex<double>> FFT(const vector<complex<double>> &array_in)const;
+
+
+		/** \brief Two dimensional fast Fourier transform
+		 *  \param[in] array_in two-dimensional complex vector
+		 *  \return two-dimensional complex vector
+		 */
+		vector<vector<complex<double>>> FFT(const vector<vector<complex<double>>> &array_in)const;
+
+
+		/** \brief One dimensional fast Fourier transform
+		 *  \param[in] array_in one-dimensional vector
+		 *  \return one-dimensional complex vector
+		 */
+		vector<complex<double>> FFT(const vector<double> &array_in)const;
+
+
+		/** \brief Two dimensional fast Fourier transform
+		 *  \param[in] array_in two-dimensional complex vector
+		 *  \return two-dimensional complex vector
+		 */
+		vector<vector<complex<double>>> FFT(const vector<vector<double>> &array_in)const;
+
+
+		/** \brief One dimensional fast Fourier inversion transform
+		 *  \param[in] array_in one-dimensional complex vector
+		 *  \return one-dimensional complex vector
+		 */
+		vector<complex<double>> IFFT(const vector<complex<double>> &array_in)const;
+
+
+		/** \brief Two dimensional fast Fourier inversion transform
+		 *  \param[in] array_in two-dimensional complex vector
+		 *  \return two-dimensional complex vector
+		 */
+		vector<vector<complex<double>>> IFFT(const vector<vector<complex<double>>> &array_in)const;
 
 	};
 

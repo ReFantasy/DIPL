@@ -14,7 +14,7 @@
 
 namespace IPL
 {
-	/** \brief Geneate B low pass filter.
+	/** \brief Geneate B low-pass filter.
 	 *  \param[in] rows the height of filter
 	 *  \param[in] cols the width of filter
 	 *  \param[in] D0 cut-off frequency
@@ -33,7 +33,7 @@ namespace IPL
 	std::vector<std::vector<double>> BHPF(int rows, int cols, double D0, int n = 2);
 
 
-	/** \brief Geneate Gaussian low pass filter.
+	/** \brief Geneate Gaussian low-pass filter.
 	 *  \param[in] rows the height of filter
 	 *  \param[in] cols the width of filter
 	 *  \param[in] D0 cut-off frequency

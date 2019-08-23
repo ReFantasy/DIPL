@@ -35,7 +35,54 @@ std::ostream& operator<<(std::ostream &os, const std::complex<double> &cd)
 int OpencvFourier(Mat img);
 int MyFourier(Mat image);
 
-using Complex2D = vector<vector<std::complex<double>>>;
+//std::vector<std::complex<double>> _FFT(const std::vector<std::complex<double>> &in)
+//{
+//	std::vector<std::complex<double>> out(in.size(), std::complex<double>{0,0});
+//
+//	int K = in.size() / 2;
+//	if (K > 1)
+//	{
+//		std::vector<std::complex<double>> even(K, std::complex<double>{0,0});
+//		std::vector<std::complex<double>> odd(K, std::complex<double>{0, 0});
+//		for (int i = 0; i < in.size(); i += 2)
+//		{
+//			even[i / 2] = in[i];
+//			odd[i / 2] = in[i + 1];
+//		}
+//
+//		auto even_fourier = std::move(_FFT(even));
+//		auto odd_fourier = std::move(_FFT(odd));
+//
+//
+//
+//		std::vector<std::complex<double>> W_2k_u(K, std::complex<double>{0, 0});
+//		for (int i = 0; i < K; i++)
+//		{
+//			IPL::Eulerform e(1, -2.0*PI*i / 2 / K);
+//			W_2k_u[i] = odd_fourier[i] * e.GetComplex();
+//		}
+//
+//		for (int i = 0; i < K; i++)
+//		{
+//			out[i] = even_fourier[i] + W_2k_u[i];
+//		}
+//		for (int i = 0; i < K; i++)
+//		{
+//			out[i + K] = even_fourier[i] - W_2k_u[i];
+//		}
+//	}
+//	else
+//	{
+//		assert(K == 1);
+//		std::complex<double> even0 = in[0];
+//		std::complex<double> odd0 = in[1];
+//		out[0] = even0 + odd0;
+//		out[1] = even0 - odd0;
+//	}
+//
+//	return out;
+//}
+
 
 
 
@@ -45,24 +92,54 @@ int main()
 	IPL::Fourier fourier;
 	Rand<double> _rand(1, 10);
 
-	Mat src = imread("6.tif", 0);
-	vector<vector<double>> vec_src(src.rows, vector<double>(src.cols, 0));
-	for (int i = 0; i < src.rows; i++)
-		for (int j = 0; j < src.cols; j++)
-			vec_src[i][j] = src.data[i*src.cols + j];
+	//Mat src = imread("6.tif", 0);
+	//vector<vector<double>> vec_src(src.rows, vector<double>(src.cols, 0));
+	//for (int i = 0; i < src.rows; i++)
+	//	for (int j = 0; j < src.cols; j++)
+	//		vec_src[i][j] = src.data[i*src.cols + j];
 
-	// geneate filter kernel
-	auto kernel = IPL::GHPF(src.rows, src.cols, 160);
+	//// geneate filter kernel
+	//auto kernel = IPL::GHPF(src.rows, src.cols, 160);
 
-	IPL::Filter filter;
-	filter.SetKernel(kernel);
-	IPL::FourierFilter fourier_filter;
+	//IPL::Filter filter;
+	//filter.SetKernel(kernel);
+	//IPL::FourierFilter fourier_filter;
+	//
+	//Mat dst = fourier_filter(src, filter);
 
-	Mat dst = fourier_filter(src, filter);
+	//
+	//imshow("dst", dst);
+
+	int n = 512;
+	vector<vector<complex<double>>> In(n, vector<complex<double>>(n, complex<double>(0,0)));
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			In[i][j]._Val[0] = _rand();
+			In[i][j]._Val[1] = _rand();
+		}
+	}
+	
+
+
+	auto out = In;
+
+	timer.ReSet();
+	out = fourier.FFT(In);
+	cout << timer.Elapse() << endl;
+	//Print(out);
+
+	cout << endl<<"-----------------------" << endl;
+
+	timer.Start();
+	auto res = fourier.DFT(In);
+	cout << timer.Elapse() << endl;
+	//Print(res);
+
+
 
 	
-	imshow("dst", dst);
-
 	
 
 	
@@ -146,6 +223,7 @@ int MyFourier(Mat image)
 
 	imshow("MyFourier", src);
 	waitKey(1);
+	return 0;
 }
 
 int OpencvFourier(Mat img)
