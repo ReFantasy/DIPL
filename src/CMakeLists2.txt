@@ -1,2 +1,0 @@
-ADD_SUBDIRECTORY(algorithm)
-#ADD_SUBDIRECTORY(image)

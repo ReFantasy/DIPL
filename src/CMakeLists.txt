@@ -3,3 +3,5 @@ ADD_SUBDIRECTORY(algorithm)
 #ADD_SUBDIRECTORY(assist) 
 #ADD_SUBDIRECTORY(book_example) 
 #ADD_SUBDIRECTORY(image) 
+
+ADD_EXECUTABLE(main main.cpp)
