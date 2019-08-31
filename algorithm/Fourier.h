@@ -17,7 +17,6 @@ namespace IPL
 {
 	class Fourier
 	{
-
 	public:
 		Fourier();
 		~Fourier();

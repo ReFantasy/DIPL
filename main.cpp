@@ -6,9 +6,9 @@
 #include "opencv2/opencv.hpp"
 #include "algorithm/Fourier.h"
 #include "image/Image.h"
-#include "Rand.h"
+#include "./assist/Rand.h"
 #include <share.h>
-#include "Timer.h"
+#include "./assist/Timer.h"
 
 
 using namespace std;
