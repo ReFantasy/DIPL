@@ -65,8 +65,9 @@ namespace IPL
 		std::vector<std::complex<double>> tmp(array_in.size(), { 0,0 });
 		for (int i = 0; i < array_in.size(); i++)
 		{
-			tmp[i]._Val[0] = array_in[i];
-			tmp[i]._Val[1] = 0;
+			/*tmp[i]._Val[0] = array_in[i];
+			tmp[i]._Val[1] = 0;*/
+			tmp[i] = { array_in[i], 0 };
 		}
 
 		return DFT(tmp);
@@ -146,8 +147,9 @@ namespace IPL
 		vector<complex<double>> in_complex(array_in.size(), { 0,0 });
 		for (int i = 0; i < array_in.size(); i++)
 		{
-			in_complex[i]._Val[0] = array_in[i];
-			in_complex[i]._Val[1] = 0;
+			/*in_complex[i]._Val[0] = array_in[i];
+			in_complex[i]._Val[1] = 0;*/
+			in_complex[i] = { array_in[i] ,0 };
 		}
 
 		return FFT(in_complex);
@@ -199,8 +201,9 @@ namespace IPL
 		{
 			for (int j = 0; j < cols; j++)
 			{
-				tmp[i][j]._Val[0] = array_in[i][j];
-				tmp[i][j]._Val[1] = 0;
+				/*tmp[i][j]._Val[0] = array_in[i][j];
+				tmp[i][j]._Val[1] = 0;*/
+				tmp[i][j] = { array_in[i][j], 0 };
 			}
 		}
 
@@ -220,8 +223,9 @@ namespace IPL
 		vector<complex<double>> array_in_conjugate(cnt, complex<double>{});
 		for (int i = 0; i < cnt; i++)
 		{
-			array_in_conjugate[i]._Val[0] = array_in[i]._Val[0];
-			array_in_conjugate[i]._Val[1] = -array_in[i]._Val[1];
+			/*array_in_conjugate[i]._Val[0] = array_in[i]._Val[0];
+			array_in_conjugate[i]._Val[1] = -array_in[i]._Val[1];*/
+			array_in_conjugate[i] = conj(array_in[i]);
 		}
 
 		auto MN_f_conjugate = FFT(array_in_conjugate);
@@ -308,8 +312,9 @@ namespace IPL
 		{
 			for (int j = 0; j < N; j++)
 			{
-				tmp[i][j]._Val[0] = array_in[i][j];
-				tmp[i][j]._Val[1] = 0;
+				/*tmp[i][j]._Val[0] = array_in[i][j];
+				tmp[i][j]._Val[1] = 0;*/
+				tmp[i][j] = { array_in[i][j], 0 };
 			}
 		}
 
