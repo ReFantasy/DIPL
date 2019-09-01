@@ -1,4 +1,4 @@
-# 傅里叶变换库
+﻿# 傅里叶变换库
 SET(LIBFOURIER_SRC Fourier.cpp)
 ADD_LIBRARY(fourier SHARED ${LIBFOURIER_SRC})
 ADD_LIBRARY(fourier_static STATIC ${LIBFOURIER_SRC})
