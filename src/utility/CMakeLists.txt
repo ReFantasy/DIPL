@@ -1,0 +1,39 @@
+﻿#链接库搜索目录
+LINK_DIRECTORIES(${PROJECT_BINARY_DIR}/lib)
+
+
+AUX_SOURCE_DIRECTORY(. UTILITY_LIST)
+ADD_LIBRARY(utility SHARED ${UTILITY_LIST}) # 动态库
+ADD_LIBRARY(utility_static STATIC ${UTILITY_LIST}) # 静态库
+SET_TARGET_PROPERTIES(utility_static PROPERTIES OUTPUT_NAME "utility") # 使用相同的名字
+
+# 链接库image依赖于algorithm
+TARGET_LINK_LIBRARIES(utility algorithm)
+
+
+# 安装
+INSTALL(TARGETS utility utility_static
+        LIBRARY DESTINATION ${PROJECT_BINARY_DIR}/install/lib
+        ARCHIVE DESTINATION ${PROJECT_BINARY_DIR}/install/lib)
+
+file(GLOB HEADER_FILE ./*.h ./*.hpp) #所有头文件存入变量
+FOREACH(F ${HEADER_FILE})
+    INSTALL(FILES ${F} DESTINATION ${PROJECT_BINARY_DIR}/install/include/utility)
+ENDFOREACH(F)
+
+
+# 随机数库
+#SET(LIBRAND_SRC Rand.cpp)
+#ADD_LIBRARY(rand SHARED ${LIBRAND_SRC})
+#ADD_LIBRARY(rand_static STATIC ${LIBRAND_SRC})
+#SET_TARGET_PROPERTIES(rand_static PROPERTIES OUTPUT_NAME "rand")
+
+
+
+# 计时器库
+#SET(LIBTIMER_SRC Timer.cpp)
+#ADD_LIBRARY(timer SHARED ${LIBTIMER_SRC})
+#ADD_LIBRARY(timer_static STATIC ${LIBTIMER_SRC})
+#SET_TARGET_PROPERTIES(timer_static PROPERTIES OUTPUT_NAME "timer")
+
+

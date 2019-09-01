@@ -1,4 +1,5 @@
-﻿#include "Image.h"
+﻿#include "fourier_filter.h"
+
 namespace IPL
 {
 	cv::Mat FourierFilter::operator()(const Mat &src, const vector<vector<double>> &gauss, int ft_type)

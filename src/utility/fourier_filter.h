@@ -3,8 +3,8 @@
  *  自定义图像类型与OpenCV图像类型转换
  *
  ***********************************************************************/
-#ifndef __IMAGE_H__
-#define __IMAGE_H__
+#ifndef __FOURIERFILTER_H__
+#define __FOURIERFILTER_H__
 #include <vector>
 #include <string>
 #include "../algorithm/Fourier.h"
@@ -40,4 +40,4 @@ namespace IPL
 	};
 
 }
-#endif//__IMAGE_H__
+#endif//__FOURIERFILTER_H__
