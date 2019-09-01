@@ -6,8 +6,7 @@
 *.sln
 *.tif
 *.jpg
-Rand*
-Timer*
+
 
 Debug/
 Release/
