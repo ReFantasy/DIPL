@@ -1,9 +1,6 @@
 ﻿#include "Image.h"
 namespace IPL
 {
-
-
-
 	cv::Mat FourierFilter::operator()(const Mat &src, const vector<vector<double>> &gauss, int ft_type)
 	{
 		assert(src.type() == CV_8UC1);
