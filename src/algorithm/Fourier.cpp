@@ -44,7 +44,7 @@ namespace IPL
 	{
 	}
 
-	std::vector<std::complex<double>> Fourier::DFT(const std::vector<double> &array_in) const
+	std::vector<std::complex<double>> Fourier::DFT(const std::vector<double> &array_in) 
 	{
 		/*int M = array_in.size();
 		std::vector<std::complex<double>> array_out(M, std::complex<double>{});
@@ -73,7 +73,7 @@ namespace IPL
 		return DFT(tmp);
 	}
 
-	vector<complex<double>> Fourier::DFT(const vector<complex<double>> &array_in) const
+	vector<complex<double>> Fourier::DFT(const vector<complex<double>> &array_in) 
 	{
 		int M = array_in.size();
 		std::vector<std::complex<double>> array_out(M, std::complex<double>{});
@@ -92,7 +92,7 @@ namespace IPL
 		return array_out;
 	}
 
-	vector<complex<double>> Fourier::FFT(const vector<complex<double>> &in)const
+	vector<complex<double>> Fourier::FFT(const vector<complex<double>> &in)
 	{
 		assert(Is2Power(in.size()));
 
@@ -142,7 +142,7 @@ namespace IPL
 		return out;
 	}
 
-	vector<complex<double>> Fourier::FFT(const vector<double> &array_in) const
+	vector<complex<double>> Fourier::FFT(const vector<double> &array_in) 
 	{
 		vector<complex<double>> in_complex(array_in.size(), { 0,0 });
 		for (int i = 0; i < array_in.size(); i++)
@@ -155,7 +155,7 @@ namespace IPL
 		return FFT(in_complex);
 	}
 
-	vector<vector<complex<double>>> Fourier::FFT(const vector<vector<complex<double>>> &array_in) const
+	vector<vector<complex<double>>> Fourier::FFT(const vector<vector<complex<double>>> &array_in) 
 	{
 		assert(array_in.size() > 0);
 		assert(array_in[0].size() > 0);
@@ -189,7 +189,7 @@ namespace IPL
 		return array_out;
 	}
 
-	vector<vector<complex<double>>> Fourier::FFT(const vector<vector<double>> &array_in) const
+	vector<vector<complex<double>>> Fourier::FFT(const vector<vector<double>> &array_in) 
 	{
 		assert(array_in.size() > 0);
 		assert(array_in[0].size() > 0);
@@ -216,7 +216,7 @@ namespace IPL
 	 *  To get f(x,y), we just need to input F*(u,v), which is the complex conjugate of the F(u,v), to FFT,
 	 *  and the return of FFT is the value MNf*(x,y). Once we can know MNf*(x,y), we can get f(x,y) easily.
 	 */
-	vector<complex<double>> Fourier::IFFT(const vector<complex<double>> &array_in) const
+	vector<complex<double>> Fourier::IFFT(const vector<complex<double>> &array_in) 
 	{
 		int cnt = array_in.size();
 
@@ -246,7 +246,7 @@ namespace IPL
 		return f;
 	}
 
-	vector<vector<complex<double>>> Fourier::IFFT(const vector<vector<complex<double>>> &array_in) const
+	vector<vector<complex<double>>> Fourier::IFFT(const vector<vector<complex<double>>> &array_in) 
 	{
 		assert(array_in.size() > 0);
 		assert(array_in[0].size() > 0);
@@ -280,7 +280,7 @@ namespace IPL
 		return array_out;
 	}
 
-	vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>> &array_in)const
+	vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>> &array_in)
 	{
 		int M = array_in.size();
 		std::vector<std::complex<double>> array_out_com(M, std::complex<double>{});
@@ -300,7 +300,7 @@ namespace IPL
 	}
 
 
-	vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>> &array_in) const
+	vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>> &array_in) 
 	{
 		assert(array_in.size() > 0);
 		assert(array_in[0].size() > 0);
@@ -320,7 +320,7 @@ namespace IPL
 
 		return DFT(tmp);
 	}
-	vector<vector<complex<double>>> Fourier::DFT(const vector<vector<complex<double>>> &array_in) const
+	vector<vector<complex<double>>> Fourier::DFT(const vector<vector<complex<double>>> &array_in) 
 	{
 
 
@@ -396,7 +396,7 @@ namespace IPL
 
 
 
-	vector<vector<complex<double>>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in)const
+	vector<vector<complex<double>>> Fourier::IDFT(const vector<vector<complex<double>>> &array_in)
 	{
 
 		// 原始版本
