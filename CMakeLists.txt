@@ -21,7 +21,7 @@ ELSEIF (UNIX)
 	MESSAGE(STATUS "operating system is UNIX-like OS.")
 ENDIF ()
 
-ADD_SUBDIRECTORY(SRC)
+ADD_SUBDIRECTORY(src)
 
 # 拷贝资源图片到指定位置
 file(COPY ./src/book_example/data DESTINATION ./install/)
