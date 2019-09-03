@@ -8,9 +8,6 @@ FIND_PACKAGE( OpenCV REQUIRED )
 INCLUDE_DIRECTORIES( ${OpenCV_INCLUDE_DIRS} )
 LINK_LIBRARIES( ${OpenCV_LIBS} )
 
-#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
-#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
-
 # 目标文件输出目录
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
@@ -25,6 +22,10 @@ ELSEIF (UNIX)
 ENDIF ()
 
 ADD_SUBDIRECTORY(SRC)
+
+# 拷贝资源图片到指定位置
+file(COPY ./src/book_example/data DESTINATION ./install/)
+file(COPY ./src/book_example/data DESTINATION ./src/book_example/)
 
 
 
