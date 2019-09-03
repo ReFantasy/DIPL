@@ -16,13 +16,10 @@ void OpencvFouier(Mat srcImage);
 
 int main(int argc, char *argv[])
 {
-	if (argc < 2)
-	{
-		cout << "No input image" << endl;
-		return -1;
-	}
-		
+	
+	//std::string image_path = "../data/DIP3E_Original_Images_CH04/1.tif";
 	Mat src = imread(argv[1], 0);
+
 	int rows = src.rows;
 	int cols = src.cols;
 	IPL::Fourier fourier;

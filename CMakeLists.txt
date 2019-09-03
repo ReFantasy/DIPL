@@ -8,9 +8,10 @@ FIND_PACKAGE( OpenCV REQUIRED )
 INCLUDE_DIRECTORIES( ${OpenCV_INCLUDE_DIRS} )
 LINK_LIBRARIES( ${OpenCV_LIBS} )
 
-# 目标文件输出目录
+# 库文件输出目录
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
-
+# 可执行文件输出目录
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 	
 # 输出平台信息
 IF (WIN32)
@@ -22,10 +23,11 @@ ELSEIF (UNIX)
 ENDIF ()
 
 ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(sample)
 
 # 拷贝资源图片到指定位置
-file(COPY ./src/book_example/data DESTINATION ./install/)
-file(COPY ./src/book_example/data DESTINATION ./src/book_example/)
+# file(COPY ./src/book_example/data DESTINATION ./install/)
+# file(COPY ./src/book_example/data DESTINATION ./src/book_example/)
 
 
 

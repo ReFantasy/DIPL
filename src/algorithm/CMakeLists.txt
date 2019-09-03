@@ -5,14 +5,14 @@ SET_TARGET_PROPERTIES(algorithm_static PROPERTIES OUTPUT_NAME "algorithm") # 使
 
 
 # 安装
-INSTALL(TARGETS algorithm algorithm_static
-        LIBRARY DESTINATION ${PROJECT_BINARY_DIR}/install/lib
-        ARCHIVE DESTINATION ${PROJECT_BINARY_DIR}/install/lib)
+# INSTALL(TARGETS algorithm algorithm_static
+        # LIBRARY DESTINATION ${PROJECT_BINARY_DIR}/install/lib
+        # ARCHIVE DESTINATION ${PROJECT_BINARY_DIR}/install/lib)
 
-file(GLOB HEADER_FILE ./*.h ./*.hpp) #所有头文件存入变量
-FOREACH(F ${HEADER_FILE})
-    INSTALL(FILES ${F} DESTINATION ${PROJECT_BINARY_DIR}/install/include/algorithm)
-ENDFOREACH(F)
+# file(GLOB HEADER_FILE ./*.h ./*.hpp) #所有头文件存入变量
+# FOREACH(F ${HEADER_FILE})
+    # INSTALL(FILES ${F} DESTINATION ${PROJECT_BINARY_DIR}/install/include/algorithm)
+# ENDFOREACH(F)
 
 
 
