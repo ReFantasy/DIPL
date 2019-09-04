@@ -152,6 +152,7 @@ void OpencvFouier(Mat srcImage)
 	normalize(magnitudeImage, magnitudeImage, 0, 1, NORM_MINMAX);
 
 	// 9.显示效果图
-	imshow("OpenCV 频谱幅值", magnitudeImage);
+	imshow("OpenCV fourier", magnitudeImage);
+	
 }
 

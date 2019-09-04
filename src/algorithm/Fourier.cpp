@@ -475,7 +475,8 @@ namespace IPL
 		if (n <= 1)
 			return false;
 
-		int max_bits = sizeof(int) * 8;
+		constexpr int bits_per_byte = 8;
+		int max_bits = sizeof(int) * bits_per_byte;
 
 		int bit = 0x1;
 		for (int i = 0; i < max_bits; i++)

@@ -48,6 +48,14 @@ namespace IPL
 	 *  \return geneated filter, a two-dimensional vector
 	 */
 	std::vector<std::vector<double>> GHPF(int rows, int cols, double D0);
+	
+	/** \brief Geneate Ideal low-pass filter.
+	 *  \param[in] rows the height of filter
+	 *  \param[in] cols the width of filter
+	 *  \param[in] D0 cut-off frequency
+	 *  \return geneated filter, a two-dimensional vector
+	 */
+	std::vector<std::vector<double>> ILPF(int rows, int cols, double D0);
 
 
 
