@@ -26,8 +26,8 @@ ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
 
 # 拷贝资源图片到指定位置
-# file(COPY ./src/book_example/data DESTINATION ./install/)
-# file(COPY ./src/book_example/data DESTINATION ./src/book_example/)
+file(COPY ./sample/data DESTINATION ./install/)
+
 
 
 

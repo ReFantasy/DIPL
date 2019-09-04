@@ -1,4 +1,4 @@
-#include <iostream>      
+ï»¿#include <iostream>      
 #include <vector>
 #include <iterator>
 #include <random>
@@ -15,10 +15,9 @@ using namespace std;
 void OpencvFouier(Mat srcImage);
 
 int main(int argc, char *argv[])
-{
-	
-	//std::string image_path = "../data/DIP3E_Original_Images_CH04/1.tif";
-	Mat src = imread(argv[1], 0);
+{	
+	std::string image_path = "../data/1.tif";
+	Mat src = imread(image_path, 0);
 
 	int rows = src.rows;
 	int cols = src.cols;
@@ -73,56 +72,56 @@ int main(int argc, char *argv[])
 
 void OpencvFouier(Mat srcImage)
 {
-	// 2.½«ÊäÈëÍ¼ÏñÑÓÀ©µ½×î¼Ñ³ß´ç£¬±ß½çÓÃ0²¹³ä
+	// 2.å°†è¾“å…¥å›¾åƒå»¶æ‰©åˆ°æœ€ä½³å°ºå¯¸ï¼Œè¾¹ç•Œç”¨0è¡¥å……
 	int m = getOptimalDFTSize(srcImage.rows);
 	int n = getOptimalDFTSize(srcImage.cols);
-	// ½«Ìí¼ÓµÄÏñËØ³õÊ¼»¯Îª0¡£
+	// å°†æ·»åŠ çš„åƒç´ åˆå§‹åŒ–ä¸º0ã€‚
 	Mat padded;
 	copyMakeBorder(srcImage, padded, 0, m - srcImage.rows, 0, n - srcImage.cols, BORDER_CONSTANT, Scalar::all(0));
 
-	// 3.Îª¸µÀïÒ¶±ä»»µÄ½á¹û£¨Êµ²¿ºÍĞé²¿£©·ÖÅä¿Õ¼ä¡£
-	// ½«planesÊı×é×éºÏºÏ²¢³ÉÒ»¸ö¶àÍ¨µÀµÄÊı×écomplexI
+	// 3.ä¸ºå‚…é‡Œå¶å˜æ¢çš„ç»“æœï¼ˆå®éƒ¨å’Œè™šéƒ¨ï¼‰åˆ†é…ç©ºé—´ã€‚
+	// å°†planesæ•°ç»„ç»„åˆåˆå¹¶æˆä¸€ä¸ªå¤šé€šé“çš„æ•°ç»„complexI
 	Mat planes[] = { Mat_<float>(padded), Mat::zeros(padded.size(),CV_32F) };
 	Mat complexI;
 	merge(planes, 2, complexI);
 
-	// 4.½øĞĞÀëÉ¢¸µÀïÒ¶±ä»»
+	// 4.è¿›è¡Œç¦»æ•£å‚…é‡Œå¶å˜æ¢
 	dft(complexI, complexI);
 
-	// 5.½«¸´Êı×ª»»Îª·ùÖµ£¬¼´ log(1+sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
-	split(complexI, planes);    //½«¶àÍ¨µÀÊı×écomplexI·ÖÀë³É¼¸¸öµ¥Í¨µÀÊı×é£¬[0]=Re,[1]=Im
+	// 5.å°†å¤æ•°è½¬æ¢ä¸ºå¹…å€¼ï¼Œå³ log(1+sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
+	split(complexI, planes);    //å°†å¤šé€šé“æ•°ç»„complexIåˆ†ç¦»æˆå‡ ä¸ªå•é€šé“æ•°ç»„ï¼Œ[0]=Re,[1]=Im
 	magnitude(planes[0], planes[1], planes[0]); //planes[0] = magnitude
 	Mat magnitudeImage = planes[0];
 
-	// 6.½øĞĞ¶ÔÊı³ß¶È£¨logarithmic scale£©Ëõ·Å
+	// 6.è¿›è¡Œå¯¹æ•°å°ºåº¦ï¼ˆlogarithmic scaleï¼‰ç¼©æ”¾
 	magnitudeImage += Scalar::all(1);
-	log(magnitudeImage, magnitudeImage);    //Çó×ÔÈ»¶ÔÊı
+	log(magnitudeImage, magnitudeImage);    //æ±‚è‡ªç„¶å¯¹æ•°
 
-	// 7.¼ôÇĞºÍÖØ·Ö²¼·ù¶ÈÍ¼ÏóÏŞ
-	//ÈôÓĞÆæÊıĞĞ»òÆæÊıÁĞ£¬½øĞĞÆµÆ×²Ã¼ô
+	// 7.å‰ªåˆ‡å’Œé‡åˆ†å¸ƒå¹…åº¦å›¾è±¡é™
+	//è‹¥æœ‰å¥‡æ•°è¡Œæˆ–å¥‡æ•°åˆ—ï¼Œè¿›è¡Œé¢‘è°±è£å‰ª
 	magnitudeImage = magnitudeImage(Rect(0, 0, magnitudeImage.cols & -2, magnitudeImage.rows & -2));
 
-	// ÖØĞÂÅÅÁĞ¸µÀïÒ¶Í¼ÏñÖĞµÄÏóÏŞ£¬Ê¹µÃÔ­µãÎ»ÓÚÍ¼ÏñÖĞĞÄ
+	// é‡æ–°æ’åˆ—å‚…é‡Œå¶å›¾åƒä¸­çš„è±¡é™ï¼Œä½¿å¾—åŸç‚¹ä½äºå›¾åƒä¸­å¿ƒ
 	int cx = magnitudeImage.cols / 2;
 	int cy = magnitudeImage.rows / 2;
-	Mat q0(magnitudeImage, Rect(0, 0, cx, cy));     //ROIÇøÓòµÄ×óÉÏ
-	Mat q1(magnitudeImage, Rect(cx, 0, cx, cy));    //ROIÇøÓòµÄÓÒÉÏ
-	Mat q2(magnitudeImage, Rect(0, cy, cx, cy));    //ROIÇøÓòµÄ×óÏÂ
-	Mat q3(magnitudeImage, Rect(cx, cy, cx, cy));   //ROIÇøÓòµÄÓÒÏÂ
-	//½»»»ÏóÏŞ£¨×óÉÏÓëÓÒÏÂ½øĞĞ½»»»£©
+	Mat q0(magnitudeImage, Rect(0, 0, cx, cy));     //ROIåŒºåŸŸçš„å·¦ä¸Š
+	Mat q1(magnitudeImage, Rect(cx, 0, cx, cy));    //ROIåŒºåŸŸçš„å³ä¸Š
+	Mat q2(magnitudeImage, Rect(0, cy, cx, cy));    //ROIåŒºåŸŸçš„å·¦ä¸‹
+	Mat q3(magnitudeImage, Rect(cx, cy, cx, cy));   //ROIåŒºåŸŸçš„å³ä¸‹
+	//äº¤æ¢è±¡é™ï¼ˆå·¦ä¸Šä¸å³ä¸‹è¿›è¡Œäº¤æ¢ï¼‰
 	Mat tmp;
 	q0.copyTo(tmp);
 	q3.copyTo(q0);
 	tmp.copyTo(q3);
-	//½»»»ÏóÏŞ£¨ÓÒÉÏÓë×óÏÂ½øĞĞ½»»»£©
+	//äº¤æ¢è±¡é™ï¼ˆå³ä¸Šä¸å·¦ä¸‹è¿›è¡Œäº¤æ¢ï¼‰
 	q1.copyTo(tmp);
 	q2.copyTo(q1);
 	tmp.copyTo(q2);
 
-	// 8.¹éÒ»»¯£¬ÓÃ0µ½1Ö®¼äµÄ¸¡µãÖµ½«¾ØÕó±ä»»Îª¿ÉÊÓ»¯µÄÍ¼Ïñ¸ñÊ½
+	// 8.å½’ä¸€åŒ–ï¼Œç”¨0åˆ°1ä¹‹é—´çš„æµ®ç‚¹å€¼å°†çŸ©é˜µå˜æ¢ä¸ºå¯è§†åŒ–çš„å›¾åƒæ ¼å¼
 	normalize(magnitudeImage, magnitudeImage, 0, 1, NORM_MINMAX);
 
-	// 9.ÏÔÊ¾Ğ§¹ûÍ¼
-	imshow("OpenCV ÆµÆ×·ùÖµ", magnitudeImage);
+	// 9.æ˜¾ç¤ºæ•ˆæœå›¾
+	imshow("OpenCV é¢‘è°±å¹…å€¼", magnitudeImage);
 }
 
