@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 {	
 	std::string image_path = "../data/1.tif";
 	Mat src = imread(image_path, 0);
-
+	
 	int rows = src.rows;
 	int cols = src.cols;
 	IPL::Fourier fourier;

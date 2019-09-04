@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-
 PROJECT(IPL)
+#PROJECT(IPL)
 ADD_COMPILE_OPTIONS(-std=c++11)
 
 # 配置 OpenCV 库
@@ -27,6 +27,7 @@ ADD_SUBDIRECTORY(sample)
 
 # 拷贝资源图片到指定位置
 file(COPY ./sample/data DESTINATION ./install/)
+file(COPY ./sample/data DESTINATION ./sample/)
 
 
 
