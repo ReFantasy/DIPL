@@ -95,6 +95,28 @@ namespace IPL
 
 		return ilpf;
 	}
+
+	std::vector<std::vector<double>> IHPF(int rows, int cols, double D0)
+	{
+		int centre_x = rows / 2;
+		int centre_y = cols / 2;
+
+		auto ihpf = MakeVector2D(rows, cols);
+
+		for (int u = 0; u < rows; u++)
+		{
+			for (int v = 0; v < cols; v++)
+			{
+				double Duv = Distance(Point(u, v), Point(centre_x, centre_y));
+				if (Duv <= D0)
+					ihpf[u][v] = 0;
+				else
+					ihpf[u][v] = 1;
+			}
+		}
+
+		return ihpf;
+	}
 	
 	
 
