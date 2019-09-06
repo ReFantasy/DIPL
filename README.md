@@ -1,7 +1,7 @@
 # IPL
 The Implement of Digital Image Processing, Third Ediiton.
 
-![](./sample/book.jpg)
+<img src="./sample/book.jpg" style="zoom:50%;" />
 
 ## Install
 
