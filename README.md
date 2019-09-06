@@ -1,7 +1,7 @@
 # IPL
-数字图像处理函数库
+The Implement of Digital Image Processing, Third Ediiton.
 
-
+![](./sample/book.jpg)
 
 ## Install
 
