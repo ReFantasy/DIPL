@@ -1,8 +1,6 @@
 # IPL
 The Implement of Digital Image Processing, Third Ediiton.
 
-<img src="./sample/book.jpg" style="zoom:50%;" />
-
 ## Install
 
 *Your system should have installed **cmake** and **OpenCV**.* 
