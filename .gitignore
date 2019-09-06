@@ -4,8 +4,8 @@
 *.user
 *.filters
 *.sln
-*.tif
-*.jpg
+
+
 
 
 Debug/
