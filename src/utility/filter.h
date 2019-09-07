@@ -47,21 +47,21 @@ namespace IPL
 	 *  \param[in] kern_size the size of filter
 	 *  \return the filtered image
 	 */
-	cv::Mat MeanBlurArithmetic(const cv::Mat &_src, int kern_size = 3);
+	cv::Mat BlurArithmetic(const cv::Mat &_src, int kern_size = 3);
 
 	/** \brief Geometry mean filtering
 	 *  \param[in] src image data
 	 *  \param[in] kern_size the size of filter
 	 *  \return the filtered image
 	 */
-	cv::Mat MeanBlurGeometry(const cv::Mat &_src, int kern_size = 3);
+	cv::Mat BlurGeometry(const cv::Mat &_src, int kern_size = 3);
 
 	/** \brief Harmonic mean filtering
 	 *  \param[in] src image data
 	 *  \param[in] kern_size the size of filter
 	 *  \return the filtered image
 	 */
-	cv::Mat MeanBlurHarmonic(const Mat &_src, int kern_size = 3);
+	cv::Mat BlurHarmonic(const Mat &_src, int kern_size = 3);
 
 	/** \brief Inverse Harmonic mean filtering
 	 *  \param[in] src image data
@@ -69,7 +69,29 @@ namespace IPL
 	 *  \parem[in] Q the order of the filter
 	 *  \return the filtered image
 	 */
-	cv::Mat MeanBlurInverseHarmonic(const Mat &_src, int kern_size, double Q = 0);
+	cv::Mat BlurInverseHarmonic(const Mat &_src, int kern_size, double Q = 0);
+
+	/** \brief Median filtering
+	 *  \param[in] src image data
+	 *  \param[in] kern_size the size of filter
+	 *  \return the filtered image
+	 */
+	cv::Mat BlurMedian(const Mat &_src, int kern_size = 3);
+
+	/** \brief MaxMin filtering
+	 *  \param[in] src image data
+	 *  \param[in] kern_size the size of filter
+	 *  \param[in] type 0:min 1:max
+	 *  \return the filtered image
+	 */
+	cv::Mat BlurMaxMin(const Mat &_src, int kern_size = 3, int type = 0);
+
+	/** \brief Middle filtering
+	 *  \param[in] src image data
+	 *  \param[in] kern_size the size of filter
+	 *  \return the filtered image
+	 */
+	cv::Mat BlurMiddle(const Mat &_src, int kern_size = 3);
 	
 
 

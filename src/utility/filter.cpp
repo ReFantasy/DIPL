@@ -129,7 +129,7 @@ namespace IPL
 	cv::Mat NormalizeVec2DToMat(const vector<vector<double>> &vec2d)
 	{
 		assert(vec2d.size() > 0);
-		assert(vec2d[0].size());
+		assert(vec2d[0].size()>0);
 		int rows = vec2d.size();
 		int cols = vec2d[0].size();
 		cv::Mat dst(rows, cols, CV_64FC1);
@@ -146,31 +146,52 @@ namespace IPL
 		return dst;
 	}
 
-	cv::Mat MeanBlurArithmetic(const cv::Mat &_src, int kern_size)
+	cv::Mat BlurArithmetic(const cv::Mat &_src, int kern_size)
 	{
 		auto src = IPL::Mat2Vector2D(_src);
-		auto _blur = MeanBlurArithmetic(src, kern_size);
+		auto _blur = BlurArithmetic(src, kern_size);
 		return NormalizeVec2DToMat(_blur);
 	}
 	
-	cv::Mat MeanBlurGeometry(const cv::Mat &_src, int kern_size)
+	cv::Mat BlurGeometry(const cv::Mat &_src, int kern_size)
 	{
 		auto src = IPL::Mat2Vector2D(_src);
-		auto _blur = MeanBlurGeometry(src, kern_size);
+		auto _blur = BlurGeometry(src, kern_size);
 		return NormalizeVec2DToMat(_blur);
 	}
 
-	cv::Mat MeanBlurHarmonic(const Mat &_src, int kern_size)
+	cv::Mat BlurHarmonic(const Mat &_src, int kern_size)
 	{
 		auto src = IPL::Mat2Vector2D(_src);
-		auto _blur = MeanBlurHarmonic(src, kern_size);
+		auto _blur = BlurHarmonic(src, kern_size);
 		return NormalizeVec2DToMat(_blur);
 	}
 
-	cv::Mat MeanBlurInverseHarmonic(const Mat &_src, int kern_size, double Q)
+	cv::Mat BlurInverseHarmonic(const Mat &_src, int kern_size, double Q)
 	{
 		auto src = IPL::Mat2Vector2D(_src);
-		auto _blur = MeanBlurInverseHarmonic(src, kern_size, Q);
+		auto _blur = BlurInverseHarmonic(src, kern_size, Q);
+		return NormalizeVec2DToMat(_blur);
+	}
+
+	cv::Mat BlurMedian(const Mat &_src, int kern_size )
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = BlurMedian(src, kern_size);
+		return NormalizeVec2DToMat(_blur);
+	}
+
+	cv::Mat BlurMaxMin(const Mat &_src, int kern_size , int type )
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = BlurMaxMin(src, kern_size, type);
+		return NormalizeVec2DToMat(_blur);
+	}
+
+	cv::Mat BlurMiddle(const Mat &_src, int kern_size /*= 3*/)
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = BlurMiddle(src, kern_size);
 		return NormalizeVec2DToMat(_blur);
 	}
 

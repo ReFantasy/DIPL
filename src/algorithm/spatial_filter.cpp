@@ -1,5 +1,6 @@
 #include "spatial_filter.h"
 #include <cassert>
+#include <algorithm>
 
 //std::vector<std::vector<double>> IPL::MedianBlur(const std::vector<std::vector<double>> src, KernelSize<int> kern_sz)
 //{
@@ -77,7 +78,7 @@ std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector
 	return PaddingImage(src, n, n, n, n);
 }
 
-std::vector<std::vector<double>> IPL::MeanBlurArithmetic(const std::vector<std::vector<double>> &src, int kern_size)
+std::vector<std::vector<double>> IPL::BlurArithmetic(const std::vector<std::vector<double>> &src, int kern_size)
 {
 	// 判断滤波核大小是否为奇数
 	if (!IsOdd(kern_size))
@@ -97,9 +98,9 @@ std::vector<std::vector<double>> IPL::MeanBlurArithmetic(const std::vector<std::
 		for (int j = half_kern; j < cols+ half_kern; j++)
 		{
 			double tmp = 0;
-			for (int m = i-half_kern; m < i + half_kern; m++)
+			for (int m = i-half_kern; m <= i + half_kern; m++)
 			{
-				for (int n = j-half_kern; n < j + half_kern; n++)
+				for (int n = j-half_kern; n <= j + half_kern; n++)
 				{
 					tmp += image_padded[m][n];
 				}
@@ -112,7 +113,7 @@ std::vector<std::vector<double>> IPL::MeanBlurArithmetic(const std::vector<std::
 	return dst;
 }
 
-std::vector<std::vector<double>> IPL::MeanBlurGeometry(const std::vector<std::vector<double>> &src, int kern_size)
+std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector<double>> &src, int kern_size)
 {
 	// 判断滤波核大小是否为奇数
 	if (!IsOdd(kern_size))
@@ -132,9 +133,9 @@ std::vector<std::vector<double>> IPL::MeanBlurGeometry(const std::vector<std::ve
 		for (int j = half_kern; j < cols + half_kern; j++)
 		{
 			double tmp = 1;
-			for (int m = i - half_kern; m < i + half_kern; m++)
+			for (int m = i - half_kern; m <= i + half_kern; m++)
 			{
-				for (int n = j - half_kern; n < j + half_kern; n++)
+				for (int n = j - half_kern; n <= j + half_kern; n++)
 				{
 					tmp *= image_padded[m][n];
 				}
@@ -147,7 +148,7 @@ std::vector<std::vector<double>> IPL::MeanBlurGeometry(const std::vector<std::ve
 	return dst;
 }
 
-std::vector<std::vector<double>> IPL::MeanBlurHarmonic(const std::vector<std::vector<double>> &src, int kern_size)
+std::vector<std::vector<double>> IPL::BlurHarmonic(const std::vector<std::vector<double>> &src, int kern_size)
 {
 	// 判断滤波核大小是否为奇数
 	if (!IsOdd(kern_size))
@@ -167,9 +168,9 @@ std::vector<std::vector<double>> IPL::MeanBlurHarmonic(const std::vector<std::ve
 		for (int j = half_kern; j < cols + half_kern; j++)
 		{
 			double tmp = 0;
-			for (int m = i - half_kern; m < i + half_kern; m++)
+			for (int m = i - half_kern; m <= i + half_kern; m++)
 			{
-				for (int n = j - half_kern; n < j + half_kern; n++)
+				for (int n = j - half_kern; n <= j + half_kern; n++)
 				{
 					tmp += 1.0 / image_padded[m][n];
 				}
@@ -182,7 +183,7 @@ std::vector<std::vector<double>> IPL::MeanBlurHarmonic(const std::vector<std::ve
 	return dst;
 }
 
-std::vector<std::vector<double>> IPL::MeanBlurInverseHarmonic(const std::vector<std::vector<double>> &src, int kern_size, double Q)
+std::vector<std::vector<double>> IPL::BlurInverseHarmonic(const std::vector<std::vector<double>> &src, int kern_size, double Q)
 {
 	// 判断滤波核大小是否为奇数
 	if (!IsOdd(kern_size))
@@ -203,9 +204,9 @@ std::vector<std::vector<double>> IPL::MeanBlurInverseHarmonic(const std::vector<
 		{
 			double tmp1 = 0;
 			double tmp2 = 0;
-			for (int m = i - half_kern; m < i + half_kern; m++)
+			for (int m = i - half_kern; m <= i + half_kern; m++)
 			{
-				for (int n = j - half_kern; n < j + half_kern; n++)
+				for (int n = j - half_kern; n <= j + half_kern; n++)
 				{
 					tmp1 += std::pow(image_padded[m][n], Q + 1);
 					tmp2 += std::pow(image_padded[m][n], Q);
@@ -214,6 +215,114 @@ std::vector<std::vector<double>> IPL::MeanBlurInverseHarmonic(const std::vector<
 
 			
 			dst[i - half_kern][j - half_kern] = tmp1 / tmp2;
+		}
+	}
+	return dst;
+}
+
+std::vector<std::vector<double>> IPL::BlurMedian(const std::vector<std::vector<double>> &src, int kern_size)
+{
+	// 判断滤波核大小是否为奇数
+	if (!IsOdd(kern_size))
+		kern_size += 1;
+
+	// 扩展图像边界
+	int half_kern = (kern_size - 1) / 2;
+	auto image_padded = PaddingImage(src, half_kern);
+
+	// 均值滤波
+	int rows = src.size();
+	int cols = src[0].size();
+	std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
+
+	for (int i = half_kern; i < rows + half_kern; i++)
+	{
+		for (int j = half_kern; j < cols + half_kern; j++)
+		{
+			std::vector<double> tmps;
+			for (int m = i - half_kern; m <= i + half_kern; m++)
+			{
+				for (int n = j - half_kern; n <= j + half_kern; n++)
+				{
+					tmps.push_back(image_padded[m][n]);
+				}
+			}
+
+			std::sort(tmps.begin(), tmps.end());
+			dst[i - half_kern][j - half_kern] = tmps[tmps.size()/2];
+		}
+	}
+	return dst;
+}
+
+std::vector<std::vector<double>> IPL::BlurMaxMin(const std::vector<std::vector<double>> &src, int kern_size, int type )
+{
+	// 判断滤波核大小是否为奇数
+	if (!IsOdd(kern_size))
+		kern_size += 1;
+
+	// 扩展图像边界
+	int half_kern = (kern_size - 1) / 2;
+	auto image_padded = PaddingImage(src, half_kern);
+
+	// 均值滤波
+	int rows = src.size();
+	int cols = src[0].size();
+	std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
+
+	for (int i = half_kern; i < rows + half_kern; i++)
+	{
+		for (int j = half_kern; j < cols + half_kern; j++)
+		{
+			std::vector<double> tmps;
+			for (int m = i - half_kern; m <= i + half_kern; m++)
+			{
+				for (int n = j - half_kern; n <= j + half_kern; n++)
+				{
+					tmps.push_back(image_padded[m][n]);
+				}
+			}
+
+			if (type == 0)
+				dst[i - half_kern][j - half_kern] = *(std::min_element(tmps.begin(), tmps.end()));
+			else
+				dst[i - half_kern][j - half_kern] = *(std::max_element(tmps.begin(), tmps.end()));
+		}
+	}
+	return dst;
+}
+
+std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<double>> &src, int kern_size)
+{
+	// 判断滤波核大小是否为奇数
+	if (!IsOdd(kern_size))
+		kern_size += 1;
+
+	// 扩展图像边界
+	int half_kern = (kern_size - 1) / 2;
+	auto image_padded = PaddingImage(src, half_kern);
+
+	// 均值滤波
+	int rows = src.size();
+	int cols = src[0].size();
+	std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
+
+	for (int i = half_kern; i < rows + half_kern; i++)
+	{
+		for (int j = half_kern; j < cols + half_kern; j++)
+		{
+			std::vector<double> tmps;
+			for (int m = i - half_kern; m <= i + half_kern; m++)
+			{
+				for (int n = j - half_kern; n <= j + half_kern; n++)
+				{
+					tmps.push_back(image_padded[m][n]);
+				}
+			}
+
+			double minv = *(std::min_element(tmps.begin(), tmps.end()));
+			double maxv = *(std::max_element(tmps.begin(), tmps.end()));
+			dst[i - half_kern][j - half_kern] = (minv + maxv) / 2;
 		}
 	}
 	return dst;

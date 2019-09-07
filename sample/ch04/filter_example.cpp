@@ -40,15 +40,17 @@ void OpencvFouier(Mat srcImage);
 
 int main(int argc, char*argv[])
 {
-	Mat s = imread("../data/DIP3E_Original_Images_CH05/Fig0526(a)(original_DIP).tif", 0);
-	
-	auto dst1 = IPL::MeanBlurArithmetic(s, 9);
-	auto dst2 = IPL::MeanBlurGeometry(s, 9);
-	auto dst3 = IPL::MeanBlurHarmonic(s, 9);
+	Mat a = imread("../data/DIP3E_Original_Images_CH05/Fig0508(a)(circuit-board-pepper-prob-pt1).tif", 0);
+	Mat b = imread("../data/DIP3E_Original_Images_CH05/Fig0508(b)(circuit-board-salt-prob-pt1).tif", 0);
+	auto c = IPL::BlurMiddle(a, 3);
+	auto d = IPL::BlurMiddle(b, 3);
 
-	imshow("dst1", dst1);
-	imshow("dst2", dst2);
-	imshow("dst3", dst3);
+
+	imshow("a", a);
+	imshow("b", b);
+	imshow("c", c);
+	imshow("d", d);
+
 	waitKey();
 	system("pause");
 	return 0;
