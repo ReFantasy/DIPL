@@ -140,7 +140,7 @@ std::vector<std::vector<double>> IPL::MeanBlurGeometry(const std::vector<std::ve
 				}
 			}
 
-			tmp = pow(tmp, 1.0 / (kern_size * kern_size));
+			tmp = std::pow(tmp, 1.0 / (kern_size * kern_size));
 			dst[i - half_kern][j - half_kern] = tmp;
 		}
 	}
@@ -207,8 +207,8 @@ std::vector<std::vector<double>> IPL::MeanBlurInverseHarmonic(const std::vector<
 			{
 				for (int n = j - half_kern; n < j + half_kern; n++)
 				{
-					tmp1 += pow(image_padded[m][n], Q + 1);
-					tmp2 += pow(image_padded[m][n], Q);
+					tmp1 += std::pow(image_padded[m][n], Q + 1);
+					tmp2 += std::pow(image_padded[m][n], Q);
 				}
 			}
 
