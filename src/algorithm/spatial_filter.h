@@ -6,6 +6,7 @@
 
 #ifndef __SPATIAL_FILTER_H__
 #define __SPATIAL_FILTER_H__
+#include <cmath>
 #include <vector>
 namespace IPL
 {
