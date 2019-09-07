@@ -4,9 +4,9 @@
 #include <random>
 #include <chrono>
 #include "opencv2/opencv.hpp"
-#include "utility/fourier_filter.h"
-#include "utility/Timer.h"
-#include "utility/Rand.h"
+#include "utility/utility.hpp"
+#include "algorithm/algorithm.hpp"
+
 
 
 using namespace std;
@@ -40,13 +40,15 @@ void OpencvFouier(Mat srcImage);
 
 int main(int argc, char*argv[])
 {
-	if(argc<2)
-		return -1;
+	Mat s = imread("../data/DIP3E_Original_Images_CH05/Fig0526(a)(original_DIP).tif", 0);
 	
-	std::string filename(argv[1]);
-	Mat src = imread(filename, 0);
-	FourierFilterExampel(src);
-	
+	auto dst1 = IPL::MeanBlurArithmetic(s, 9);
+	auto dst2 = IPL::MeanBlurGeometry(s, 9);
+	auto dst3 = IPL::MeanBlurHarmonic(s, 9);
+
+	imshow("dst1", dst1);
+	imshow("dst2", dst2);
+	imshow("dst3", dst3);
 	waitKey();
 	system("pause");
 	return 0;

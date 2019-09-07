@@ -4,11 +4,8 @@
 #include <random>
 #include <chrono>
 #include "opencv2/opencv.hpp"
-#include "utility/fourier_filter.h"
-#include "utility/Timer.h"
-#include "utility/Rand.h"
-#include "utility/image_convert.h"
-#include "algorithm/Fourier.h"
+#include "algorithm/algorithm.hpp"
+#include "utility/utility.hpp"
 
 using namespace std;
 

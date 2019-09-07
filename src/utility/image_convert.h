@@ -21,8 +21,12 @@ namespace IPL
 	 *  \param[out] std::vector<std::vector<double>>
 	 */
 	std::vector<std::vector<double>> Mat2CentreVector2D(const cv::Mat &mat);
-
-
+	
+	/** \brief std::vector<std::vector<complex<double>>> to Mat
+	 *  \param[in] std::vector<std::vector<complex<double>>>
+	 *  \param[out] Mat
+	 */
+	cv::Mat VectorComplex2D2Mat(std::vector<std::vector<std::complex<double>>> &src);
 
 }
 

@@ -1,12 +1,8 @@
-﻿#include "frequency_filter.h"
+﻿#include "frequency_distribution.h"
 #include <cmath>
 
 namespace IPL
 {
-
-	
-	
-
 	std::vector<std::vector<double>> BLPF(int rows, int cols, double D0, int n)
 	{
 		int centre_x = rows / 2;

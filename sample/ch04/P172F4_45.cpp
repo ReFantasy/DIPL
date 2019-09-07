@@ -2,12 +2,8 @@
 #include <vector>
 #include "opencv2/opencv.hpp"
 
-#include "algorithm/Fourier.h"
-#include "algorithm/frequency_filter.h"
-
-#include "utility/image_convert.h"
-#include "utility/fourier_filter.h"
-
+#include "algorithm/algorithm.hpp"
+#include "utility/utility.hpp"
 
 
 using namespace std;

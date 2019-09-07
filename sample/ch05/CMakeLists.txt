@@ -1,0 +1,16 @@
+AUX_SOURCE_DIRECTORY(. SRC_LIST)
+
+FOREACH(F ${SRC_LIST})
+    # 生成不带扩展名的名称
+	STRING(REGEX REPLACE ".+/(.+)\\..*" "\\1" BIN_NAME ${F})
+	
+	#生成可执行文件
+    ADD_EXECUTABLE(${BIN_NAME} ${F})
+	
+	# 链接库
+	TARGET_LINK_LIBRARIES(${BIN_NAME} algorithm utility)
+	
+	# 安装
+    INSTALL(TARGETS ${BIN_NAME} RUNTIME DESTINATION ${PROJECT_BINARY_DIR}/install/bin)
+ENDFOREACH(F)
+

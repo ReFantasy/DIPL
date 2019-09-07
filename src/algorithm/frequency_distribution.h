@@ -7,8 +7,8 @@
  *  Contact : 309741309@qq.com
  *
  ***********************************************************************************************/
-#ifndef __FREQUENCY_FILTER_H__
-#define __FREQUENCY_FILTER_H__
+#ifndef __FREQUENCY_DISTRIBUTION_H__
+#define __FREQUENCY_DISTRIBUTION_H__
 
 #include <vector>
 
@@ -95,5 +95,5 @@ namespace IPL
 
 }
 
-#endif//__FREQUENCY_FILTER_H__
+#endif//__FREQUENCY_DISTRIBUTION_H__
 

@@ -1,4 +1,4 @@
-﻿#include "fourier_filter.h"
+﻿#include "filter.h"
 
 namespace IPL
 {
@@ -126,5 +126,53 @@ namespace IPL
 	
 	}
 
+	cv::Mat NormalizeVec2DToMat(const vector<vector<double>> &vec2d)
+	{
+		assert(vec2d.size() > 0);
+		assert(vec2d[0].size());
+		int rows = vec2d.size();
+		int cols = vec2d[0].size();
+		cv::Mat dst(rows, cols, CV_64FC1);
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j = 0; j < cols; j++)
+			{
+
+				dst.at<double>(i, j) = vec2d[i][j];
+			}
+		}
+		normalize(dst, dst, 0, 1, NORM_MINMAX);
+		dst.convertTo(dst, CV_8UC1, 255);
+		return dst;
+	}
+
+	cv::Mat MeanBlurArithmetic(const cv::Mat &_src, int kern_size)
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = MeanBlurArithmetic(src, kern_size);
+		return NormalizeVec2DToMat(_blur);
+	}
 	
+	cv::Mat MeanBlurGeometry(const cv::Mat &_src, int kern_size)
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = MeanBlurGeometry(src, kern_size);
+		return NormalizeVec2DToMat(_blur);
+	}
+
+	cv::Mat MeanBlurHarmonic(const Mat &_src, int kern_size)
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = MeanBlurHarmonic(src, kern_size);
+		return NormalizeVec2DToMat(_blur);
+	}
+
+	cv::Mat MeanBlurInverseHarmonic(const Mat &_src, int kern_size, double Q)
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = MeanBlurInverseHarmonic(src, kern_size, Q);
+		return NormalizeVec2DToMat(_blur);
+	}
+
 }
+
