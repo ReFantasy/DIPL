@@ -22,6 +22,10 @@ ELSEIF (UNIX)
 	MESSAGE(STATUS "operating system is UNIX-like OS.")
 ENDIF ()
 
+# 编译版本
+SET(CMAKE_BUILD_TYPE "Release")
+#SET(CMAKE_BUILD_TYPE "Debug")
+
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
 
