@@ -1,6 +1,7 @@
 #include "spatial_filter.h"
 #include <cassert>
 #include <algorithm>
+#include<numeric>
 
 //std::vector<std::vector<double>> IPL::MedianBlur(const std::vector<std::vector<double>> src, KernelSize<int> kern_sz)
 //{
@@ -137,12 +138,13 @@ std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector
 			{
 				for (int n = j - half_kern; n <= j + half_kern; n++)
 				{
-					tmp *= image_padded[m][n];
+					if(image_padded[m][n]!=0)
+					    tmp *= image_padded[m][n];
 				}
 			}
 
-			tmp = std::pow(tmp, 1.0 / (kern_size * kern_size));
-			dst[i - half_kern][j - half_kern] = tmp;
+			
+			dst[i - half_kern][j - half_kern] = std::pow(tmp, 1.0 / (kern_size * kern_size));
 		}
 	}
 	return dst;
@@ -323,6 +325,44 @@ std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<d
 			double minv = *(std::min_element(tmps.begin(), tmps.end()));
 			double maxv = *(std::max_element(tmps.begin(), tmps.end()));
 			dst[i - half_kern][j - half_kern] = (minv + maxv) / 2;
+		}
+	}
+	return dst;
+}
+
+std::vector<std::vector<double>> IPL::BlurModifiedAlpha(const std::vector<std::vector<double>> &src, int kern_size, int d)
+{
+	// 判断滤波核大小是否为奇数
+	if (!IsOdd(kern_size))
+		kern_size += 1;
+	if (d >= kern_size*kern_size)
+		d = kern_size * kern_size - 1;
+
+	// 扩展图像边界
+	int half_kern = (kern_size - 1) / 2;
+	auto image_padded = PaddingImage(src, half_kern);
+
+	// 均值滤波
+	int rows = src.size();
+	int cols = src[0].size();
+	std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
+
+	for (int i = half_kern; i < rows + half_kern; i++)
+	{
+		for (int j = half_kern; j < cols + half_kern; j++)
+		{
+			std::vector<double> tmps;
+			for (int m = i - half_kern; m <= i + half_kern; m++)
+			{
+				for (int n = j - half_kern; n <= j + half_kern; n++)
+				{
+					tmps.push_back(image_padded[m][n]);
+				}
+			}
+			std::sort(tmps.begin(), tmps.end());
+			// 去掉前后各d/2个元素，并求其均值
+			double sum = std::accumulate(tmps.begin() + d / 2, tmps.end() - d / 2, 0);
+			dst[i - half_kern][j - half_kern] = sum / (kern_size*kern_size-d);
 		}
 	}
 	return dst;

@@ -195,5 +195,12 @@ namespace IPL
 		return NormalizeVec2DToMat(_blur);
 	}
 
+	cv::Mat BlurModifiedAlpha(const Mat &_src, int kern_size, int d)
+	{
+		auto src = IPL::Mat2Vector2D(_src);
+		auto _blur = BlurModifiedAlpha(src, kern_size, d);
+		return NormalizeVec2DToMat(_blur);
+	}
+
 }
 

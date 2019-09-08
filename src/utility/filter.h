@@ -92,6 +92,14 @@ namespace IPL
 	 *  \return the filtered image
 	 */
 	cv::Mat BlurMiddle(const Mat &_src, int kern_size = 3);
+
+	/** \brief Modified alpha mean filter
+	 *  \param[in] src image data
+	 *  \param[in] kern_size the size of filter
+	 *  \param[in] d the number of dropped pixel
+	 *  \return the filtered image
+	 */
+	cv::Mat BlurModifiedAlpha(const Mat &_src, int kern_size, int d);
 	
 
 

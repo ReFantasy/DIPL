@@ -72,6 +72,14 @@ namespace IPL
 	 */
 	std::vector<std::vector<double>> BlurMiddle(const std::vector<std::vector<double>> &src, int kern_size);
 
+	/** \brief Modified alpha mean filter
+	 *  \param[in] src image data
+	 *  \param[in] kern_size the size of filter
+	 *  \param[in] d the number of dropped pixel
+	 *  \return the filtered image
+	 */
+	std::vector<std::vector<double>> BlurModifiedAlpha(const std::vector<std::vector<double>> &src, int kern_size, int d);
+
 	
 	bool IsOdd(int num);
 	
