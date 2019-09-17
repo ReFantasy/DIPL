@@ -39,8 +39,14 @@ namespace IPL
 
 	};
 
+
+	void OpencvFouier(Mat srcImage, std::string name);
+
 	// 归一化的二维浮点数组转为CV_8UC1类型图像
 	cv::Mat NormalizeVec2DToMat(const vector<vector<double>> &vec2d);
+
+	// 归一化的二维浮点数组转为CV_8UC1类型图像
+	cv::Mat ShowFourier(const vector<vector<std::complex<double>>> &vec2d);
 	
 	/** \brief Arithmetic mean filtering
 	 *  \param[in] src image data

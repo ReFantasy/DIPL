@@ -1,27 +1,8 @@
 #include "spatial_filter.h"
 #include <cassert>
 #include <algorithm>
-#include<numeric>
+#include <numeric>
 
-//std::vector<std::vector<double>> IPL::MedianBlur(const std::vector<std::vector<double>> src, KernelSize<int> kern_sz)
-//{
-//	assert(src.size() > 0);
-//	assert(src[0].size() > 0);
-//	int rows = src.size();
-//	int cols = src[0].size();
-//
-//	int half_x = (kern_sz.x - 1) / 2;
-//	int half_y = (kern_sz.y - 1) / 2;
-//
-//	for (int i = half_x; i < rows - half_x; i++)
-//	{
-//		for (int j = half_y; j < cols - half_y; j++)
-//		{
-//
-//		}
-//	}
-//
-//}
 
 std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector<double>> &src, int left, int right, int top, int bottom)
 {
@@ -72,7 +53,6 @@ std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector
 
 	return new_image;
 }
-
 
 std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector<double>> &src, int n)
 {
