@@ -6,6 +6,7 @@
 
 #ifndef __SPATIAL_FILTER_H__
 #define __SPATIAL_FILTER_H__
+#include "algorithm.hpp"
 #include <cmath>
 #include <vector>
 namespace IPL
@@ -80,6 +81,8 @@ namespace IPL
 	 */
 	std::vector<std::vector<double>> BlurModifiedAlpha(const std::vector<std::vector<double>> &src, int kern_size, int d);
 
+	std::vector<std::vector<double>> NearestNeighborInterpolation(const std::vector<std::vector<double>> &src, 
+		                                                          int new_rows, int new_cols);
 	
 	bool IsOdd(int num);
 	

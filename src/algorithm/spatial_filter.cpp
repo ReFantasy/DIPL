@@ -348,6 +348,26 @@ std::vector<std::vector<double>> IPL::BlurModifiedAlpha(const std::vector<std::v
 	return dst;
 }
 
+std::vector<std::vector<double>> IPL::NearestNeighborInterpolation(const std::vector<std::vector<double>> &src, int new_rows, int new_cols)
+{
+	int rows = src.size();
+	int cols = src[0].size();
+	auto res = IPL::MakeVector2D(new_rows, new_cols);
+	for (int i = 0; i < new_rows; i++)
+	{
+		for (int j = 0; j < new_cols; j++)
+		{
+			int r = std::round(i / (double)new_rows*rows);
+			int c = std::round(j / (double)new_cols*cols);
+			if (r >= rows)r = rows - 1;
+			if (c >= cols)c = cols - 1;
+			res[i][j] = src[r][c];
+		}
+	}
+
+	return res;
+}
+
 bool IPL::IsOdd(int num)
 {
 	return (num % 2);
