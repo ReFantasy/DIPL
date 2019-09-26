@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	Mat src = imread("../data/DIP3E_Original_Images_CH07/Fig0701.tif", 0);
+	Mat src = imread("../data/DIP3E_Original_Images_CH07/vase.tif", 0);
 	
 	auto src_vec = IPL::Mat2Vector2D(src);
 
@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 	IPL::PyramidExample(_approximate, approximate, residual);
 	auto a_5 = IPL::NormalizeVec2DToMat(approximate);
 	auto b_6 = IPL::NormalizeVec2DToMat(residual);
+
 
 	imshow("a_9", src);
 	imshow("b_9", b_9);
