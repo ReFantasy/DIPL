@@ -40,19 +40,26 @@ void OpencvFouier(Mat srcImage);
 
 int main(int argc, char*argv[])
 {
-	Mat a = imread("../data/DIP3E_Original_Images_CH05/Fig0508(a)(circuit-board-pepper-prob-pt1).tif", 0);
+	/*Mat a = imread("../data/DIP3E_Original_Images_CH05/Fig0508(a)(circuit-board-pepper-prob-pt1).tif", 0);
 	Mat b = imread("../data/DIP3E_Original_Images_CH05/Fig0508(b)(circuit-board-salt-prob-pt1).tif", 0);
 	auto c = IPL::BlurMiddle(a, 3);
 	auto d = IPL::BlurMiddle(b, 3);
-
-
 	imshow("a", a);
 	imshow("b", b);
 	imshow("c", c);
-	imshow("d", d);
+	imshow("d", d);*/
 
+	//cv::pyrUp(a, a);
+
+	Mat src = imread("../data/DIP3E_Original_Images_CH01/Fig0115(b)(100-dollars).tif", 0);
+	
+
+	Mat b;
+	cv::pyrUp(src, b);
+
+	imshow("src", src);
+	imshow("b", b);
 	waitKey();
-	system("pause");
 	return 0;
 }
 
