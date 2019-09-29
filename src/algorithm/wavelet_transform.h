@@ -1,6 +1,6 @@
 #ifndef __WAVELET_TRANSFORM_H__
 #define __WAVELET_TRANSFORM_H__
-#include "algorithm.hpp"
+#include "spatial_filter.h"
 #include <vector>
 namespace IPL
 {

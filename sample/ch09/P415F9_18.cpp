@@ -9,7 +9,9 @@ using namespace cv;
 void MouseHandle(int event, int x, int y, int flags, void* param);
 
 Mat Cross(const Mat a, const Mat b);
-Mat Connected(Mat A, cv::Point pt);
+Mat Connected(const Mat A, cv::Point pt);
+
+int GetSpecificPixelNumber(const Mat src, int gray_level);
 
 bool IsSame(const Mat A, const Mat B)
 {
@@ -25,17 +27,18 @@ bool IsSame(const Mat A, const Mat B)
 
 int main(int argc, char*argv[])
 {
-	cout << "使用鼠标点击 res 窗口中的孔洞..." << endl;
+	cout << "使用鼠标点击 src 窗口中的白色连通分量..." << endl;
 	namedWindow("src");
 	namedWindow("res");
 	
-	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0916(a)(region-filling-reflections).tif", 0);
+	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0918(a)(Chickenfilet with bones).tif", 0);
+	cv::threshold(src, src, 205, 255, CV_THRESH_BINARY);
 	imshow("src", src);
 
-	Mat res = src.clone();
+	Mat res(src.rows, src.cols, CV_8UC1, Scalar(0));
 
 	cv::Point pt;
-	setMouseCallback("res", MouseHandle, &res);
+	setMouseCallback("src", MouseHandle, &src);
 	while (1)
 	{
 		imshow("res", res);
@@ -43,26 +46,33 @@ int main(int argc, char*argv[])
 	}
 
 	imshow("src", src);
-
-	
 	waitKey();
 	return 0;
+}
+
+int GetSpecificPixelNumber(const Mat src, int gray_level)
+{
+	int n = 0;
+	for (auto itor = src.begin<uchar>(); itor != src.end<uchar>(); itor++)
+	{
+		if ((*itor) == gray_level)n++;
+	}
+	return n;
 }
 
 void MouseHandle(int event, int x, int y, int flags, void* param)
 {
 	Point pt;
-	static Mat src = (*(Mat *)(param)).clone();
 	switch (event)
 	{
 		//左键按下消息
 		case EVENT_LBUTTONDOWN:
 		{
 			pt = Point(x, y);
-			Mat res = *(Mat *)(param);
-			res = Connected(res, pt);
-			bitwise_or(src, res, res);
-			src = res.clone();
+			const Mat src = *(Mat *)(param);
+			auto res = Connected(src, pt);
+			int connect_count = GetSpecificPixelNumber(res, 255);
+			cout << "连通的像素数量：" << connect_count << endl;
 			imshow("res", res);
 		}
 	    break;
@@ -93,12 +103,9 @@ Mat Cross(const Mat a, const Mat b)
 	return res;
 }
 
-Mat Connected(Mat A, cv::Point pt)
+Mat Connected(const Mat A, cv::Point pt)
 {
-	Mat A_C; 
-	cv::bitwise_not(A, A_C);  
-
-	Mat B = getStructuringElement(cv::MORPH_CROSS, cv::Size(3, 3));
+	Mat B = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 
 	// opencv 膨胀白色区域，所以需要设置背景为黑色
 	Mat X0(A.rows, A.cols, CV_8UC1, Scalar(0));
@@ -107,7 +114,7 @@ Mat Connected(Mat A, cv::Point pt)
 	Mat tmp;
 	dilate(X0, tmp, B);
 
-	Mat X1 = Cross(tmp, A_C);
+	Mat X1 = Cross(tmp, A);
 	
 
 	Mat X_K = X1;
@@ -117,9 +124,9 @@ Mat Connected(Mat A, cv::Point pt)
 	{
 		X_K_1 = X_K;
 		dilate(X_K_1, tmp, B);
-		X_K = Cross(tmp, A_C);	
+		X_K = Cross(tmp, A);	
 	}
-
+	
 	return X_K;
 }
 
