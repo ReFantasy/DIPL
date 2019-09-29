@@ -51,14 +51,15 @@ int main(int argc, char*argv[])
 
 	//cv::pyrUp(a, a);
 
-	Mat src = imread("../data/DIP3E_Original_Images_CH01/Fig0115(b)(100-dollars).tif", 0);
+	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0905(a)(wirebond-mask).tif", 0);
+	Mat se = getStructuringElement(cv::MORPH_RECT, { 11,11 });
+
+	Mat res;
+	cv::erode(src, res, se);
 	
-
-	Mat b;
-	cv::pyrUp(src, b);
-
 	imshow("src", src);
-	imshow("b", b);
+	imshow("res", res);
+	
 	waitKey();
 	return 0;
 }
