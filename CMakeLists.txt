@@ -27,6 +27,9 @@ ENDIF ()
 SET(CMAKE_BUILD_TYPE "Release")
 #SET(CMAKE_BUILD_TYPE "Debug")
 
+#字符集
+Add_Definitions(-DUNICODE -D_UNICODE)
+
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
 
