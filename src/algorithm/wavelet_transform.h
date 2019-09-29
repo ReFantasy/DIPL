@@ -3,16 +3,7 @@
 #include "spatial_filter.h"
 #include <vector>
 namespace IPL
-{
-	// 上采样
-	template<typename T>
-	std::vector<std::vector<T>> PryUp(const std::vector<std::vector<T>> &src)
-	{
-		auto res = PryUpByRow(src);
-		res = PryUpByCol(res);
-		return res;
-	}
-	
+{	
 	template<typename T>
 	std::vector<std::vector<T>> PryUpByRow(const std::vector<std::vector<T>> &src)
 	{
@@ -61,14 +52,16 @@ namespace IPL
 		return res;
 	}
 
-	// 下采样
+	// 上采样
 	template<typename T>
-	std::vector<std::vector<T>> PryDown(const std::vector<std::vector<T>> &src)
+	std::vector<std::vector<T>> PryUp(const std::vector<std::vector<T>> &src)
 	{
-		auto res = PryDownByRow(src);
-		res = PryDownByCol(res);
+		auto res = PryUpByRow(src);
+		res = PryUpByCol(res);
 		return res;
 	}
+
+	
 
 	template<typename T>
 	std::vector<std::vector<T>> PryDownByRow(const std::vector<std::vector<T>> &src)
@@ -109,6 +102,15 @@ namespace IPL
 			}
 		}
 
+		return res;
+	}
+
+	// 下采样
+	template<typename T>
+	std::vector<std::vector<T>> PryDown(const std::vector<std::vector<T>> &src)
+	{
+		auto res = PryDownByRow(src);
+		res = PryDownByCol(res);
 		return res;
 	}
 
