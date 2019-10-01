@@ -1,4 +1,4 @@
-#include <iostream>      
+ï»¿#include <iostream>      
 #include "opencv2/opencv.hpp"
 #include "utility/utility.hpp"
 #include "algorithm/algorithm.hpp"
@@ -25,7 +25,7 @@ bool IsSame(const Mat A, const Mat B)
 
 int main(int argc, char*argv[])
 {
-	cout << "Ê¹ÓÃÊó±êµã»÷ res ´°¿ÚÖÐµÄ¿×¶´..." << endl;
+	cout << "ä½¿ç”¨é¼ æ ‡ç‚¹å‡» res çª—å£ä¸­çš„å­”æ´ž..." << endl;
 	namedWindow("src");
 	namedWindow("res");
 	
@@ -39,7 +39,7 @@ int main(int argc, char*argv[])
 	while (1)
 	{
 		imshow("res", res);
-		waitKey(0);          //Ö±µ½ÓÐ°´¼ü°´ÏÂ
+		waitKey(0);          //ç›´åˆ°æœ‰æŒ‰é”®æŒ‰ä¸‹
 	}
 
 	imshow("src", src);
@@ -55,7 +55,7 @@ void MouseHandle(int event, int x, int y, int flags, void* param)
 	static Mat src = (*(Mat *)(param)).clone();
 	switch (event)
 	{
-		//×ó¼ü°´ÏÂÏûÏ¢
+		//å·¦é”®æŒ‰ä¸‹æ¶ˆæ¯
 		case EVENT_LBUTTONDOWN:
 		{
 			pt = Point(x, y);
@@ -100,7 +100,7 @@ Mat Connected(Mat A, cv::Point pt)
 
 	Mat B = getStructuringElement(cv::MORPH_CROSS, cv::Size(3, 3));
 
-	// opencv ÅòÕÍ°×É«ÇøÓò£¬ËùÒÔÐèÒªÉèÖÃ±³¾°ÎªºÚÉ«
+	// opencv è†¨èƒ€ç™½è‰²åŒºåŸŸï¼Œæ‰€ä»¥éœ€è¦è®¾ç½®èƒŒæ™¯ä¸ºé»‘è‰²
 	Mat X0(A.rows, A.cols, CV_8UC1, Scalar(0));
 	X0.at<uchar>(pt) = 255;
 
