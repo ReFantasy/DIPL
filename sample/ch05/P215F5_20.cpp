@@ -71,7 +71,7 @@ cv::Mat notch_kernel(cv::Mat &scr, std::vector<cv::Point> &notch_pot, float D0)
 
 	std::string name = "notch滤波器d0=" + std::to_string(D0);
 	cv::Mat show;
-	cv::normalize(temp[0], show, 1, 0, CV_MINMAX);
+	cv::normalize(temp[0], show, 1, 0, NORM_MINMAX);
 	cv::imshow(name, show);
 	return notch_pass;
 }
