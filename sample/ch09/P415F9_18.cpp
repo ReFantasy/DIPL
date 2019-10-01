@@ -32,7 +32,7 @@ int main(int argc, char*argv[])
 	namedWindow("res");
 	
 	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0918(a)(Chickenfilet with bones).tif", 0);
-	cv::threshold(src, src, 205, 255, CV_THRESH_BINARY);
+	cv::threshold(src, src, 205, 255, THRESH_BINARY);
 	imshow("src", src);
 
 	Mat res(src.rows, src.cols, CV_8UC1, Scalar(0));
