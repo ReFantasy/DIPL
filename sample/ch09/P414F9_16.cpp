@@ -66,6 +66,7 @@ void MouseHandle(int event, int x, int y, int flags, void* param)
 			imshow("res", res);
 		}
 	    break;
+
 	}
 }
 
