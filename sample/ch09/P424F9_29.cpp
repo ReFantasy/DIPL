@@ -91,8 +91,6 @@ Mat Open(const Mat src, const Mat se)
 
 int main(int argc, char*argv[])
 {
-	cout << "使用鼠标点击 src 窗口中的白色连通分量..." << endl;
-	
 	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0929(a)(text_image).tif", 0);
 	cv::threshold(src, src, 205, 255, THRESH_BINARY);
 
