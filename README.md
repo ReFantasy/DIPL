@@ -1,5 +1,5 @@
 # IPL
-The Implement of Digital Image Processing, Third Ediiton.
+The C++ Implement of Digital Image Processing, Third Ediiton.
 
 ## Install
 
