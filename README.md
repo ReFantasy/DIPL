@@ -15,7 +15,7 @@ then open visual studio project in build dirctory.
 
 ### Linux & MacOS
 ```bash
-cmake -S . -B build -DUSER_INSTALL_PREFIX=./build/install
-cmake --build build
+cmake -S . -B build -DUSER_INSTALL_PREFIX=./install
+cmake --build build -j8 --target install
 ```
 
