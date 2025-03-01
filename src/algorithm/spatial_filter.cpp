@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <numeric>
+#include <cmath>
 
 std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector<double>> &src,
                                                    int left, int right, int top, int bottom)
