@@ -6,4 +6,4 @@ using namespace cv;
 
 Mat GetHistogram(const Mat grayImage);
 
-#endif//__HISTOGRAM_H__
+#endif //__HISTOGRAM_H__

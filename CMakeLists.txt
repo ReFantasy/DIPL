@@ -1,8 +1,9 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 PROJECT(IPL)
-#PROJECT(IPL)
-#ADD_COMPILE_OPTIONS(-std=c++11)
-SET(CMAKE_CXX_FLAGS "-std=c++11")
+SET(CMAKE_CXX_FLAGS "-std=c++17")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+
 
 # 配置 OpenCV 库
 FIND_PACKAGE( OpenCV REQUIRED )
@@ -14,28 +15,32 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 # 可执行文件输出目录
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 	
-# 输出平台信息
-IF (WIN32)
-    MESSAGE(STATUS "operating system is windows")
-ELSEIF (APPLE)
-    MESSAGE(STATUS "operating system is Apple system.")
-ELSEIF (UNIX)
-	MESSAGE(STATUS "operating system is UNIX-like OS.")
-ENDIF ()
 
-# 编译版本
-SET(CMAKE_BUILD_TYPE "Release")
-#SET(CMAKE_BUILD_TYPE "Debug")
+# Build type - Release by default
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_definitions(-DDEBUG)
+endif()
 
 #字符集
 Add_Definitions(-DUNICODE -D_UNICODE)
+
+
+add_definitions(-DDATA_DIR="${PROJECT_SOURCE_DIR}/sample/data")
+add_definitions(-DMY_VARIABLE=100)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/algorithm)
+include_directories(${PROJECT_SOURCE_DIR}/include/utility)
+
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
 
 # 拷贝资源图片到指定位置
-file(COPY ./sample/data DESTINATION ./install/)
-file(COPY ./sample/data DESTINATION ./sample/)
+# file(COPY ./sample/data DESTINATION ./install/)
+# file(COPY ./sample/data DESTINATION ./sample/)
 
 
 

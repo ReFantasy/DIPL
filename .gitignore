@@ -4,6 +4,8 @@
 *.user
 *.filters
 *.sln
+*.cache
+*.DS_Store
 
 
 
@@ -12,3 +14,4 @@ Debug/
 Release/
 x64/
 build/
+install/
