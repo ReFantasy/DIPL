@@ -9,7 +9,7 @@ The C++ Implement of Digital Image Processing, Third Ediiton.
 
 ### Windows
 ```bash
-cmake -S . -B build -DOpenCV_DIR="E:/opencv/build/x64/vc15/lib" -DUSER_INSTALL_PREFIX=./build/install
+cmake -S . -B build -DOpenCV_DIR="E:/opencv/build/x64/vc15/lib" -DUSER_INSTALL_PREFIX=install
 ```
 then open visual studio project in build dirctory.
 
