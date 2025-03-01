@@ -106,3 +106,4 @@ doc/
 imgui.ini
 .vscode/
 build/
+CMakeFiles/
