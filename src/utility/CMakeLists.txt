@@ -1,6 +1,8 @@
 ﻿AUX_SOURCE_DIRECTORY(. UTILITY_LIST)
 ADD_LIBRARY(utility ${UTILITY_LIST} ) 
 
+target_link_libraries(utility algorithm)
+
 # 安装
 INSTALL(TARGETS utility ARCHIVE DESTINATION lib)
 
