@@ -12,10 +12,18 @@ elseif(CMAKE_BUILD_TYPE MATCHES "Debug")
 	add_definitions(-DDEBUG)
 endif()
 
+# 设置 CMAKE_INSTALL_PREFIX 的默认值
+if(NOT USER_INSTALL_PREFIX)
+    set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+else()
+	set(CMAKE_INSTALL_PREFIX ${USER_INSTALL_PREFIX})
+endif()
+message(STATUS ${CMAKE_INSTALL_PREFIX})
+
 # 库文件输出目录
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+#SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 # 可执行文件输出目录
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+#SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 # 配置 OpenCV 库
 FIND_PACKAGE( OpenCV REQUIRED )
@@ -32,9 +40,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/utility)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
 
-# 拷贝资源图片到指定位置
-# file(COPY ./sample/data DESTINATION ./install/)
-# file(COPY ./sample/data DESTINATION ./sample/)
+
 
 
 
