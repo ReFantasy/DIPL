@@ -1,30 +1,23 @@
-#include <iostream>      
-#include "opencv2/opencv.hpp"
-#include "utility/utility.hpp"
-#include "algorithm/algorithm.hpp"
-
-
-
-using namespace std;
+#include "ipl.h"
 using namespace cv;
+using namespace std;
 
-int main(int argc, char*argv[])
+int main(int argc, char *argv[])
 {
-	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0914(a)(licoln from penny).tif", 0);
-	imshow("a", src);
+    Mat src = imread(std::string(DATA_DIR) +
+                         "/DIP3E_Original_Images_CH09/Fig0914(a)(licoln from penny).tif",
+                     0);
+    imshow("a", src);
 
+    Mat se = getStructuringElement(cv::MORPH_RECT, {3, 3});
+    cout << se << endl;
 
-	Mat se = getStructuringElement(cv::MORPH_RECT, { 3,3 });
-	cout  << se << endl;
+    Mat src_ero;
+    cv::erode(src, src_ero, se);
 
-	Mat src_ero;
-	cv::erode(src, src_ero, se);
+    Mat b = src - src_ero;
+    imshow("b", b);
 
-	Mat b = src - src_ero;
-	imshow("b", b);
-
-	
-	waitKey();
-	return 0;
+    waitKey();
+    return 0;
 }
-

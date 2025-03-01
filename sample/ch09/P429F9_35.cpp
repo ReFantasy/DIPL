@@ -1,14 +1,10 @@
-﻿#include <iostream>      
-#include "opencv2/opencv.hpp"
-#include "utility/utility.hpp"
-#include "algorithm/algorithm.hpp"
-
-using namespace std;
+﻿#include "ipl.h"
 using namespace cv;
+using namespace std;
 
 int main(int argc, char*argv[])
 {
-	Mat src = imread("../data/DIP3E_Original_Images_CH09/Fig0935(a)(ckt_board_section).tif", 0);
+	Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH09/Fig0935(a)(ckt_board_section).tif", 0);
 	
 	Mat se = getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5,5));
 
