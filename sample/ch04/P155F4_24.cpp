@@ -1,7 +1,7 @@
 ﻿#include <vector>
 // #include "Fourier.h"
 // #include "image_convert.h"
-#include "ipl.h"
+#include "dipl.h"
 
 using namespace cv;
 using namespace std;

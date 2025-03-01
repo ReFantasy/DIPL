@@ -1,4 +1,4 @@
-﻿#include "ipl.h"
+﻿#include "dipl.h"
 using namespace cv;
 using namespace std;
 using Vec2D = std::vector<std::vector<double>>;
