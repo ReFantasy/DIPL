@@ -2,11 +2,9 @@
 #include <vector>
 #include "opencv2/opencv.hpp"
 
-#include "algorithm/algorithm.hpp"
-#include "utility/utility.hpp"
+#include "ipl.h"
 
-
-
+using namespace cv;
 using namespace std;
 
 Mat P219(Mat src, double k)
@@ -43,7 +41,7 @@ Mat P219(Mat src, double k)
 
 int main(int argc, char *argv[])
 {
-	Mat src = imread("../data/DIP3E_Original_Images_CH05/Fig0525(a)(aerial_view_no_turb).tif", 0);
+	Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH05/Fig0525(a)(aerial_view_no_turb).tif", 0);
 	resize(src, src, { 512,512 });
 	
 

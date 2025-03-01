@@ -1,18 +1,15 @@
 ﻿#include <iostream>      
 #include <vector>
 #include "opencv2/opencv.hpp"
+#include "ipl.h"
 
-#include "algorithm/algorithm.hpp"
-#include "utility/utility.hpp"
-
-
-
+using namespace cv;
 using namespace std;
 
 
 int main(int argc, char *argv[])
 {
-	Mat s = imread("../data/DIP3E_Original_Images_CH05/Fig0505(a)(applo17_boulder_noisy).tif", 0);
+	Mat s = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH05/Fig0505(a)(applo17_boulder_noisy).tif", 0);
 	
 	auto src = IPL::Mat2CentreVector2D(s);
 	auto src_fourier = IPL::Fourier::DFT(src);

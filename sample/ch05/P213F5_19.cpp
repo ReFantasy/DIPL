@@ -1,18 +1,15 @@
 ﻿#include <iostream>      
 #include <vector>
 #include "opencv2/opencv.hpp"
+#include "ipl.h"
 
-#include "algorithm/algorithm.hpp"
-#include "utility/utility.hpp"
-
-
-
+using namespace cv;
 using namespace std;
 
 
 int main(int argc, char *argv[])
 {
-	Mat a = imread("../data/DIP3E_Original_Images_CH05/Fig0519(a)(florida_satellite_original).tif", 0);
+	Mat a = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH05/Fig0519(a)(florida_satellite_original).tif", 0);
 	resize(a, a, { 512,512 });
 	int rows = a.rows;
 	int cols = a.cols;

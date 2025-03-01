@@ -1,19 +1,15 @@
 ﻿#include <iostream>      
 #include <vector>
 #include "opencv2/opencv.hpp"
+#include "ipl.h"
 
-#include "algorithm/algorithm.hpp"
-#include "utility/utility.hpp"
-
-
-
+using namespace cv;
 using namespace std;
-
 
 int main(int argc, char *argv[])
 {
-	Mat a = imread("../data/DIP3E_Original_Images_CH05/Fig0507(a)(ckt-board-orig).tif", 0);
-	Mat b = imread("../data/DIP3E_Original_Images_CH05/Fig0507(b)(ckt-board-gauss-var-400).tif", 0);
+	Mat a = imread(std::string(DATA_DIR) +"/DIP3E_Original_Images_CH05/Fig0507(a)(ckt-board-orig).tif", 0);
+	Mat b = imread(std::string(DATA_DIR) +"/DIP3E_Original_Images_CH05/Fig0507(b)(ckt-board-gauss-var-400).tif", 0);
 	auto c = IPL::BlurArithmetic(b, 3);
 	auto d = IPL::BlurGeometry(b, 3);
 
