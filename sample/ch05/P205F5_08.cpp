@@ -1,7 +1,4 @@
-﻿#include <iostream>      
-#include <vector>
-#include "opencv2/opencv.hpp"
-#include "ipl.h"
+﻿#include "ipl.h"
 
 using namespace cv;
 using namespace std;
