@@ -5,8 +5,17 @@ The C++ Implement of Digital Image Processing, Third Ediiton.
 
 *Your system should have installed **cmake** and **OpenCV**.* 
 
-Especially on Windows systems, you should add the following to the PATH environment variable: *YOUR_OPENCV_PATH\build\x64\vc15\bin*
+> Especially on Windows systems, you should add the following to the PATH environment variable: *YOUR_OPENCV_PATH\build\x64\vc15\bin*
 
-### Windows(eg. Visual Studio 2017)
+### Windows
+```bash
+cmake -S . -B build -DOpenCV_DIR="E:/opencv/build/x64/vc15/lib"
+```
+then open visual studio project in build dirctory.
 
-cmake .. -DOpenCV_DIR="E:/opencv/build/x64/vc15/lib"
+### Linux & MacOS
+```bash
+cmake -S . -B build
+cmake --build build
+```
+
