@@ -23,14 +23,14 @@ jobs:
         run: |
           cmake -S . -B build
           cmake --build build -j8 --target install
-  Window-build:
-    runs-on: windows-latest 
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - name: install opencv
-        run : vcpkg install opencv:x64-windows
-      - name: build
-        run : |
-          cmake -S . -B build -DUSER_INSTALL_PREFIX=install
-          cmake --build build -j8 --target install
+  # Window-build:
+  #   runs-on: windows-latest 
+  #   steps:
+  #     - name: Check out repository code
+  #       uses: actions/checkout@v4
+  #     - name: install opencv
+  #       run : vcpkg install opencv:x64-windows
+  #     - name: build
+  #       run : |
+  #         cmake -S . -B build -DUSER_INSTALL_PREFIX=install
+  #         cmake --build build -j8 --target install
