@@ -19,4 +19,5 @@ jobs:
       - run: |
           sudo apt-get install libopencv-dev
           cmake -S . -B build
+          cmake --build build --target install
 
