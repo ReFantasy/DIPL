@@ -1,0 +1,3 @@
+name: DIPL Action
+on: [push]
+
