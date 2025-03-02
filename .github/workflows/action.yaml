@@ -12,4 +12,14 @@ jobs:
           sudo apt-get install libopencv-dev
           cmake -S . -B build
           cmake --build build -j8 --target install
-
+  Macos-build:
+    runs-on: macos-15
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: install opencv
+        run : brew install opencv
+      - name: build
+        run: |
+          cmake -S . -B build
+          cmake --build build -j8 --target install
