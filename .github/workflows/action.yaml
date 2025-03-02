@@ -1,8 +1,8 @@
-name: GitHub Actions Demo
+name: DIPL Build 
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Build on Linux:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
