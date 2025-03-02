@@ -5,4 +5,5 @@ jobs:
     name: my job 
     runs-on: ubuntu-latest
     steps:
-      run: echo "hello"
+      - name: aza
+      - run: echo "hello"
