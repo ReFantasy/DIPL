@@ -2,11 +2,11 @@
 #include "frequency_distribution.h"
 #include <algorithm>
 #include <cassert>
-#include <numeric>
 #include <cmath>
+#include <numeric>
 
-std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector<double>> &src,
-                                                   int left, int right, int top, int bottom)
+std::vector<std::vector<double>>
+IPL::PaddingImage(const std::vector<std::vector<double>>& src, int left, int right, int top, int bottom)
 {
     assert(src.size() > 0);
     assert(src[0].size() > 0);
@@ -56,26 +56,24 @@ std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector
     return new_image;
 }
 
-std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector<double>> &src,
-                                                   int n)
+std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector<double>>& src, int n)
 {
     return PaddingImage(src, n, n, n, n);
 }
 
-std::vector<std::vector<double>> IPL::BlurArithmetic(
-    const std::vector<std::vector<double>> &src, int kern_size)
+std::vector<std::vector<double>> IPL::BlurArithmetic(const std::vector<std::vector<double>>& src, int kern_size)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -98,20 +96,19 @@ std::vector<std::vector<double>> IPL::BlurArithmetic(
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector<double>> &src,
-                                                   int kern_size)
+std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector<double>>& src, int kern_size)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -134,20 +131,19 @@ std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurHarmonic(const std::vector<std::vector<double>> &src,
-                                                   int kern_size)
+std::vector<std::vector<double>> IPL::BlurHarmonic(const std::vector<std::vector<double>>& src, int kern_size)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -163,27 +159,27 @@ std::vector<std::vector<double>> IPL::BlurHarmonic(const std::vector<std::vector
                 }
             }
 
-            tmp = kern_size * kern_size / tmp;
+            tmp                               = kern_size * kern_size / tmp;
             dst[i - half_kern][j - half_kern] = tmp;
         }
     }
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurInverseHarmonic(
-    const std::vector<std::vector<double>> &src, int kern_size, double Q)
+std::vector<std::vector<double>>
+IPL::BlurInverseHarmonic(const std::vector<std::vector<double>>& src, int kern_size, double Q)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -207,20 +203,19 @@ std::vector<std::vector<double>> IPL::BlurInverseHarmonic(
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurMedian(const std::vector<std::vector<double>> &src,
-                                                 int kern_size)
+std::vector<std::vector<double>> IPL::BlurMedian(const std::vector<std::vector<double>>& src, int kern_size)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -243,20 +238,19 @@ std::vector<std::vector<double>> IPL::BlurMedian(const std::vector<std::vector<d
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurMaxMin(const std::vector<std::vector<double>> &src,
-                                                 int kern_size, int type)
+std::vector<std::vector<double>> IPL::BlurMaxMin(const std::vector<std::vector<double>>& src, int kern_size, int type)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -273,30 +267,27 @@ std::vector<std::vector<double>> IPL::BlurMaxMin(const std::vector<std::vector<d
             }
 
             if (type == 0)
-                dst[i - half_kern][j - half_kern] =
-                    *(std::min_element(tmps.begin(), tmps.end()));
+                dst[i - half_kern][j - half_kern] = *(std::min_element(tmps.begin(), tmps.end()));
             else
-                dst[i - half_kern][j - half_kern] =
-                    *(std::max_element(tmps.begin(), tmps.end()));
+                dst[i - half_kern][j - half_kern] = *(std::max_element(tmps.begin(), tmps.end()));
         }
     }
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<double>> &src,
-                                                 int kern_size)
+std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<double>>& src, int kern_size)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
         kern_size += 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -312,16 +303,16 @@ std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<d
                 }
             }
 
-            double minv = *(std::min_element(tmps.begin(), tmps.end()));
-            double maxv = *(std::max_element(tmps.begin(), tmps.end()));
+            double minv                       = *(std::min_element(tmps.begin(), tmps.end()));
+            double maxv                       = *(std::max_element(tmps.begin(), tmps.end()));
             dst[i - half_kern][j - half_kern] = (minv + maxv) / 2;
         }
     }
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::BlurModifiedAlpha(
-    const std::vector<std::vector<double>> &src, int kern_size, int d)
+std::vector<std::vector<double>>
+IPL::BlurModifiedAlpha(const std::vector<std::vector<double>>& src, int kern_size, int d)
 {
     // 判断滤波核大小是否为奇数
     if (!IsOdd(kern_size))
@@ -330,12 +321,12 @@ std::vector<std::vector<double>> IPL::BlurModifiedAlpha(
         d = kern_size * kern_size - 1;
 
     // 扩展图像边界
-    int half_kern = (kern_size - 1) / 2;
+    int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
     // 均值滤波
-    int rows = src.size();
-    int cols = src[0].size();
+    int                              rows = src.size();
+    int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
 
     for (int i = half_kern; i < rows + half_kern; i++)
@@ -352,19 +343,19 @@ std::vector<std::vector<double>> IPL::BlurModifiedAlpha(
             }
             std::sort(tmps.begin(), tmps.end());
             // 去掉前后各d/2个元素，并求其均值
-            double sum = std::accumulate(tmps.begin() + d / 2, tmps.end() - d / 2, 0);
+            double sum                        = std::accumulate(tmps.begin() + d / 2, tmps.end() - d / 2, 0);
             dst[i - half_kern][j - half_kern] = sum / (kern_size * kern_size - d);
         }
     }
     return dst;
 }
 
-std::vector<std::vector<double>> IPL::NearestNeighborInterpolation(
-    const std::vector<std::vector<double>> &src, int new_rows, int new_cols)
+std::vector<std::vector<double>>
+IPL::NearestNeighborInterpolation(const std::vector<std::vector<double>>& src, int new_rows, int new_cols)
 {
-    int rows = src.size();
-    int cols = src[0].size();
-    auto res = IPL::MakeVector2D(new_rows, new_cols);
+    int  rows = src.size();
+    int  cols = src[0].size();
+    auto res  = IPL::MakeVector2D(new_rows, new_cols);
     for (int i = 0; i < new_rows; i++)
     {
         for (int j = 0; j < new_cols; j++)
@@ -382,7 +373,4 @@ std::vector<std::vector<double>> IPL::NearestNeighborInterpolation(
     return res;
 }
 
-bool IPL::IsOdd(int num)
-{
-    return (num % 2);
-}
+bool IPL::IsOdd(int num) { return (num % 2); }
