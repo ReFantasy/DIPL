@@ -1,6 +1,6 @@
 #include "image_convert.h"
 
-std::vector<std::vector<double>> IPL::Mat2Vector2D(const cv::Mat &mat)
+std::vector<std::vector<double>> IPL::Mat2Vector2D(const cv::Mat& mat)
 {
     auto dst = std::vector<std::vector<double>>(mat.rows, std::vector<double>(mat.cols, 0));
 
@@ -16,7 +16,7 @@ std::vector<std::vector<double>> IPL::Mat2Vector2D(const cv::Mat &mat)
     }
     return dst;
 }
-std::vector<std::vector<double>> IPL::Mat2CentreVector2D(const cv::Mat &mat)
+std::vector<std::vector<double>> IPL::Mat2CentreVector2D(const cv::Mat& mat)
 {
     auto dst = std::vector<std::vector<double>>(mat.rows, std::vector<double>(mat.cols, 0));
 
@@ -33,7 +33,7 @@ std::vector<std::vector<double>> IPL::Mat2CentreVector2D(const cv::Mat &mat)
     return dst;
 }
 
-cv::Mat IPL::VectorComplex2D2Mat(std::vector<std::vector<std::complex<double>>> &src)
+cv::Mat IPL::Complex2Mat(std::vector<std::vector<std::complex<double>>>& src)
 {
     int rows = src.size();
     int cols = src[0].size();

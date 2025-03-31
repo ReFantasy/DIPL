@@ -26,7 +26,7 @@ namespace IPL
      *  \param[in] std::vector<std::vector<complex<double>>>
      *  \param[out] Mat
      */
-    cv::Mat VectorComplex2D2Mat(std::vector<std::vector<std::complex<double>>>& src);
+    cv::Mat Complex2Mat(std::vector<std::vector<std::complex<double>>>& src);
 
 } // namespace IPL
 
