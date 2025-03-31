@@ -2,36 +2,27 @@
 #define __RAND_H__
 #include <ctime>
 #include <random>
-template <typename T = int>
+template<typename T = int>
 class Rand
 {
-  public:
-    Rand(T minv = std::numeric_limits<T>::min, T maxv = std::numeric_limits<T>::max)
-        : _min(minv), _max(maxv), d(std::uniform_real_distribution<T>(minv, maxv))
+public:
+    Rand(T minv = std::numeric_limits<T>::min, T maxv = std::numeric_limits<T>::max) :
+        _min(minv), _max(maxv), d(std::uniform_real_distribution<T>(minv, maxv))
     {
         e.seed(std::time(nullptr));
     }
 
-    T Random()
-    {
+    T Random() { return d(e); }
 
-        return d(e);
-    }
+    T operator()() { return d(e); }
 
-    T operator()()
-    {
-        return d(e);
-    }
+    ~Rand() {}
 
-    ~Rand()
-    {
-    }
-
-  private:
-    std::default_random_engine e;
+private:
+    std::default_random_engine        e;
     std::uniform_real_distribution<T> d;
-    T _min;
-    T _max;
+    T                                 _min;
+    T                                 _max;
 };
 
 #endif //__RAND_H__

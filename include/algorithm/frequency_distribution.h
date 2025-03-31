@@ -127,8 +127,8 @@ namespace IPL
      *  \param[in] uv_ks off-centering
      *  \return geneated filter, a two-dimensional vector
      */
-    std::vector<std::vector<double>> NBSF(int rows, int cols, std::vector<double> D0s,
-                                          std::vector<std::pair<int, int>> uv_ks, int n = 2);
+    std::vector<std::vector<double>>
+    NBSF(int rows, int cols, std::vector<double> D0s, std::vector<std::pair<int, int>> uv_ks, int n = 2);
 
     /** \brief Geneate B band-pass notch filter.
      *  \param[in] rows the height of filter
@@ -137,19 +137,15 @@ namespace IPL
      *  \param[in] uv_ks off-centering
      *  \return geneated filter, a two-dimensional vector
      */
-    std::vector<std::vector<double>> NBPF(int rows, int cols, std::vector<double> D0s,
-                                          std::vector<std::pair<int, int>> uv_ks, int n = 2);
+    std::vector<std::vector<double>>
+    NBPF(int rows, int cols, std::vector<double> D0s, std::vector<std::pair<int, int>> uv_ks, int n = 2);
 
     class Point
     {
-      public:
+    public:
         Point() = default;
-        Point(double x, double y) : _x(x), _y(y)
-        {
-        }
-        ~Point()
-        {
-        }
+        Point(double x, double y) : _x(x), _y(y) {}
+        ~Point() {}
         double _x;
         double _y;
     };
@@ -159,7 +155,7 @@ namespace IPL
      *  \param[in] p2 the second point
      *  \return the distance between p1 and p2
      */
-    double Distance(const Point &p1, const Point &p2);
+    double Distance(const Point& p1, const Point& p2);
 
     std::vector<std::vector<double>> MakeVector2D(int rows, int cols);
 
