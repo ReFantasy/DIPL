@@ -382,6 +382,7 @@ std::vector<std::vector<double>> IPL::HistogramEqualizate(const std::vector<std:
     int num_pixels = src.size() * src[0].size();
 
     int CDF[256] = {0};
+
     for (int i = 0; i < src.size(); i++)
     {
         for (int j = 0; j < src[0].size(); j++)
@@ -395,7 +396,9 @@ std::vector<std::vector<double>> IPL::HistogramEqualizate(const std::vector<std:
     }
     for (int i = 0; i < 256; i++)
     {
-        CDF[i] = (int)(CDF[i] * 255.0 / num_pixels);
+        double L_1 = 255.0; // L minus 1
+
+        CDF[i] = (int)(CDF[i] * L_1 / num_pixels);
         // CDF[i] = std::min(255, CDF[i]);
         // CDF[i] = std::max(0, CDF[i]);
         assert(CDF[i] >= 0 && CDF[i] <= 255);
