@@ -5,8 +5,8 @@ int main()
 {
 
     cv::Mat a   = cv::imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH03/Fig0316(4)(bottom_left).tif", 0);
-    auto    src = IPL::HistogramEqualizate(IPL::Mat2Vector2D(a));
-    auto    dst = IPL::HistogramEqualizate(src);
+    auto    src = IPL::HistogramEqualization(IPL::Mat2Vector2D(a));
+    auto    dst = IPL::HistogramEqualization(src);
     auto    b   = IPL::Vector2D2Mat(dst);
 
     auto a_hist = GetHistogram(a);

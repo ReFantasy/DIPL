@@ -375,7 +375,7 @@ IPL::NearestNeighborInterpolation(const std::vector<std::vector<double>>& src, i
 
 bool IPL::IsOdd(int num) { return (num % 2); }
 
-std::vector<std::vector<double>> IPL::HistogramEqualizate(const std::vector<std::vector<double>>& src)
+std::vector<std::vector<double>> IPL::HistogramEqualization(const std::vector<std::vector<double>>& src)
 {
     std::vector<std::vector<double>> dst = src;
 
