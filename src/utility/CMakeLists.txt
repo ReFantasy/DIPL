@@ -2,9 +2,9 @@
 
 
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/utility/*.h)
-source_group("${CMAKE_CURRENT_SOURCE_DIR}" FILES ${UTILITY_LIST} ${HEADER_FILES})
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${UTILITY_LIST})
 
-ADD_LIBRARY(utility ${UTILITY_LIST} ) 
+ADD_LIBRARY(utility ${UTILITY_LIST} ${HEADER_FILES}) 
 
 target_link_libraries(utility algorithm)
 
