@@ -87,7 +87,7 @@ namespace IPL
     bool IsOdd(int num);
 
 
-    std::vector<std::vector<double>> HistogramEqualization(const std::vector<std::vector<double>>& src);
+    std::vector<std::vector<double>> HistogramEqualizate(const std::vector<std::vector<double>>& src);
 
 } // namespace IPL
 
