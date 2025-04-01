@@ -1,4 +1,8 @@
 ﻿AUX_SOURCE_DIRECTORY(. UTILITY_LIST)
+
+
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${UTILITY_LIST})
+
 ADD_LIBRARY(utility ${UTILITY_LIST} ) 
 
 target_link_libraries(utility algorithm)
