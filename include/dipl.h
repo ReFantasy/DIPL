@@ -8,3 +8,6 @@
 #include "histogram.h"
 #include "image_convert.h"
 
+
+#include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>

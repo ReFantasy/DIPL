@@ -1,9 +1,5 @@
-#include "image_convert.h"
 #include "iostream"
-#include "spatial_filter.h"
-#include <histogram.h>
-#include <opencv2/highgui.hpp>
-#include <opencv2/opencv.hpp>
+#include "dipl.h"
 
 int main()
 {
