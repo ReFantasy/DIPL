@@ -2,7 +2,7 @@
  *
  *  The header file define some universal frequency filter
  *
- *  Author  : ReFantasy
+ *  Author  : Tan DL
  *  Date    : 2019-08-22
  *  Contact : 309741309@qq.com
  *

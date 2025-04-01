@@ -1,5 +1,5 @@
 #include "Fourier.h"
-#include "frequency_distribution.h"
+#include "frequency_filter.h"
 #include "spatial_filter.h"
 #include "wavelet_transform.h"
 #include "Rand.h"

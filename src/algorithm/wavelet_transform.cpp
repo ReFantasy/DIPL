@@ -2,7 +2,7 @@
 #include <string>
 #include <exception>
 #include "wavelet_transform.h"
-#include "frequency_distribution.h"
+#include "frequency_filter.h"
 #include "spatial_filter.h"
 
 void IPL::PyramidExample(const std::vector<std::vector<double>> &src, std::vector<std::vector<double>> &approximate, std::vector<std::vector<double>> &residual)

@@ -1,5 +1,5 @@
 #include "spatial_filter.h"
-#include "frequency_distribution.h"
+#include "frequency_filter.h"
 #include <algorithm>
 #include <cassert>
 #include <cmath>

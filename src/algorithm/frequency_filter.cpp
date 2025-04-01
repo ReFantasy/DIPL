@@ -1,4 +1,4 @@
-﻿#include "frequency_distribution.h"
+﻿#include "frequency_filter.h"
 #include <cmath>
 
 namespace IPL
