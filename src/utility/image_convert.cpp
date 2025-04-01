@@ -16,6 +16,22 @@ std::vector<std::vector<double>> IPL::Mat2Vector2D(const cv::Mat& mat)
     }
     return dst;
 }
+
+cv::Mat IPL::Vector2D2Mat(std::vector<std::vector<double>> src)
+{
+    int rows = src.size();
+    int cols = src[0].size();
+
+    cv::Mat dst(rows, cols, CV_8UC1);
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            dst.data[i * cols + j] = src[i][j];
+        }
+    }
+    return dst;
+}
 std::vector<std::vector<double>> IPL::Mat2CentreVector2D(const cv::Mat& mat)
 {
     auto dst = std::vector<std::vector<double>>(mat.rows, std::vector<double>(mat.cols, 0));

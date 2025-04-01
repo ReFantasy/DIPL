@@ -374,3 +374,40 @@ IPL::NearestNeighborInterpolation(const std::vector<std::vector<double>>& src, i
 }
 
 bool IPL::IsOdd(int num) { return (num % 2); }
+
+std::vector<std::vector<double>> IPL::HistogramEqualization(const std::vector<std::vector<double>>& src)
+{
+    std::vector<std::vector<double>> dst = src;
+
+    int num_pixels = src.size() * src[0].size();
+
+    int CDF[256] = {0};
+    for (int i = 0; i < src.size(); i++)
+    {
+        for (int j = 0; j < src[0].size(); j++)
+        {
+            CDF[(int)src[i][j]]++;
+        }
+    }
+    for (int i = 1; i < 256; i++)
+    {
+        CDF[i] += CDF[i - 1];
+    }
+    for (int i = 0; i < 256; i++)
+    {
+        CDF[i] = (int)(CDF[i] * 255.0 / num_pixels);
+        // CDF[i] = std::min(255, CDF[i]);
+        // CDF[i] = std::max(0, CDF[i]);
+        assert(CDF[i] >= 0 && CDF[i] <= 255);
+    }
+
+    for (int i = 0; i < src.size(); i++)
+    {
+        for (int j = 0; j < src[0].size(); j++)
+        {
+            dst[i][j] = CDF[(int)src[i][j]];
+        }
+    }
+
+    return dst;
+}
