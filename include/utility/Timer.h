@@ -1,6 +1,7 @@
 ﻿#ifndef __TIMER_H__
 #define __TIMER_H__
 #include <chrono>
+#include <vector>
 
 using namespace std::chrono;
 
@@ -17,6 +18,7 @@ public:
     }
 
     void Suspend() { _suspend_time = high_resolution_clock::now(); }
+
     void Continue()
     {
         auto current_time = high_resolution_clock::now();
