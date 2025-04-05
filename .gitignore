@@ -107,3 +107,4 @@ imgui.ini
 .vscode/
 build/
 CMakeFiles/
+.envrc
