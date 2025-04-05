@@ -1,4 +1,4 @@
-#include "Fourier.h"
+#include "fourier.h"
 #include "frequency_filter.h"
 #include "spatial_filter.h"
 #include "wavelet_transform.h"

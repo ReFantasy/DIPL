@@ -1,4 +1,4 @@
-﻿#include "Fourier.h"
+﻿#include "fourier.h"
 #include <cassert>
 namespace IPL
 {

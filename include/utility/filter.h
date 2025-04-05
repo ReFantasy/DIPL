@@ -5,7 +5,7 @@
  ***********************************************************************/
 #ifndef __FILTER_H__
 #define __FILTER_H__
-#include "Fourier.h"
+#include "fourier.h"
 #include "opencv2/opencv.hpp"
 #include <string>
 using namespace std;
