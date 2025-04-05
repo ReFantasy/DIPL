@@ -28,11 +28,11 @@ int main()
     timer.Continue();
     auto src = IPL::Fourier::IDFT(out);
 
-    auto comsume_time = timer.Elapse<std::chrono::microseconds>();
+    auto consume_time = timer.Elapse<std::chrono::microseconds>();
 
     for (auto e : src)
     {
         std::cout << e << std::endl;
     }
-    std::cout << "time:" << comsume_time << " microseconds" << std::endl;
+    std::cout << "time:" << consume_time << " microseconds" << std::endl;
 }
