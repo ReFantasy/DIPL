@@ -19,13 +19,13 @@ namespace IPL
         // 功能：一维离散傅里叶变换
         // 输入：一维向量
         // 输出：一维复数向量
-        static vector<complex<double>> DFT(const vector<double>& array_in);
+        static vector<complex<double>> DFT(const vector<double>& array_double);
         static vector<complex<double>> DFT(const vector<complex<double>>& array_in);
 
         // 功能 ：一维离散傅里叶逆变换
         // 参数 ：需要进行逆变换的一维复数向量
         // 输出 ：一维浮点数据向量，即傅里叶逆变换的结果
-        static vector<complex<double>> IDFT(const vector<complex<double>>& array_in);
+        static vector<complex<double>> IDFT(const vector<complex<double>>& array_complex);
 
         // 功能：二维离散傅里叶变换
         // 输入：二维向量
@@ -75,19 +75,18 @@ namespace IPL
         static vector<vector<complex<double>>> IFFT(const vector<vector<complex<double>>>& array_in);
     };
 
-    // 欧拉公式
-    // thet 单位为弧度
-    class Eulerform
+    // 欧拉公式 C = |C|e^{jθ}=|C|(cosθ + jsinθ) theta 单位为弧度
+    class EulerformComplex
     {
     public:
-        Eulerform(const std::complex<double>& com);
-        Eulerform(double mul, double thet);
-        double                      Mul() const;
-        double                      Thet() const;
-        const std::complex<double>& GetComplex() const;
+        EulerformComplex(const std::complex<double>& com);
+        EulerformComplex(double magnitude, double theta);
+        double                      Magnitude() const;
+        double                      Theta() const;
+        const std::complex<double>& NativeComplex() const;
 
     private:
-        std::complex<double> _com;
+        std::complex<double> _complex;
     };
 
     /** \brief check n = pow(2,k), k=1,2,3...

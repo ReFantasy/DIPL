@@ -3,71 +3,70 @@
 namespace IPL
 {
 
-    Eulerform::Eulerform(const std::complex<double>& com) : _com(com) {}
+    EulerformComplex::EulerformComplex(const std::complex<double>& com) : _complex(com) {}
 
-    Eulerform::Eulerform(double mul, double thet)
+    EulerformComplex::EulerformComplex(double magnitude, double theta)
     {
-        double re = mul * cos(thet);
-        double im = mul * sin(thet);
-        _com      = std::complex<double>(re, im);
+        double re = magnitude * cos(theta);
+        double im = magnitude * sin(theta);
+        _complex  = std::complex<double>(re, im);
     }
 
-    double Eulerform::Mul() const { return std::abs(_com); }
+    double EulerformComplex::Magnitude() const { return std::abs(_complex); }
 
-    double Eulerform::Thet() const { return std::arg(_com); }
+    double EulerformComplex::Theta() const { return std::arg(_complex); }
 
-    const std::complex<double>& Eulerform::GetComplex() const { return _com; }
+    const std::complex<double>& EulerformComplex::NativeComplex() const { return _complex; }
 
     Fourier::Fourier() {}
 
     Fourier::~Fourier() {}
 
-    std::vector<std::complex<double>> Fourier::DFT(const std::vector<double>& array_in)
+    std::vector<std::complex<double>> Fourier::DFT(const std::vector<double>& array_double)
     {
-        /*int M = array_in.size();
-        std::vector<std::complex<double>> array_out(M, std::complex<double>{});
-
-        for (int i = 0; i < M; i++)
-        {
-            std::complex<double> tmp;
-            for (int j = 0; j < M; j++)
-            {
-                Eulerform el(1, -2.0*PI*i*j / M);
-                tmp += (array_in[j] * el.GetComplex());
-            }
-            array_out[i] = tmp;
-        }
-
-        return array_out;*/
-
-        std::vector<std::complex<double>> tmp(array_in.size(), {0, 0});
-        for (int i = 0; i < array_in.size(); i++)
-        {
-            /*tmp[i]._Val[0] = array_in[i];
-            tmp[i]._Val[1] = 0;*/
-            tmp[i] = {array_in[i], 0};
-        }
-
-        return DFT(tmp);
+        std::vector<std::complex<double>> array_complex(array_double.size(), std::complex<double> {});
+        for (int i = 0; i < array_double.size(); i++)
+            array_complex[i] = std::complex<double>(array_double[i], 0);
+        return DFT(array_complex);
     }
 
     vector<complex<double>> Fourier::DFT(const vector<complex<double>>& array_in)
     {
-        int                               M = array_in.size();
-        std::vector<std::complex<double>> array_out(M, std::complex<double> {});
+        int  M         = array_in.size();
+        auto array_out = std::vector<std::complex<double>>(M, std::complex<double> {});
 
-        for (int i = 0; i < M; i++)
+        for (int m = 0; m < M; m++)
         {
             std::complex<double> tmp;
-            for (int j = 0; j < M; j++)
+            for (int n = 0; n < M; n++)
             {
-                Eulerform el(1, -2.0 * PI * i * j / M);
-                tmp += (array_in[j] * el.GetComplex());
+                EulerformComplex el(1, -2.0 * PI * m * n / M);
+                tmp += (array_in[n] * el.NativeComplex());
             }
-            array_out[i] = tmp;
+
+            array_out[m] = tmp;
         }
 
         return array_out;
+    }
+
+    vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>>& array_complex)
+    {
+        int  M             = array_complex.size();
+        auto array_out_com = std::vector<std::complex<double>>(M, std::complex<double> {});
+
+        for (int n = 0; n < M; n++)
+        {
+            std::complex<double> tmp;
+            for (int m = 0; m < M; m++)
+            {
+                EulerformComplex el(1, 2.0 * PI * n * m / M);
+                tmp += (array_complex[m] * el.NativeComplex());
+            }
+            array_out_com[n] = std::complex<double>(tmp.real() / M, tmp.imag() / M);
+        }
+
+        return array_out_com;
     }
 
     vector<complex<double>> Fourier::FFT(const vector<complex<double>>& in)
@@ -93,8 +92,8 @@ namespace IPL
             std::vector<std::complex<double>> W_2k_u(K, std::complex<double> {0, 0});
             for (int i = 0; i < K; i++)
             {
-                IPL::Eulerform e(1, -2.0 * PI * i / 2 / K);
-                W_2k_u[i] = odd_fourier[i] * e.GetComplex();
+                IPL::EulerformComplex e(1, -2.0 * PI * i / 2 / K);
+                W_2k_u[i] = odd_fourier[i] * e.NativeComplex();
             }
 
             for (int i = 0; i < K; i++)
@@ -253,25 +252,6 @@ namespace IPL
             }
         }
         return array_out;
-    }
-
-    vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>>& array_in)
-    {
-        int                               M = array_in.size();
-        std::vector<std::complex<double>> array_out_com(M, std::complex<double> {});
-
-        for (int i = 0; i < M; i++)
-        {
-            std::complex<double> tmp;
-            for (int j = 0; j < M; j++)
-            {
-                Eulerform el(1, 2.0 * PI * i * j / M);
-                tmp += (array_in[j] * el.GetComplex());
-            }
-            array_out_com[i] = {tmp.real() / M, tmp.imag() / M};
-        }
-
-        return array_out_com;
     }
 
     vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>>& array_in)
