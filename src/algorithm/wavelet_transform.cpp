@@ -1,9 +1,10 @@
 #include <cmath>
 #include <string>
 #include <exception>
-#include "wavelet_transform.h"
-#include "frequency_filter.h"
-#include "spatial_filter.h"
+// #include "wavelet_transform.h"
+// #include "frequency_filter.h"
+// #include "spatial_filter.h"
+#include "dipl.h"
 
 void IPL::PyramidExample(const std::vector<std::vector<double>> &src, std::vector<std::vector<double>> &approximate, std::vector<std::vector<double>> &residual)
 {
@@ -11,14 +12,14 @@ void IPL::PyramidExample(const std::vector<std::vector<double>> &src, std::vecto
 	int cols = src[0].size();
 
 
-	// 生成近似图
+	// 锟斤拷锟缴斤拷锟斤拷图
 	auto s = IPL::BlurArithmetic(src, 5);
 	approximate = PryDown(s);
 
-	// 上采样并进行插值滤波
-	// 上采样将上一步得到的图像approximate尺寸扩大两倍 扩大的像素间填充0
-	// 插值滤波将像素为0的位置根据原图像approximate进行插值
-	// 这里采用最近邻插值代替以上两个步骤
+	// 锟较诧拷锟斤拷锟斤拷锟斤拷锟叫诧拷值锟剿诧拷
+	// 锟较诧拷锟斤拷锟斤拷锟斤拷一锟斤拷锟矫碉拷锟斤拷图锟斤拷approximate锟竭达拷锟斤拷锟斤拷锟斤拷锟斤拷 锟斤拷锟斤拷锟斤拷锟斤拷丶锟斤拷锟斤拷0
+	// 锟斤拷值锟剿诧拷锟斤拷锟斤拷锟斤拷为0锟斤拷位锟矫革拷锟斤拷原图锟斤拷approximate锟斤拷锟叫诧拷值
+	// 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟节诧拷值锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
 	auto indicate = IPL::NearestNeighborInterpolation(approximate, rows, cols);
 	
 

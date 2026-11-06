@@ -1,5 +1,5 @@
 #include "dipl.h"
-#include "fourier.h"
+#include "algorithm/fourier.h"
 #include <vector>
 
 int main()

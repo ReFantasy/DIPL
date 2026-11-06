@@ -1,9 +1,9 @@
-#ifndef __HISTOGRAM_H__
-#define __HISTOGRAM_H__
+#pragma once
 
 #include "opencv2/opencv.hpp"
+#include <vector>
 using namespace cv;
 
-Mat GetHistogram(const Mat grayImage);
+Mat GetHistogram(Mat grayImage);
 
-#endif //__HISTOGRAM_H__
+std::vector<int> ComputeHistogram(const cv::Mat& gray_image, bool show = false);

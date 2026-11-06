@@ -6,7 +6,11 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${UTILITY_LIST})
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/utility/*.h)
 ADD_LIBRARY(utility ${UTILITY_LIST} ${HEADER_FILES}) 
 
-target_link_libraries(utility algorithm)
+target_link_libraries(utility algorithm OpenMP::OpenMP_CXX Matplot++::matplot)
+
+target_include_directories(utility
+        INTERFACE
+        ${CMAKE_SOURCE_DIR}/include/)
 
 # 安装
 INSTALL(TARGETS utility ARCHIVE DESTINATION lib)

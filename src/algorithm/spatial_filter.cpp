@@ -1,5 +1,6 @@
-#include "spatial_filter.h"
-#include "frequency_filter.h"
+// #include "spatial_filter.h"
+// #include "frequency_filter.h"
+#include "dipl.h"
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -17,7 +18,7 @@ IPL::PaddingImage(const std::vector<std::vector<double>>& src, int left, int rig
 
     std::vector<std::vector<double>> new_image(new_rows, std::vector<double>(new_cols, 0));
 
-    // ¿½±´Ô­Ê¼Êý¾Ý
+    // ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½
     for (int i = 0; i < old_rows; i++)
     {
         for (int j = 0; j < old_cols; j++)
@@ -26,7 +27,7 @@ IPL::PaddingImage(const std::vector<std::vector<double>>& src, int left, int rig
         }
     }
 
-    // À©³ä±ßÔµ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ôµ
     for (int i = 0; i < old_rows; i++)
     {
         // left
@@ -63,15 +64,15 @@ std::vector<std::vector<double>> IPL::PaddingImage(const std::vector<std::vector
 
 std::vector<std::vector<double>> IPL::BlurArithmetic(const std::vector<std::vector<double>>& src, int kern_size)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -98,15 +99,15 @@ std::vector<std::vector<double>> IPL::BlurArithmetic(const std::vector<std::vect
 
 std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector<double>>& src, int kern_size)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -133,15 +134,15 @@ std::vector<std::vector<double>> IPL::BlurGeometry(const std::vector<std::vector
 
 std::vector<std::vector<double>> IPL::BlurHarmonic(const std::vector<std::vector<double>>& src, int kern_size)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -169,15 +170,15 @@ std::vector<std::vector<double>> IPL::BlurHarmonic(const std::vector<std::vector
 std::vector<std::vector<double>>
 IPL::BlurInverseHarmonic(const std::vector<std::vector<double>>& src, int kern_size, double Q)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -205,15 +206,15 @@ IPL::BlurInverseHarmonic(const std::vector<std::vector<double>>& src, int kern_s
 
 std::vector<std::vector<double>> IPL::BlurMedian(const std::vector<std::vector<double>>& src, int kern_size)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -240,15 +241,15 @@ std::vector<std::vector<double>> IPL::BlurMedian(const std::vector<std::vector<d
 
 std::vector<std::vector<double>> IPL::BlurMaxMin(const std::vector<std::vector<double>>& src, int kern_size, int type)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -277,15 +278,15 @@ std::vector<std::vector<double>> IPL::BlurMaxMin(const std::vector<std::vector<d
 
 std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<double>>& src, int kern_size)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -314,17 +315,17 @@ std::vector<std::vector<double>> IPL::BlurMiddle(const std::vector<std::vector<d
 std::vector<std::vector<double>>
 IPL::BlurModifiedAlpha(const std::vector<std::vector<double>>& src, int kern_size, int d)
 {
-    // ÅÐ¶ÏÂË²¨ºË´óÐ¡ÊÇ·ñÎªÆæÊý
+    // ï¿½Ð¶ï¿½ï¿½Ë²ï¿½ï¿½Ë´ï¿½Ð¡ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½
     if (!IsOdd(kern_size))
         kern_size += 1;
     if (d >= kern_size * kern_size)
         d = kern_size * kern_size - 1;
 
-    // À©Õ¹Í¼Ïñ±ß½ç
+    // ï¿½ï¿½Õ¹Í¼ï¿½ï¿½ß½ï¿½
     int  half_kern    = (kern_size - 1) / 2;
     auto image_padded = PaddingImage(src, half_kern);
 
-    // ¾ùÖµÂË²¨
+    // ï¿½ï¿½Öµï¿½Ë²ï¿½
     int                              rows = src.size();
     int                              cols = src[0].size();
     std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
@@ -342,7 +343,7 @@ IPL::BlurModifiedAlpha(const std::vector<std::vector<double>>& src, int kern_siz
                 }
             }
             std::sort(tmps.begin(), tmps.end());
-            // È¥µôÇ°ºó¸÷d/2¸öÔªËØ£¬²¢ÇóÆä¾ùÖµ
+            // È¥ï¿½ï¿½Ç°ï¿½ï¿½ï¿½d/2ï¿½ï¿½Ôªï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
             double sum                        = std::accumulate(tmps.begin() + d / 2, tmps.end() - d / 2, 0);
             dst[i - half_kern][j - half_kern] = sum / (kern_size * kern_size - d);
         }

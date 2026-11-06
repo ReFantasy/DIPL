@@ -1,6 +1,6 @@
-﻿#include "filter.h"
-#include "image_convert.h"
-#include "spatial_filter.h"
+﻿#include "utility/filter.h"
+#include "utility/image_convert.h"
+#include "algorithm/spatial_filter.h"
 
 using namespace cv;
 namespace IPL
