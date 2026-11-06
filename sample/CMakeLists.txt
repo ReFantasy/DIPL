@@ -8,7 +8,7 @@ ADD_SUBDIRECTORY(ch08)
 ADD_SUBDIRECTORY(ch09)
 
 add_executable(test test.cpp)
-target_link_libraries(test algorithm utility Matplot++::matplot)
+target_link_libraries(test algorithm utility)
 
 
 

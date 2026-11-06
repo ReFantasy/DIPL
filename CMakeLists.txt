@@ -45,9 +45,6 @@ FIND_PACKAGE( OpenCV REQUIRED )
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 LINK_LIBRARIES(${OpenCV_LIBS})
 
-# Matplot for cpp
-find_package(Matplot++ REQUIRED)
-
 add_definitions(-DDATA_DIR="${PROJECT_SOURCE_DIR}/sample/data")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
