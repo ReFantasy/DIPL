@@ -9,8 +9,8 @@ int main()
     auto    dst = IPL::HistogramEqualization(src);
     auto    b   = IPL::Vector2D2Mat(dst);
 
-    auto a_hist = GetHistogram(a);
-    auto b_hist = GetHistogram(b);
+    auto a_hist = DrawHistogram(ComputeHistogram(a));
+    auto b_hist = DrawHistogram(ComputeHistogram(b));
 
     cv::imshow("a", a);
     cv::imshow("b", b);

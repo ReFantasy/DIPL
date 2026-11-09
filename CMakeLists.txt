@@ -22,6 +22,7 @@ endif()
 
 if(WIN32)
 	MESSAGE(STATUS "operating system is windows")
+	find_package(OpenMP REQUIRED)
 elseif(APPLE)
 	MESSAGE(STATUS "operating system is Apple system.")
 	set(OpenMP_ROOT "/opt/homebrew/opt/libomp")  # Apple Silicon Mac
@@ -36,11 +37,12 @@ elseif(UNIX)
 endif()
 
 # 库文件输出目录
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 # 可执行文件输出目录
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 # 配置 OpenCV 库
+set(OpenCV_DIR "C:/opencv/build")
 FIND_PACKAGE( OpenCV REQUIRED )
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 LINK_LIBRARIES(${OpenCV_LIBS})
@@ -54,11 +56,3 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
-
-
-
-
-
-
-
-
