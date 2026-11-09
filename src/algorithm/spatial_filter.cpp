@@ -1,6 +1,9 @@
 // #include "spatial_filter.h"
 // #include "frequency_filter.h"
-#include "dipl.h"
+// #include "dipl.h"
+#include "algorithm/spatial_filter.h"
+#include "algorithm/frequency_filter.h"
+#include "algorithm/wavelet_transform.h"
 #include <algorithm>
 #include <cassert>
 #include <cmath>

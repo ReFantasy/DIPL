@@ -51,7 +51,7 @@ namespace IPL
         return res;
     }
 
-    // ÉÏ²ÉÑù
+    // ä¸Šé‡‡æ ·
     template<typename T>
     std::vector<std::vector<T>> PryUp(const std::vector<std::vector<T>>& src)
     {
@@ -102,7 +102,7 @@ namespace IPL
         return res;
     }
 
-    // ÏÂ²ÉÑù
+    // ä¸‹é‡‡æ ·
     template<typename T>
     std::vector<std::vector<T>> PryDown(const std::vector<std::vector<T>>& src)
     {
@@ -115,7 +115,7 @@ namespace IPL
                         std::vector<std::vector<double>>&       approximate,
                         std::vector<std::vector<double>>&       residual);
 
-    // ¹þ¶û»ùº¯Êý
+    // å“ˆå°”åŸºå‡½æ•°
     class HaarBasis
     {
     public:

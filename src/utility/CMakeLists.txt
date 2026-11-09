@@ -1,28 +1,31 @@
-﻿AUX_SOURCE_DIRECTORY(. UTILITY_LIST)
+﻿# 配置 OpenCV 库
+FIND_PACKAGE( OpenCV REQUIRED )
+INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
+
+AUX_SOURCE_DIRECTORY(. UTILITY_LIST)
 
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${UTILITY_LIST})
 
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/utility/*.h)
-ADD_LIBRARY(utility ${UTILITY_LIST} ${HEADER_FILES})
+ADD_LIBRARY(utility SHARED ${UTILITY_LIST} ${HEADER_FILES})
 
-# 导出全部符号，否则 MSVC 不会生成 utility.lib（导入库），可执行文件无法链接
-if(WIN32)
-    set_target_properties(utility PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
-endif()
 
-target_link_libraries(utility algorithm OpenMP::OpenMP_CXX)
+target_link_libraries(utility PUBLIC algorithm OpenMP::OpenMP_CXX ${OpenCV_LIBS})
 
 target_include_directories(utility
-        INTERFACE
-        ${CMAKE_SOURCE_DIR}/include/)
+        PUBLIC
+        ${CMAKE_SOURCE_DIR}/include
+        ${OpenCV_INCLUDE_DIRS}
+        )
 
-# 安装
-INSTALL(TARGETS utility
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin)
 
-# FILE(GLOB HEADER_FILE ./*.h ./*.hpp) #所有头文件存入变量
-# FOREACH(F ${HEADER_FILE})
-#     INSTALL(FILES ${F} DESTINATION ${PROJECT_BINARY_DIR}/install/include/utility)
-# ENDFOREACH(F)
+if(WIN32)
+    # set_target_properties(algorithm PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    add_custom_command(TARGET utility POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:utility>
+            $<TARGET_RUNTIME_DLLS:utility>
+            COMMAND_EXPAND_LISTS
+            COMMENT "Copying runtime DLLs (via TARGET_RUNTIME_DLLS)..."
+        )
+endif()
