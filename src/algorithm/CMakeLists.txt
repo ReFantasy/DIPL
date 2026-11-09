@@ -8,9 +8,7 @@ ADD_LIBRARY(algorithm SHARED ${ALGORITHM_LIST} ${HEADER_FILES})
 
 target_link_libraries(algorithm OpenMP::OpenMP_CXX)
 
-# target_include_directories(algorithm
-#         INTERFACE
-#         ${CMAKE_SOURCE_DIR}/include/)
+
 target_include_directories(algorithm PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 
