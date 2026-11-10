@@ -12,12 +12,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS Debug Release RelWithDebInfo MinSizeRel)
+    set_property(CACHE CMAKE_BUILD_TYPE
+        PROPERTY STRINGS Debug Release RelWithDebInfo MinSizeRel)
 endif()
 add_compile_definitions($<$<CONFIG:Debug>:DEBUG>)
 
+# 允许 -DOpenMP_ROOT 覆盖（Intel Mac 等）
 if(APPLE AND NOT DEFINED OpenMP_ROOT)
-    set(OpenMP_ROOT "/opt/homebrew/opt/libomp")   # 允许 -DOpenMP_ROOT 覆盖（Intel Mac 等）
+    set(OpenMP_ROOT "/opt/homebrew/opt/libomp")
 endif()
 
 find_package(OpenMP REQUIRED COMPONENTS CXX)
