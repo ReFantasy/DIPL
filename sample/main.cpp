@@ -1,4 +1,3 @@
-// #include "rttr/registration"
 #include "dipl.h"
 #include "utility/reflection.h"
 
