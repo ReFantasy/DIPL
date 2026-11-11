@@ -1,29 +1,41 @@
 #include "dipl.h"
 #include "utility/reflection.h"
 
-int main()
+void PrintRegisteredFunctions()
 {
-    auto& reg = FunctionRegistry::instance();
-    // reg.invoke("test2");
-
-    // 调用 int add(int, int)
-    // std::any r1 = reg.invoke("add", {1, 2});
-    // std::cout << "add(1,2) = " << std::any_cast<int>(r1) << "\n";
-
-    // cv::Mat gray = cv::imread("/Users/refantasy/Downloads/1.jpg", 0);
-    // cv::Mat gray   = cv::imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH03/Fig0316(4)(bottom_left).tif",0);
-
-    // auto hist = ComputeHistogram(gray);
-    // auto img = DrawHistogram(hist);
-    // cv::imshow("img", img);
-    // cv::waitKey();
-
-    // ShowHistogram(gray, 0);
-
-    auto list = reg.list();
+    auto& reg  = FunctionRegistry::instance();
+    auto  list = reg.list();
     std::cout << "Registered functions:\n";
     for (const auto& name : list)
-        std::cout << "  " << name << "\n";
+        printf("%-25s", name.c_str());
+}
 
-    reg.invoke("P77F3_20");
+int main()
+{
+    while (true)
+    {
+// clear the console screen (platform-dependent)
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
+
+        PrintRegisteredFunctions();
+        std::string input;
+        std::cout << "\nEnter function name to invoke (or 'exit' to quit): ";
+        std::getline(std::cin, input);
+
+        if (input == "exit")
+            break;
+
+        try
+        {
+            FunctionRegistry::instance().invoke(input);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Error: " << e.what() << "\n";
+        }
+    }
 }
