@@ -1,4 +1,3 @@
-// reflection.h
 #pragma once
 #include <any>
 #include <functional>
@@ -36,6 +35,7 @@ public:
     }
 
     bool has(const std::string& name) const { return table_.count(name) > 0; }
+
     std::vector<std::string> list() const
     {
         std::vector<std::string> names;

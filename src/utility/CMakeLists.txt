@@ -11,7 +11,8 @@ file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/include/utility/*.h)
 ADD_LIBRARY(utility SHARED ${UTILITY_LIST} ${HEADER_FILES})
 
 
-target_link_libraries(utility PUBLIC algorithm OpenMP::OpenMP_CXX ${OpenCV_LIBS})
+target_link_libraries(utility
+    PUBLIC algorithm OpenMP::OpenMP_CXX ${OpenCV_LIBS})
 
 target_include_directories(utility
         PUBLIC

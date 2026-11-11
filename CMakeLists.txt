@@ -16,19 +16,17 @@ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
         PROPERTY STRINGS Debug Release RelWithDebInfo MinSizeRel)
 endif()
 add_compile_definitions($<$<CONFIG:Debug>:DEBUG>)
-
-# 允许 -DOpenMP_ROOT 覆盖（Intel Mac 等）
-if(APPLE AND NOT DEFINED OpenMP_ROOT)
-    set(OpenMP_ROOT "/opt/homebrew/opt/libomp")
-endif()
-
-find_package(OpenMP REQUIRED COMPONENTS CXX)
-
 add_compile_definitions(DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/sample/data")
 
 if(WIN32 AND MSVC)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif()
+
+if(APPLE AND NOT DEFINED OpenMP_ROOT)
+    set(OpenMP_ROOT "/opt/homebrew/opt/libomp")
+endif()
+
+find_package(OpenMP REQUIRED COMPONENTS CXX)
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
