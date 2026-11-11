@@ -1,23 +1,22 @@
-﻿#include <vector>
-
-#include "dipl.h"
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <vector>
 using namespace cv;
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int P165F4_35()
 {
-    std::string image_path =
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0431(d)(blown_ic_crop).tif";
-    Mat src = imread(image_path, 0);
+    std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0431(d)(blown_ic_crop).tif";
+    Mat         src        = imread(image_path, 0);
     // 寻找最佳图像尺寸
     int optimal_rows = IPL::Nearst2Power(src.rows);
     int optimal_cols = IPL::Nearst2Power(src.cols);
     resize(src, src, {optimal_cols, optimal_rows});
 
-    auto src_vec = IPL::Mat2Vector2D(src);
-    IPL::Fourier fourier;
-    auto src_fourier = fourier.FFT(src_vec);
+    auto                   src_vec = IPL::Mat2Vector2D(src);
+    IPL::Fourier           fourier;
+    auto                   src_fourier = fourier.FFT(src_vec);
     vector<vector<double>> fourier_power(optimal_rows, vector<double>(optimal_cols, 0));
     vector<vector<double>> fourier_angle = fourier_power;
     for (int i = 0; i < optimal_rows; i++)
@@ -30,22 +29,20 @@ int main(int argc, char *argv[])
     }
 
     double scale = 0.5;
-    Mat b;
+    Mat    b;
     {
-        vector<vector<complex<double>>> fourier_complex(
-            optimal_rows, vector<complex<double>>(optimal_cols, {0, 0}));
+        vector<vector<complex<double>>> fourier_complex(optimal_rows, vector<complex<double>>(optimal_cols, {0, 0}));
         // 相角乘以0.5
         for (int i = 0; i < optimal_rows; i++)
         {
             for (int j = 0; j < optimal_cols; j++)
             {
-                double angle = fourier_angle[i][j] * scale;
-                fourier_complex[i][j] =
-                    fourier_power[i][j] * complex<double>{cos(angle), sin(angle)};
+                double angle          = fourier_angle[i][j] * scale;
+                fourier_complex[i][j] = fourier_power[i][j] * complex<double> {cos(angle), sin(angle)};
             }
         }
         auto b_tmp = fourier.IFFT(fourier_complex);
-        Mat _b(optimal_rows, optimal_cols, CV_8UC1);
+        Mat  _b(optimal_rows, optimal_cols, CV_8UC1);
         for (int i = 0; i < optimal_rows; i++)
         {
             for (int j = 0; j < optimal_cols; j++)
@@ -63,20 +60,18 @@ int main(int argc, char *argv[])
     Mat c;
     scale = 0.25;
     {
-        vector<vector<complex<double>>> fourier_complex(
-            optimal_rows, vector<complex<double>>(optimal_cols, {0, 0}));
+        vector<vector<complex<double>>> fourier_complex(optimal_rows, vector<complex<double>>(optimal_cols, {0, 0}));
         // 相角乘以0.5
         for (int i = 0; i < optimal_rows; i++)
         {
             for (int j = 0; j < optimal_cols; j++)
             {
-                double angle = fourier_angle[i][j] * scale;
-                fourier_complex[i][j] =
-                    fourier_power[i][j] * complex<double>{cos(angle), sin(angle)};
+                double angle          = fourier_angle[i][j] * scale;
+                fourier_complex[i][j] = fourier_power[i][j] * complex<double> {cos(angle), sin(angle)};
             }
         }
         auto b_tmp = fourier.IFFT(fourier_complex);
-        Mat _b(optimal_rows, optimal_cols, CV_8UC1);
+        Mat  _b(optimal_rows, optimal_cols, CV_8UC1);
         for (int i = 0; i < optimal_rows; i++)
         {
             for (int j = 0; j < optimal_cols; j++)
@@ -98,3 +93,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P165F4_35", P165F4_35);

@@ -1,14 +1,19 @@
 # ADD_SUBDIRECTORY(ch01)
 # ADD_SUBDIRECTORY(ch02)
-ADD_SUBDIRECTORY(ch03)
-ADD_SUBDIRECTORY(ch04)
-ADD_SUBDIRECTORY(ch05)
-ADD_SUBDIRECTORY(ch07)
-ADD_SUBDIRECTORY(ch08)
-ADD_SUBDIRECTORY(ch09)
+AUX_SOURCE_DIRECTORY(ch03 SRC_03)
+AUX_SOURCE_DIRECTORY(ch04 SRC_04)
+AUX_SOURCE_DIRECTORY(ch05 SRC_05)
+AUX_SOURCE_DIRECTORY(ch07 SRC_07)
+AUX_SOURCE_DIRECTORY(ch08 SRC_08)
+AUX_SOURCE_DIRECTORY(ch09 SRC_09)
 
-add_executable(test test.cpp test2.cpp)
-target_link_libraries(test algorithm utility)
+
+
+
+
+
+add_executable(sample main.cpp ${SRC_03} ${SRC_04} ${SRC_05} ${SRC_07} ${SRC_08} ${SRC_09})
+target_link_libraries(sample algorithm utility)
 
 
 

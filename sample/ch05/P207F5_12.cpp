@@ -1,20 +1,16 @@
 ﻿#include "dipl.h"
+#include "utility/reflection.h"
 
 using namespace cv;
 using namespace std;
 
-int main(int argc, char *argv[])
-
+int P207F5_12()
 {
 
-    Mat a = imread(std::string(DATA_DIR) +
-                       "/DIP3E_Original_Images_CH05/Fig0512(a)(ckt-uniform-var-800).tif",
-                   0);
+    Mat a = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH05/Fig0512(a)(ckt-uniform-var-800).tif", 0);
 
     Mat b = imread(
-        std::string(DATA_DIR) +
-            "/DIP3E_Original_Images_CH05/Fig0512(b)(ckt-uniform-plus-saltpepr-prob-pt1).tif",
-        0);
+        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH05/Fig0512(b)(ckt-uniform-plus-saltpepr-prob-pt1).tif", 0);
 
     auto c = IPL::BlurArithmetic(b, 5);
 
@@ -40,3 +36,5 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+REGISTER_FUNC("P207F5_12", P207F5_12);

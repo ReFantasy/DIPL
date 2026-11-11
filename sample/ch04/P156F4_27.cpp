@@ -1,21 +1,20 @@
-﻿#include <vector>
-
-#include "dipl.h"
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <vector>
 using namespace cv;
 using namespace std;
 
-int main(int argc, char *argv[])
+int P156F4_27()
 {
     // 妇女原图
-    std::string image_path =
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0427(a)(woman).tif";
-    Mat src = imread(image_path, 0);
+    std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0427(a)(woman).tif";
+    Mat         src        = imread(image_path, 0);
 
-    int rows = src.rows;
-    int cols = src.cols;
+    int          rows = src.rows;
+    int          cols = src.cols;
     IPL::Fourier fourier;
 
-    auto a = IPL::Mat2Vector2D(src);
+    auto a           = IPL::Mat2Vector2D(src);
     auto src_fourier = fourier.FFT(a);
 
     // 获取相角
@@ -40,7 +39,7 @@ int main(int argc, char *argv[])
             angle_build[i][j] = {cos(angle[i][j]), sin(angle[i][j])};
         }
     auto _c = fourier.IFFT(angle_build);
-    Mat c(rows, cols, CV_64FC1);
+    Mat  c(rows, cols, CV_64FC1);
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
         {
@@ -56,7 +55,7 @@ int main(int argc, char *argv[])
             spectrum[i][j] = {abs(src_fourier[i][j]), 0};
         }
     auto _d = fourier.IFFT(spectrum);
-    Mat d(rows, cols, CV_64FC1);
+    Mat  d(rows, cols, CV_64FC1);
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
         {
@@ -65,16 +64,14 @@ int main(int argc, char *argv[])
     normalize(d, d, 0, 1, NORM_MINMAX);
 
     // fig 4.24谱和妇女的相位角
-    image_path =
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0424(a)(rectangle).tif";
-    Mat fig4_24 = imread(image_path, 0);
-    auto _fig4_24 = IPL::Mat2Vector2D(fig4_24);
+    image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0424(a)(rectangle).tif";
+    Mat                             fig4_24  = imread(image_path, 0);
+    auto                            _fig4_24 = IPL::Mat2Vector2D(fig4_24);
     vector<vector<complex<double>>> _e(rows, vector<complex<double>>(cols, {0, 0}));
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
         {
-            _e[i][j] = {abs(_fig4_24[i][j]) * cos(angle[i][j]),
-                        abs(_fig4_24[i][j]) * sin(angle[i][j])};
+            _e[i][j] = {abs(_fig4_24[i][j]) * cos(angle[i][j]), abs(_fig4_24[i][j]) * sin(angle[i][j])};
         }
     _e = fourier.IFFT(_e);
     Mat e(rows, cols, CV_64FC1);
@@ -86,7 +83,7 @@ int main(int argc, char *argv[])
     normalize(e, e, 0, 1, NORM_MINMAX);
 
     // 矩形的相角妇女的谱
-    auto _fig4_24_fourier = fourier.FFT(_fig4_24);
+    auto                            _fig4_24_fourier = fourier.FFT(_fig4_24);
     vector<vector<complex<double>>> _f(rows, vector<complex<double>>(cols, {0, 0}));
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
@@ -113,3 +110,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P156F4_27", P156F4_27);

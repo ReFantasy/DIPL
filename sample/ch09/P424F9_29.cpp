@@ -1,113 +1,116 @@
 ﻿#include "dipl.h"
+#include "utility/reflection.h"
+
 using namespace cv;
 using namespace std;
-
-bool IsSame(const Mat A, const Mat B)
+namespace
 {
-    Mat dif = A - B;
-    for (auto it = dif.begin<uchar>(); it != dif.end<uchar>(); it++)
+    bool IsSame(const Mat A, const Mat B)
     {
-        if (*it != 0)
-            return false;
+        Mat dif = A - B;
+        for (auto it = dif.begin<uchar>(); it != dif.end<uchar>(); it++)
+        {
+            if (*it != 0)
+                return false;
+        }
+
+        return true;
     }
 
-    return true;
-}
-
-// 9.5-22
-Mat D_G(const Mat F, const Mat G, const Mat se, int n)
-{
-    Mat res;
-
-    if (n == 0)
+    // 9.5-22
+    Mat D_G(const Mat F, const Mat G, const Mat se, int n)
     {
-        return F;
+        Mat res;
+
+        if (n == 0)
+        {
+            return F;
+        }
+        else if (n == 1)
+        {
+
+            dilate(F, res, se);
+            bitwise_and(res, G, res);
+            return res;
+        }
+        else
+        {
+            res = D_G(F, G, se, n - 1);
+            return D_G(res, G, se, 1);
+        }
     }
-    else if (n == 1)
-    {
 
-        dilate(F, res, se);
-        bitwise_and(res, G, res);
+    // 9.5-24
+    Mat E_G(const Mat F, const Mat G, const Mat se, int n)
+    {
+        Mat res;
+
+        if (n == 0)
+        {
+            return F;
+        }
+        else if (n == 1)
+        {
+
+            erode(F, res, se);
+            bitwise_or(res, G, res);
+            return res;
+        }
+        else
+        {
+            res = E_G(F, G, se, n - 1);
+            return E_G(res, G, se, 1);
+        }
+    }
+
+    // 9.5-25
+    Mat RGD(const Mat F, const Mat G, const Mat se)
+    {
+        Mat res_k_1 = F;
+        Mat res_k   = D_G(F, G, se, 1);
+
+        while (!IsSame(res_k, res_k_1))
+        {
+            res_k_1 = res_k;
+            res_k   = D_G(res_k, G, se, 1);
+        }
+
+        return res_k;
+    }
+
+    Mat Open(const Mat src, const Mat se)
+    {
+        Mat res;
+        erode(src, res, se);
+        dilate(res, res, se);
         return res;
     }
-    else
+
+    int P424F9_29()
     {
-        res = D_G(F, G, se, n - 1);
-        return D_G(res, G, se, 1);
+        Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH09/Fig0929(a)(text_image).tif", 0);
+        cv::threshold(src, src, 205, 255, THRESH_BINARY);
+
+        Mat se = getStructuringElement(cv::MORPH_RECT, cv::Size(1, 51));
+
+        Mat b;
+        erode(src, b, se, {-1, -1}, 1);
+
+        Mat c = Open(src, se);
+
+        se    = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
+        Mat d = RGD(c, src, se);
+
+        imshow("a", src);
+        imshow("b", b);
+        imshow("c", c);
+        imshow("d", d);
+
+        waitKey();
+        return 0;
     }
-}
-
-// 9.5-24
-Mat E_G(const Mat F, const Mat G, const Mat se, int n)
-{
-    Mat res;
-
-    if (n == 0)
-    {
-        return F;
-    }
-    else if (n == 1)
-    {
-
-        erode(F, res, se);
-        bitwise_or(res, G, res);
-        return res;
-    }
-    else
-    {
-        res = E_G(F, G, se, n - 1);
-        return E_G(res, G, se, 1);
-    }
-}
-
-// 9.5-25
-Mat RGD(const Mat F, const Mat G, const Mat se)
-{
-    Mat res_k_1 = F;
-    Mat res_k = D_G(F, G, se, 1);
-
-    while (!IsSame(res_k, res_k_1))
-    {
-        res_k_1 = res_k;
-        res_k = D_G(res_k, G, se, 1);
-    }
-
-    return res_k;
-}
-
-Mat Open(const Mat src, const Mat se)
-{
-    Mat res;
-    erode(src, res, se);
-    dilate(res, res, se);
-    return res;
-}
-
-int main(int argc, char *argv[])
-{
-    Mat src = imread(
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH09/Fig0929(a)(text_image).tif", 0);
-    cv::threshold(src, src, 205, 255, THRESH_BINARY);
-
-    Mat se = getStructuringElement(cv::MORPH_RECT, cv::Size(1, 51));
-
-    Mat b;
-    erode(src, b, se, {-1, -1}, 1);
-
-    Mat c = Open(src, se);
-
-    se = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-    Mat d = RGD(c, src, se);
-
-    imshow("a", src);
-    imshow("b", b);
-    imshow("c", c);
-    imshow("d", d);
-
-    waitKey();
-    return 0;
-}
-
+    REGISTER_FUNC("P424F9_29", P424F9_29);
+} // namespace
 // Mat B = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 // Mat F(9, 10, CV_8UC1, Scalar(0));
 // for (int i = 1; i <= 4; i++)

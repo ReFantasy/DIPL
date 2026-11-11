@@ -1,15 +1,14 @@
-﻿#include <vector>
-
-#include "dipl.h"
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <vector>
 using namespace cv;
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int P179F4_57()
 {
-    std::string image_path =
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0457(a)(thumb_print).tif";
-    Mat src = imread(image_path, 0);
+    std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0457(a)(thumb_print).tif";
+    Mat         src        = imread(image_path, 0);
 
     int old_rows = src.rows;
     int old_cols = src.cols;
@@ -22,8 +21,8 @@ int main(int argc, char *argv[])
     auto kernel_fft = IPL::BHPF(src.rows, src.cols, 50, 4);
 
     IPL::Fourier fourier;
-    auto _src_fourier = IPL::Mat2CentreVector2D(src);
-    auto src_fourier = fourier.FFT(_src_fourier);
+    auto         _src_fourier = IPL::Mat2CentreVector2D(src);
+    auto         src_fourier  = fourier.FFT(_src_fourier);
     for (int i = 0; i < optimal_rows; i++)
     {
         for (int j = 0; j < optimal_cols; j++)
@@ -80,3 +79,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P179F4_57", P179F4_57);

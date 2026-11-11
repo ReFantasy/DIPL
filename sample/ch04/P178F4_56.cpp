@@ -1,10 +1,10 @@
-﻿#include <vector>
-
-#include "dipl.h"
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <vector>
 using namespace cv;
 
 using namespace std;
-Mat GHPFExampel(const Mat &src, double D0)
+Mat GHPFExampel(const Mat& src, double D0)
 {
     assert(src.type() == CV_8UC1);
 
@@ -29,11 +29,10 @@ Mat GHPFExampel(const Mat &src, double D0)
     return dst;
 }
 
-int main(int argc, char *argv[])
+int P178F4_56()
 {
     std::string image_path =
-        std::string(DATA_DIR) +
-        "/DIP3E_Original_Images_CH04/Fig0441(a)(characters_test_pattern).tif";
+        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0441(a)(characters_test_pattern).tif";
     Mat src = imread(image_path, 0);
 
     auto a = GHPFExampel(src, 30);
@@ -48,3 +47,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P178F4_56", P178F4_56);

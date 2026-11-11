@@ -1,8 +1,9 @@
 ﻿#include "dipl.h"
 using namespace cv;
 using namespace std;
+#include "utility/reflection.h"
 
-int main(int argc, char *argv[])
+int P292F7_03()
 {
     Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH07/vase.tif", 0);
 
@@ -41,3 +42,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P292F7_03", P292F7_03);

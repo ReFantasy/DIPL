@@ -1,7 +1,8 @@
-#include "iostream"
 #include "dipl.h"
+#include "iostream"
+#include "utility/reflection.h"
 
-int main()
+void P77F3_20()
 {
 
     cv::Mat a   = cv::imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH03/Fig0316(4)(bottom_left).tif", 0);
@@ -18,3 +19,5 @@ int main()
     cv::imshow("b_hist", b_hist);
     cv::waitKey();
 }
+
+REGISTER_FUNC("P77F3_20", P77F3_20);

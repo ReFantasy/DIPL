@@ -1,36 +1,36 @@
+#include "dipl.h"
+#include "utility/reflection.h"
 #include <iostream>
 #include <vector>
-
-#include "dipl.h"
 using namespace cv;
 
 using namespace std;
 using namespace cv;
 
-template <typename T>
-void Print(const vector<vector<T>> &vt)
+template<typename T>
+void Print(const vector<vector<T>>& vt)
 {
-    for (const auto &e : vt)
+    for (const auto& e : vt)
     {
-        for (const auto &i : e)
+        for (const auto& i : e)
         {
             std::cout << i << " ";
         }
         std::cout << std::endl;
     }
 }
-std::ostream &operator<<(std::ostream &os, const std::complex<double> &cd)
+std::ostream& operator<<(std::ostream& os, const std::complex<double>& cd)
 {
     os << "[" << cd.real() << "," << cd.imag() << "]";
     return os;
 }
 
 // 傅里叶滤波示例
-void FourierFilterExampel(const Mat &src);
+void FourierFilterExampel(const Mat& src);
 
 void OpencvFouier(Mat srcImage);
 
-int main(int argc, char *argv[])
+int filter_example()
 {
     /*Mat a =
     imread("../data/DIP3E_Original_Images_CH05/Fig0508(a)(circuit-board-pepper-prob-pt1).tif",
@@ -43,10 +43,8 @@ int main(int argc, char *argv[])
 
     // cv::pyrUp(a, a);
 
-    Mat src = imread(std::string(DATA_DIR) +
-                         "/DIP3E_Original_Images_CH09/Fig0905(a)(wirebond-mask).tif",
-                     0);
-    Mat se = getStructuringElement(cv::MORPH_RECT, {11, 11});
+    Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH09/Fig0905(a)(wirebond-mask).tif", 0);
+    Mat se  = getStructuringElement(cv::MORPH_RECT, {11, 11});
 
     Mat res;
     cv::erode(src, res, se);
@@ -57,14 +55,15 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("filter_example", filter_example);
 
-void FourierFilterExampel(const Mat &src)
+void FourierFilterExampel(const Mat& src)
 {
     assert(src.type() == CV_8UC1);
 
     // 初始化变量和数据
-    Timer timer;
-    Rand<double> _rand(1, 10);
+    Timer              timer;
+    Rand<double>       _rand(1, 10);
     IPL::FourierFilter fourier_filter;
 
     // ------------------------------------- FFT ---------------------------------------
@@ -109,8 +108,7 @@ void OpencvFouier(Mat srcImage)
     int n = getOptimalDFTSize(srcImage.cols);
     // 将添加的像素初始化为0。
     Mat padded;
-    copyMakeBorder(srcImage, padded, 0, m - srcImage.rows, 0, n - srcImage.cols,
-                   BORDER_CONSTANT, Scalar::all(0));
+    copyMakeBorder(srcImage, padded, 0, m - srcImage.rows, 0, n - srcImage.cols, BORDER_CONSTANT, Scalar::all(0));
 
     // 3.为傅里叶变换的结果（实部和虚部）分配空间。
     // 将planes数组组合合并成一个多通道的数组complexI
@@ -122,7 +120,7 @@ void OpencvFouier(Mat srcImage)
     dft(complexI, complexI);
 
     // 5.将复数转换为幅值，即 log(1+sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
-    split(complexI, planes); // 将多通道数组complexI分离成几个单通道数组，[0]=Re,[1]=Im
+    split(complexI, planes);                    // 将多通道数组complexI分离成几个单通道数组，[0]=Re,[1]=Im
     magnitude(planes[0], planes[1], planes[0]); // planes[0] = magnitude
     Mat magnitudeImage = planes[0];
 
@@ -132,8 +130,7 @@ void OpencvFouier(Mat srcImage)
 
     // 7.剪切和重分布幅度图象限
     // 若有奇数行或奇数列，进行频谱裁剪
-    magnitudeImage =
-        magnitudeImage(Rect(0, 0, magnitudeImage.cols & -2, magnitudeImage.rows & -2));
+    magnitudeImage = magnitudeImage(Rect(0, 0, magnitudeImage.cols & -2, magnitudeImage.rows & -2));
 
     // 重新排列傅里叶图像中的象限，使得原点位于图像中心
     int cx = magnitudeImage.cols / 2;

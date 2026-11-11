@@ -1,8 +1,9 @@
-#include "dipl.h"
 #include "algorithm/fourier.h"
+#include "dipl.h"
+#include "utility/reflection.h"
 #include <vector>
 
-int main()
+void fourier_test()
 {
     Timer timer;
 
@@ -36,3 +37,4 @@ int main()
     }
     std::cout << "time:" << consume_time << " microseconds" << std::endl;
 }
+REGISTER_FUNC("fourier_test", fourier_test);

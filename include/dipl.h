@@ -2,10 +2,10 @@
 #include "algorithm/frequency_filter.h"
 #include "algorithm/spatial_filter.h"
 #include "algorithm/wavelet_transform.h"
-#include "utility/histogram.h"
-#include "utility/image_convert.h"
 #include "utility/Rand.h"
 #include "utility/Timer.h"
 #include "utility/filter.h"
+#include "utility/histogram.h"
+#include "utility/image_convert.h"
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>

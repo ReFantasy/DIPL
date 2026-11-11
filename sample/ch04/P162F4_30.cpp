@@ -1,20 +1,19 @@
-﻿#include <iostream>
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <iostream>
 #include <vector>
-
-#include "dipl.h"
 using namespace cv;
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int P162F4_30()
 {
     // 妇女原图
-    std::string image_path =
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0429(a)(blown_ic).tif";
-    Mat src = imread(image_path, 0);
+    std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0429(a)(blown_ic).tif";
+    Mat         src        = imread(image_path, 0);
 
-    int rows = src.rows;
-    int cols = src.cols;
+    int          rows = src.rows;
+    int          cols = src.cols;
     IPL::Fourier fourier;
 
     auto a = IPL::Mat2CentreVector2D(src);
@@ -53,3 +52,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P162F4_30", P162F4_30);

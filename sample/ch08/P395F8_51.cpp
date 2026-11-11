@@ -1,11 +1,12 @@
 ﻿#include "dipl.h"
 using namespace cv;
 using namespace std;
+#include "utility/reflection.h"
 
-int main(int argc, char *argv[])
+int P395F8_51()
 {
 
-    Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH08/Fig0809(a).tif", 0);
+    Mat src  = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH08/Fig0809(a).tif", 0);
     Mat logo = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH08/Fig0850(a).tif", 0);
 
     // 将图像的最低两位置零
@@ -58,8 +59,7 @@ int main(int argc, char *argv[])
     {
         for (int j = 0; j < src_to_jpg.cols; j++)
         {
-            logo_built2.data[i * src_to_jpg.cols + j] =
-                src_to_jpg.data[i * src_to_jpg.cols + j] & 0X3;
+            logo_built2.data[i * src_to_jpg.cols + j] = src_to_jpg.data[i * src_to_jpg.cols + j] & 0X3;
         }
     }
     cv::equalizeHist(logo_built2, logo_built2);
@@ -72,3 +72,5 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+
+REGISTER_FUNC("P395F8_51", P395F8_51);

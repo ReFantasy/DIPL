@@ -1,10 +1,10 @@
-﻿#include <vector>
-
-#include "dipl.h"
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <vector>
 using namespace cv;
 
 using namespace std;
-Mat GLPFExampel(const Mat &src, double D0)
+Mat GLPFExampel(const Mat& src, double D0)
 {
     assert(src.type() == CV_8UC1);
 
@@ -29,11 +29,10 @@ Mat GLPFExampel(const Mat &src, double D0)
     return dst;
 }
 
-int main(int argc, char *argv[])
+int P175F4_51()
 {
-    std::string image_path = std::string(DATA_DIR) +
-                             "/DIP3E_Original_Images_CH04/Fig0451(a)(satellite_original).tif";
-    Mat src = imread(image_path, 0);
+    std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0451(a)(satellite_original).tif";
+    Mat         src        = imread(image_path, 0);
 
     auto b = GLPFExampel(src, 50);
     auto c = GLPFExampel(src, 20);
@@ -45,3 +44,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P175F4_51", P175F4_51);

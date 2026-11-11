@@ -1,18 +1,17 @@
-﻿#include <vector>
-
-#include "dipl.h"
+﻿#include "dipl.h"
+#include "utility/reflection.h"
+#include <vector>
 using namespace cv;
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int P163F4_31()
 {
-    IPL::Fourier fourier;
+    IPL::Fourier       fourier;
     IPL::FourierFilter fourier_filter;
 
-    std::string image_path =
-        std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0431(d)(blown_ic_crop).tif";
-    Mat src = imread(image_path, 0);
+    std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0431(d)(blown_ic_crop).tif";
+    Mat         src        = imread(image_path, 0);
 
     // 生成高斯低通滤波核
     Mat src_fft;
@@ -26,14 +25,14 @@ int main(int argc, char *argv[])
 
     // 生成滤波核
     auto a = IPL::GLPF(src_fft.rows, src_fft.cols, 21);
-    Mat d = fourier_filter(src_fft, a);
+    Mat  d = fourier_filter(src_fft, a);
 
     auto b = IPL::GHPF(src_fft.rows, src_fft.cols, 11);
-    Mat e = fourier_filter(src_fft, b);
+    Mat  e = fourier_filter(src_fft, b);
 
     auto c = IPL::GLPF(src_fft.rows, src_fft.cols, 11);
-    for (auto &e : c)
-        for (auto &i : e)
+    for (auto& e : c)
+        for (auto& i : e)
             i = 1 - i * 0.85;
 
     // auto c = IPL::GHPF(src_fft.rows, src_fft.cols, 10);
@@ -48,3 +47,4 @@ int main(int argc, char *argv[])
     waitKey();
     return 0;
 }
+REGISTER_FUNC("P163F4_31", P163F4_31);
