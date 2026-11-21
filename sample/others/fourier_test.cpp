@@ -37,4 +37,8 @@ void fourier_test()
     }
     std::cout << "time:" << consume_time << " microseconds" << std::endl;
 }
-REGISTER_FUNC("fourier_test", fourier_test);
+
+int main()
+{
+    fourier_test();
+}

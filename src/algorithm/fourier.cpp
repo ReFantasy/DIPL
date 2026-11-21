@@ -7,9 +7,11 @@ namespace IPL
 
     EulerformComplex::EulerformComplex(double magnitude, double theta)
     {
-        double re = magnitude * cos(theta);
-        double im = magnitude * sin(theta);
-        _complex  = std::complex<double>(re, im);
+        // double re = magnitude * cos(theta);
+        // double im = magnitude * sin(theta);
+        // _complex  = std::complex<double>(re, im);
+        assert(std::complex<double>(magnitude * cos(theta), magnitude * sin(theta)) == std::polar(magnitude, theta));
+        _complex = std::polar(magnitude, theta);
     }
 
     double EulerformComplex::Magnitude() const { return std::abs(_complex); }

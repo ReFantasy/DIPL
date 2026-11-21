@@ -55,7 +55,10 @@ int filter_example()
     waitKey();
     return 0;
 }
-REGISTER_FUNC("filter_example", filter_example);
+int main()
+{
+    filter_example();
+}
 
 void FourierFilterExampel(const Mat& src)
 {

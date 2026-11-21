@@ -75,7 +75,8 @@ namespace IPL
         static vector<vector<complex<double>>> IFFT(const vector<vector<complex<double>>>& array_in);
     };
 
-    // 欧拉公式 C = |C|e^{jθ}=|C|(cosθ + jsinθ) theta 单位为弧度
+    // 欧拉公式 e^{jθ} = cosθ + jsinθ
+    // 复数 C = |C|e^{jθ}=|C|(cosθ + jsinθ) θ单位为弧度
     class EulerformComplex
     {
     public:
