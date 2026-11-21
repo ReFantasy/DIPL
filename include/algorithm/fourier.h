@@ -8,21 +8,6 @@
 
 namespace IPL
 {
-    // 欧拉公式 e^{jθ} = cosθ + jsinθ
-    // 复数 C = |C|e^{jθ}=|C|(cosθ + jsinθ) θ单位为弧度
-    class EulerTransform
-    {
-    public:
-        EulerTransform(const std::complex<double>& com);
-        EulerTransform(double magnitude, double theta);
-        double                      Magnitude() const;
-        double                      Theta() const;
-        const std::complex<double>& NativeComplex() const;
-
-    private:
-        std::complex<double> _complex;
-    };
-
     class Fourier
     {
     public:
@@ -90,6 +75,21 @@ namespace IPL
          */
         static std::vector<std::vector<std::complex<double>>>
         IFFT(const std::vector<std::vector<std::complex<double>>>& array_in);
+    };
+
+    // 欧拉公式 e^{jθ} = cosθ + jsinθ
+    // 复数 C = |C|e^{jθ}=|C|(cosθ + jsinθ) θ单位为弧度
+    class EulerTransform
+    {
+    public:
+        EulerTransform(const std::complex<double>& com);
+        EulerTransform(double magnitude, double theta);
+        double                      Magnitude() const;
+        double                      Theta() const;
+        const std::complex<double>& NativeComplex() const;
+
+    private:
+        std::complex<double> _complex;
     };
 
     /** \brief check n = pow(2,k), k=1,2,3...
