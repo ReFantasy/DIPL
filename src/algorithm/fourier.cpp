@@ -1,24 +1,10 @@
 ﻿#include "algorithm/fourier.h"
 #include <cassert>
+
+using std::complex;
+using std::vector;
 namespace IPL
 {
-
-    EulerformComplex::EulerformComplex(const std::complex<double>& com) : _complex(com) {}
-
-    EulerformComplex::EulerformComplex(double magnitude, double theta)
-    {
-        // double re = magnitude * cos(theta);
-        // double im = magnitude * sin(theta);
-        // _complex  = std::complex<double>(re, im);
-        assert(std::complex<double>(magnitude * cos(theta), magnitude * sin(theta)) == std::polar(magnitude, theta));
-        _complex = std::polar(magnitude, theta);
-    }
-
-    double EulerformComplex::Magnitude() const { return std::abs(_complex); }
-
-    double EulerformComplex::Theta() const { return std::arg(_complex); }
-
-    const std::complex<double>& EulerformComplex::NativeComplex() const { return _complex; }
 
     Fourier::Fourier() {}
 
@@ -42,7 +28,7 @@ namespace IPL
             std::complex<double> tmp;
             for (int n = 0; n < M; n++)
             {
-                EulerformComplex el(1, -2.0 * PI * m * n / M);
+                EulerTransform el(1, -2.0 * PI * m * n / M);
                 tmp += (array_in[n] * el.NativeComplex());
             }
 
@@ -62,7 +48,7 @@ namespace IPL
             std::complex<double> tmp;
             for (int m = 0; m < M; m++)
             {
-                EulerformComplex el(1, 2.0 * PI * n * m / M);
+                EulerTransform el(1, 2.0 * PI * n * m / M);
                 tmp += (array_complex[m] * el.NativeComplex());
             }
             array_out_com[n] = std::complex<double>(tmp.real() / M, tmp.imag() / M);
@@ -94,7 +80,7 @@ namespace IPL
             std::vector<std::complex<double>> W_2k_u(K, std::complex<double> {0, 0});
             for (int i = 0; i < K; i++)
             {
-                IPL::EulerformComplex e(1, -2.0 * PI * i / 2 / K);
+                IPL::EulerTransform e(1, -2.0 * PI * i / 2 / K);
                 W_2k_u[i] = odd_fourier[i] * e.NativeComplex();
             }
 
@@ -479,4 +465,20 @@ namespace IPL
         return table[index];
     }
 
+    EulerTransform::EulerTransform(const std::complex<double>& com) : _complex(com) {}
+
+    EulerTransform::EulerTransform(double magnitude, double theta)
+    {
+        // double re = magnitude * cos(theta);
+        // double im = magnitude * sin(theta);
+        // _complex  = std::complex<double>(re, im);
+        assert(std::complex<double>(magnitude * cos(theta), magnitude * sin(theta)) == std::polar(magnitude, theta));
+        _complex = std::polar(magnitude, theta);
+    }
+
+    double EulerTransform::Magnitude() const { return std::abs(_complex); }
+
+    double EulerTransform::Theta() const { return std::arg(_complex); }
+
+    const std::complex<double>& EulerTransform::NativeComplex() const { return _complex; }
 } // namespace IPL

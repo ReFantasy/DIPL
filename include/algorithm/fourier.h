@@ -3,13 +3,26 @@
 
 #include <complex>
 #include <vector>
-using std::complex;
-using std::vector;
 
 #define PI 3.141592653589793
 
 namespace IPL
 {
+    // 欧拉公式 e^{jθ} = cosθ + jsinθ
+    // 复数 C = |C|e^{jθ}=|C|(cosθ + jsinθ) θ单位为弧度
+    class EulerTransform
+    {
+    public:
+        EulerTransform(const std::complex<double>& com);
+        EulerTransform(double magnitude, double theta);
+        double                      Magnitude() const;
+        double                      Theta() const;
+        const std::complex<double>& NativeComplex() const;
+
+    private:
+        std::complex<double> _complex;
+    };
+
     class Fourier
     {
     public:
@@ -19,75 +32,64 @@ namespace IPL
         // 功能：一维离散傅里叶变换
         // 输入：一维向量
         // 输出：一维复数向量
-        static vector<complex<double>> DFT(const vector<double>& array_double);
-        static vector<complex<double>> DFT(const vector<complex<double>>& array_in);
+        static std::vector<std::complex<double>> DFT(const std::vector<double>& array_double);
+        static std::vector<std::complex<double>> DFT(const std::vector<std::complex<double>>& array_in);
 
         // 功能 ：一维离散傅里叶逆变换
         // 参数 ：需要进行逆变换的一维复数向量
         // 输出 ：一维浮点数据向量，即傅里叶逆变换的结果
-        static vector<complex<double>> IDFT(const vector<complex<double>>& array_complex);
+        static std::vector<std::complex<double>> IDFT(const std::vector<std::complex<double>>& array_complex);
 
         // 功能：二维离散傅里叶变换
         // 输入：二维向量
         // 输出：二维复数向量
-        static vector<vector<complex<double>>> DFT(const vector<vector<double>>& array_in);
-        static vector<vector<complex<double>>> DFT(const vector<vector<complex<double>>>& array_in);
+        static std::vector<std::vector<std::complex<double>>> DFT(const std::vector<std::vector<double>>& array_in);
+        static std::vector<std::vector<std::complex<double>>>
+        DFT(const std::vector<std::vector<std::complex<double>>>& array_in);
 
         // 功能 ：二维离散傅里叶逆变换
         // 参数 ：需要进行逆变换的二维复数向量
         // 输出 ：二维浮点数据向量，即傅里叶逆变换的结果
-        static vector<vector<complex<double>>> IDFT(const vector<vector<complex<double>>>& array_in);
+        static std::vector<std::vector<std::complex<double>>>
+        IDFT(const std::vector<std::vector<std::complex<double>>>& array_in);
 
         /** \brief One dimensional fast Fourier transform
          *  \param[in] array_in one-dimensional complex vector
          *  \return one-dimensional complex vector
          */
-        static vector<complex<double>> FFT(const vector<complex<double>>& array_in);
+        static std::vector<std::complex<double>> FFT(const std::vector<std::complex<double>>& array_in);
 
         /** \brief Two dimensional fast Fourier transform
          *  \param[in] array_in two-dimensional complex vector
          *  \return two-dimensional complex vector
          */
-        static vector<vector<complex<double>>> FFT(const vector<vector<complex<double>>>& array_in);
+        static std::vector<std::vector<std::complex<double>>>
+        FFT(const std::vector<std::vector<std::complex<double>>>& array_in);
 
         /** \brief One dimensional fast Fourier transform
          *  \param[in] array_in one-dimensional vector
          *  \return one-dimensional complex vector
          */
-        static vector<complex<double>> FFT(const vector<double>& array_in);
+        static std::vector<std::complex<double>> FFT(const std::vector<double>& array_in);
 
         /** \brief Two dimensional fast Fourier transform
          *  \param[in] array_in two-dimensional complex vector
          *  \return two-dimensional complex vector
          */
-        static vector<vector<complex<double>>> FFT(const vector<vector<double>>& array_in);
+        static std::vector<std::vector<std::complex<double>>> FFT(const std::vector<std::vector<double>>& array_in);
 
         /** \brief One dimensional fast Fourier inversion transform
          *  \param[in] array_in one-dimensional complex vector
          *  \return one-dimensional complex vector
          */
-        static vector<complex<double>> IFFT(const vector<complex<double>>& array_in);
+        static std::vector<std::complex<double>> IFFT(const std::vector<std::complex<double>>& array_in);
 
         /** \brief Two dimensional fast Fourier inversion transform
          *  \param[in] array_in two-dimensional complex vector
          *  \return two-dimensional complex vector
          */
-        static vector<vector<complex<double>>> IFFT(const vector<vector<complex<double>>>& array_in);
-    };
-
-    // 欧拉公式 e^{jθ} = cosθ + jsinθ
-    // 复数 C = |C|e^{jθ}=|C|(cosθ + jsinθ) θ单位为弧度
-    class EulerformComplex
-    {
-    public:
-        EulerformComplex(const std::complex<double>& com);
-        EulerformComplex(double magnitude, double theta);
-        double                      Magnitude() const;
-        double                      Theta() const;
-        const std::complex<double>& NativeComplex() const;
-
-    private:
-        std::complex<double> _complex;
+        static std::vector<std::vector<std::complex<double>>>
+        IFFT(const std::vector<std::vector<std::complex<double>>>& array_in);
     };
 
     /** \brief check n = pow(2,k), k=1,2,3...
