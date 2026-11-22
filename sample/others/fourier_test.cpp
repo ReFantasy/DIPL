@@ -10,6 +10,9 @@ void fourier_test()
     std::cout << "一维傅立叶变换 例4.4" << std::endl;
     std::vector<double> input = {1, 2, 4, 4};
 
+    int N = input.size();
+    int M = 10;
+
     std::cout << "source data:" << std::endl;
     for (auto e : input)
     {
@@ -18,7 +21,7 @@ void fourier_test()
 
     std::cout << std::endl << "DFT:" << std::endl;
     timer.Start();
-    auto out = IPL::Fourier::DFT(input);
+    auto out = IPL::Fourier::DFT(input, M);
     timer.Suspend();
     for (auto e : out)
     {
@@ -27,7 +30,7 @@ void fourier_test()
 
     std::cout << std::endl << "IDFT:" << std::endl;
     timer.Continue();
-    auto src = IPL::Fourier::IDFT(out);
+    auto src = IPL::Fourier::IDFT(out, N);
 
     auto consume_time = timer.Elapse<std::chrono::microseconds>();
 
