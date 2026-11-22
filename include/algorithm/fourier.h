@@ -83,6 +83,7 @@ namespace IPL
     {
     public:
         EulerTransform(const std::complex<double>& com);
+        EulerTransform(double theta);
         EulerTransform(double magnitude, double theta);
         double                      Magnitude() const;
         double                      Theta() const;

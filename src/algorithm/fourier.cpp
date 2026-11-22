@@ -1,5 +1,6 @@
 ﻿#include "algorithm/fourier.h"
 #include <cassert>
+#include <complex>
 
 using std::complex;
 using std::vector;
@@ -28,7 +29,8 @@ namespace IPL
             std::complex<double> tmp;
             for (int n = 0; n < M; n++)
             {
-                EulerTransform el(1, -2.0 * PI * m * n / M);
+                //EulerTransform el(1, -2.0 * PI * m * n / M);
+                EulerTransform el(-2.0 * PI * m * n / M);
                 tmp += (array_in[n] * el.NativeComplex());
             }
 
@@ -466,6 +468,10 @@ namespace IPL
     }
 
     EulerTransform::EulerTransform(const std::complex<double>& com) : _complex(com) {}
+    EulerTransform::EulerTransform(double theta)
+    {
+        _complex = std::complex<double>(cos(theta), sin(theta));
+    }
 
     EulerTransform::EulerTransform(double magnitude, double theta)
     {
