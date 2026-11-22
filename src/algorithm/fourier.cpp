@@ -44,9 +44,9 @@ namespace IPL
         return out;
     }
 
-    vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>>& array_complex)
+    vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>>& freq_data)
     {
-        int  M             = array_complex.size();
+        int  M             = freq_data.size();
         auto array_out_com = std::vector<std::complex<double>>(M, std::complex<double> {});
 
         for (int n = 0; n < M; n++)
@@ -55,7 +55,7 @@ namespace IPL
             for (int m = 0; m < M; m++)
             {
                 EulerTransform el(1, 2.0 * PI * n * m / M);
-                tmp += (array_complex[m] * el.NativeComplex());
+                tmp += (freq_data[m] * el.NativeComplex());
             }
             array_out_com[n] = std::complex<double>(tmp.real() / M, tmp.imag() / M);
         }

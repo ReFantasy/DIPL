@@ -27,7 +27,7 @@ namespace IPL
         // 功能 ：一维离散傅里叶逆变换
         // 参数 ：需要进行逆变换的一维复数向量
         // 输出 ：一维浮点数据向量，即傅里叶逆变换的结果
-        static std::vector<std::complex<double>> IDFT(const std::vector<std::complex<double>>& array_complex);
+        static std::vector<std::complex<double>> IDFT(const std::vector<std::complex<double>>& freq_data);
 
         // 功能：二维离散傅里叶变换
         // 输入：二维向量
