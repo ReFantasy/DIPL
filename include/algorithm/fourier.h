@@ -24,9 +24,19 @@ namespace IPL
         static std::vector<std::complex<double>> DFT(const std::vector<double>& data, int M = 0);
         static std::vector<std::complex<double>> DFT(const std::vector<std::complex<double>>& data, int M = 0);
 
-        // 功能 ：一维离散傅里叶逆变换
-        // 参数 ：需要进行逆变换的一维复数向量
-        // 输出 ：一维浮点数据向量，即傅里叶逆变换的结果
+        /** \brief  一维离散傅里叶逆变换
+         *  \details x[n] = (1/M) * sum(m=0..M-1) freq_data[m] * exp(j*2*pi*m*n/M)，n = 0..N-1；
+         *           M 为频谱长度即变换点数，归一化系数恒为 1/M，与 N 无关
+         *  \param[in] freq_data 待逆变换的一维复数频谱，长度记为 M
+         *  \param[in] N         期望输出的时域样本数；N <= 0 时取 N = M，
+         *                       即完整还原 M 点逆变换的结果
+         *  \return 长度为 N 的复数向量（时域），已含 1/M 归一化，理想情况下虚部为 0
+         *  \note   正变换做过补零时（DFT(data, M)，M > data.size()），
+         *          这里传 N = data.size() 即可截回原始长度的序列
+         *  \note   N > M 时输出是 M 点逆变换结果的周期延拓（周期为 M）；
+         *          N < M 时仅截取前 N 个样本，其余样本被丢弃
+         *  \note   复杂度 O(M*N)；freq_data 为空时返回空向量
+         */
         static std::vector<std::complex<double>> IDFT(const std::vector<std::complex<double>>& freq_data, int N = 0);
 
         // 功能：二维离散傅里叶变换
