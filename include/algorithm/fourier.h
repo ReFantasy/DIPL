@@ -17,8 +17,8 @@ namespace IPL
         // 功能：一维离散傅里叶变换
         // 输入：一维向量
         // 输出：一维复数向量
-        static std::vector<std::complex<double>> DFT(const std::vector<double>& array_double);
-        static std::vector<std::complex<double>> DFT(const std::vector<std::complex<double>>& array_in);
+        static std::vector<std::complex<double>> DFT(const std::vector<double>& array_double, int M = 0);
+        static std::vector<std::complex<double>> DFT(const std::vector<std::complex<double>>& array_in, int M = 0);
 
         // 功能 ：一维离散傅里叶逆变换
         // 参数 ：需要进行逆变换的一维复数向量
@@ -82,7 +82,6 @@ namespace IPL
     class EulerTransform
     {
     public:
-        EulerTransform(const std::complex<double>& com);
         EulerTransform(double theta);
         EulerTransform(double magnitude, double theta);
         double                      Magnitude() const;

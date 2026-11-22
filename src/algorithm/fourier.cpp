@@ -11,32 +11,36 @@ namespace IPL
 
     Fourier::~Fourier() {}
 
-    std::vector<std::complex<double>> Fourier::DFT(const std::vector<double>& array_double)
+    std::vector<std::complex<double>> Fourier::DFT(const std::vector<double>& data, int M)
     {
-        std::vector<std::complex<double>> array_complex(array_double.size(), std::complex<double> {});
-        for (int i = 0; i < array_double.size(); i++)
-            array_complex[i] = std::complex<double>(array_double[i], 0);
-        return DFT(array_complex);
+        if (M <= 0)
+            M = data.size();
+        std::vector<std::complex<double>> res;
+
+        for (int i = 0; i < data.size(); i++)
+            res.push_back(std::complex<double>(data[i], 0));
+
+        return DFT(res, M);
     }
 
-    vector<complex<double>> Fourier::DFT(const vector<complex<double>>& array_in)
+    vector<complex<double>> Fourier::DFT(const vector<complex<double>>& array_in, int M)
     {
-        int  M         = array_in.size();
-        auto array_out = std::vector<std::complex<double>>(M, std::complex<double> {});
+        if (M <= 0)
+            M = array_in.size();
+
+        auto array_out = std::vector<std::complex<double>>(M, std::complex<double> {0.0, 0.0});
 
         for (int m = 0; m < M; m++)
         {
-            std::complex<double> tmp;
-            for (int n = 0; n < M; n++)
+            std::complex<double> tmp {0.0, 0.0};
+            for (int n = 0; n < array_in.size(); n++)
             {
-                //EulerTransform el(1, -2.0 * PI * m * n / M);
                 EulerTransform el(-2.0 * PI * m * n / M);
                 tmp += (array_in[n] * el.NativeComplex());
             }
 
             array_out[m] = tmp;
         }
-
         return array_out;
     }
 
@@ -467,11 +471,7 @@ namespace IPL
         return table[index];
     }
 
-    EulerTransform::EulerTransform(const std::complex<double>& com) : _complex(com) {}
-    EulerTransform::EulerTransform(double theta)
-    {
-        _complex = std::complex<double>(cos(theta), sin(theta));
-    }
+    EulerTransform::EulerTransform(double theta) { _complex = std::complex<double>(cos(theta), sin(theta)); }
 
     EulerTransform::EulerTransform(double magnitude, double theta)
     {
