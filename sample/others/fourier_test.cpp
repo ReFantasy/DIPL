@@ -11,7 +11,7 @@ void fourier_test()
     std::vector<double> input = {1, 2, 4, 4};
 
     int N = input.size();
-    int M = 10;
+    int M = N;
 
     std::cout << "source data:" << std::endl;
     for (auto e : input)
@@ -41,7 +41,4 @@ void fourier_test()
     std::cout << "time:" << consume_time << " microseconds" << std::endl;
 }
 
-int main()
-{
-    fourier_test();
-}
+int main() { fourier_test(); }

@@ -50,21 +50,19 @@ namespace IPL
         if (N <= 0)
             N = M;
 
-        std::vector<std::complex<double>> array_out_com(N);
+        std::vector<std::complex<double>> time_space_data(N);
 
         for (int n = 0; n < N; n++)
         {
             std::complex<double> tmp {};
             for (int m = 0; m < M; m++)
             {
-                // EulerTransform el(1, 2.0 * PI * n * m / M);
                 tmp += (freq_data[m] * EulerTransform((2.0 * PI * m * n) / M).NativeComplex());
             }
-            // array_out_com[n] = std::complex<double>(tmp.real() / M, tmp.imag() / M);
-            array_out_com[n] = tmp * (1.0 / M);
+            time_space_data[n] = tmp * (1.0 / M);
         }
 
-        return array_out_com;
+        return time_space_data;
     }
 
     vector<complex<double>> Fourier::FFT(const vector<complex<double>>& in)
