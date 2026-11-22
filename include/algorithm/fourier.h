@@ -14,11 +14,15 @@ namespace IPL
         Fourier();
         ~Fourier();
 
-        // 功能：一维离散傅里叶变换
-        // 输入：一维向量
-        // 输出：一维复数向量
-        static std::vector<std::complex<double>> DFT(const std::vector<double>& array_double, int M = 0);
-        static std::vector<std::complex<double>> DFT(const std::vector<std::complex<double>>& array_in, int M = 0);
+        /** \brief  一维离散傅里叶变换
+         *  \details X[m] = sum(n=0..N-1) data[n] * exp(-j*2*pi*m*n/M)，N 为 data 的长度
+         *  \param[in] data 输入序列（实数或复数），长度记为 N
+         *  \param[in] M    变换点数；M <= 0 时取 M = N，即对整段输入做 N 点 DFT
+         *  \return 长度为 M 的复数频谱
+         *  \note   复杂度 O(M*N)，需要 M 为 2 的幂时请改用 FFT
+         */
+        static std::vector<std::complex<double>> DFT(const std::vector<double>& data, int M = 0);
+        static std::vector<std::complex<double>> DFT(const std::vector<std::complex<double>>& data, int M = 0);
 
         // 功能 ：一维离散傅里叶逆变换
         // 参数 ：需要进行逆变换的一维复数向量

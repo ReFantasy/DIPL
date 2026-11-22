@@ -23,25 +23,25 @@ namespace IPL
         return DFT(res, M);
     }
 
-    vector<complex<double>> Fourier::DFT(const vector<complex<double>>& array_in, int M)
+    vector<complex<double>> Fourier::DFT(const vector<complex<double>>& data, int M)
     {
+        int N = data.size();
         if (M <= 0)
-            M = array_in.size();
+            M = N;
 
-        auto array_out = std::vector<std::complex<double>>(M, std::complex<double> {0.0, 0.0});
+        auto out = std::vector<std::complex<double>>(M, std::complex<double>(0.0, 0.0));
 
         for (int m = 0; m < M; m++)
         {
             std::complex<double> tmp {0.0, 0.0};
-            for (int n = 0; n < array_in.size(); n++)
+            for (int n = 0; n < N; n++)
             {
-                EulerTransform el(-2.0 * PI * m * n / M);
-                tmp += (array_in[n] * el.NativeComplex());
+                tmp += (data[n] * EulerTransform((-2.0 * PI * m * n) / M).NativeComplex());
             }
 
-            array_out[m] = tmp;
+            out[m] = tmp;
         }
-        return array_out;
+        return out;
     }
 
     vector<complex<double>> Fourier::IDFT(const std::vector<std::complex<double>>& array_complex)
