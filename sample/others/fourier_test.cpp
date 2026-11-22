@@ -1,6 +1,5 @@
 #include "algorithm/fourier.h"
 #include "dipl.h"
-#include "utility/reflection.h"
 #include <vector>
 
 void fourier_test()
