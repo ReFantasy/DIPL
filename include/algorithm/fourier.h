@@ -58,7 +58,14 @@ namespace IPL
          *  \param[in] array_in one-dimensional complex vector
          *  \return one-dimensional complex vector
          */
-        static std::vector<std::complex<double>> FFT(const std::vector<std::complex<double>>& array_in);
+        static std::vector<std::complex<double>> FFT(const std::vector<std::complex<double>>& data);
+        static std::vector<std::complex<double>> FFT(const std::vector<double>& data);
+
+        /** \brief One dimensional fast Fourier inversion transform
+         *  \param[in] array_in one-dimensional complex vector
+         *  \return one-dimensional complex vector
+         */
+        static std::vector<std::complex<double>> IFFT(const std::vector<std::complex<double>>& array_in);
 
         /** \brief Two dimensional fast Fourier transform
          *  \param[in] array_in two-dimensional complex vector
@@ -66,24 +73,7 @@ namespace IPL
          */
         static std::vector<std::vector<std::complex<double>>>
         FFT(const std::vector<std::vector<std::complex<double>>>& array_in);
-
-        /** \brief One dimensional fast Fourier transform
-         *  \param[in] array_in one-dimensional vector
-         *  \return one-dimensional complex vector
-         */
-        static std::vector<std::complex<double>> FFT(const std::vector<double>& array_in);
-
-        /** \brief Two dimensional fast Fourier transform
-         *  \param[in] array_in two-dimensional complex vector
-         *  \return two-dimensional complex vector
-         */
         static std::vector<std::vector<std::complex<double>>> FFT(const std::vector<std::vector<double>>& array_in);
-
-        /** \brief One dimensional fast Fourier inversion transform
-         *  \param[in] array_in one-dimensional complex vector
-         *  \return one-dimensional complex vector
-         */
-        static std::vector<std::complex<double>> IFFT(const std::vector<std::complex<double>>& array_in);
 
         /** \brief Two dimensional fast Fourier inversion transform
          *  \param[in] array_in two-dimensional complex vector

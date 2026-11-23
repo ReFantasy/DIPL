@@ -27,3 +27,45 @@ int GetTerminalWidth(int fallback)
 #endif
     return fallback;
 }
+std::vector<std::complex<double>> Real2Complex(const std::vector<double>& vec)
+{
+    int N = vec.size();
+
+    std::vector<std::complex<double>> res(N);
+    for (int i = 0; i < N; i++)
+    {
+        res[i] = {vec[i], 0};
+    }
+    return res;
+}
+
+std::vector<std::vector<std::complex<double>>> Real2Complex(const std::vector<std::vector<double>>& vec)
+{
+    std::vector<std::vector<std::complex<double>>> res;
+    for (int i = 0; i < vec.size(); i++)
+    {
+        res.push_back(Real2Complex(vec[i]));
+    }
+    return res;
+}
+
+std::vector<double> Complex2Real(const std::vector<std::complex<double>>& complexs)
+{
+    int N = complexs.size();
+
+    std::vector<double> vec(N);
+    for (int i = 0; i < N; i++)
+    {
+        vec[i] = complexs[i].real();
+    }
+    return vec;
+}
+std::vector<std::vector<double>> Complex2Real(const std::vector<std::vector<std::complex<double>>>& complexs)
+{
+    std::vector<std::vector<double>> res;
+    for (int i = 0; i < complexs.size(); i++)
+    {
+        res.push_back(Complex2Real(complexs[i]));
+    }
+    return res;
+}

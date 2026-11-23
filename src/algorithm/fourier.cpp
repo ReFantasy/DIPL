@@ -69,27 +69,27 @@ namespace IPL
     {
         assert(Is2Power(in.size()));
 
-        std::vector<std::complex<double>> out(in.size(), std::complex<double> {0, 0});
+        std::vector<std::complex<double>> out(in.size());
 
         int K = in.size() / 2;
+
         if (K > 1)
         {
-            std::vector<std::complex<double>> even(K, std::complex<double> {0, 0});
-            std::vector<std::complex<double>> odd(K, std::complex<double> {0, 0});
+            std::vector<std::complex<double>> even(K);
+            std::vector<std::complex<double>> odd(K);
             for (int i = 0; i < in.size(); i += 2)
             {
                 even[i / 2] = in[i];
                 odd[i / 2]  = in[i + 1];
             }
 
-            auto even_fourier = std::move(FFT(even));
-            auto odd_fourier  = std::move(FFT(odd));
+            auto even_fourier = FFT(even);
+            auto odd_fourier  = FFT(odd);
 
-            std::vector<std::complex<double>> W_2k_u(K, std::complex<double> {0, 0});
+            std::vector<std::complex<double>> W_2k_u(K);
             for (int i = 0; i < K; i++)
             {
-                IPL::EulerTransform e(1, -2.0 * PI * i / 2 / K);
-                W_2k_u[i] = odd_fourier[i] * e.NativeComplex();
+                W_2k_u[i] = odd_fourier[i] * IPL::EulerTransform(-2.0 * PI * i / 2 / K).NativeComplex();
             }
 
             for (int i = 0; i < K; i++)
@@ -113,17 +113,15 @@ namespace IPL
         return out;
     }
 
-    vector<complex<double>> Fourier::FFT(const vector<double>& array_in)
+    vector<complex<double>> Fourier::FFT(const vector<double>& data)
     {
-        vector<complex<double>> in_complex(array_in.size(), {0, 0});
-        for (int i = 0; i < array_in.size(); i++)
+        vector<complex<double>> complex_vec(data.size(), {0, 0});
+        for (int i = 0; i < data.size(); i++)
         {
-            /*in_complex[i]._Val[0] = array_in[i];
-            in_complex[i]._Val[1] = 0;*/
-            in_complex[i] = {array_in[i], 0};
+            complex_vec[i] = {data[i], 0};
         }
 
-        return FFT(in_complex);
+        return FFT(complex_vec);
     }
 
     vector<vector<complex<double>>> Fourier::FFT(const vector<vector<complex<double>>>& array_in)
@@ -139,7 +137,7 @@ namespace IPL
         // 先进行行变换
         for (int i = 0; i < M; i++)
         {
-            array_out.push_back(std::move(FFT(array_in[i])));
+            array_out.push_back(FFT(array_in[i]));
         }
 
         // 再进行列变换
@@ -172,8 +170,6 @@ namespace IPL
         {
             for (int j = 0; j < cols; j++)
             {
-                /*tmp[i][j]._Val[0] = array_in[i][j];
-                tmp[i][j]._Val[1] = 0;*/
                 tmp[i][j] = {array_in[i][j], 0};
             }
         }
@@ -189,65 +185,76 @@ namespace IPL
      */
     vector<complex<double>> Fourier::IFFT(const vector<complex<double>>& array_in)
     {
-        int cnt = array_in.size();
+        int M = array_in.size();
 
-        vector<complex<double>> array_in_conjugate(cnt, complex<double> {});
-        for (int i = 0; i < cnt; i++)
-        {
-            /*array_in_conjugate[i]._Val[0] = array_in[i]._Val[0];
-            array_in_conjugate[i]._Val[1] = -array_in[i]._Val[1];*/
-            array_in_conjugate[i] = conj(array_in[i]);
-        }
+        vector<complex<double>> array_in_conjugate = array_in;
+        for (auto& e : array_in_conjugate)
+            e = std::conj(e);
 
-        auto MN_f_conjugate = FFT(array_in_conjugate);
+        auto f = FFT(array_in_conjugate);
 
-        vector<complex<double>> f_conjugate(cnt, {0, 0});
-        for (int i = 0; i < cnt; i++)
-        {
-            f_conjugate[i] = complex<double> {MN_f_conjugate[i].real() / cnt, MN_f_conjugate[i].imag() / cnt};
-        }
+        for (auto& e : f)
+            e *= 1.0 / M;
 
-        vector<complex<double>> f(cnt, {0, 0});
-        for (int i = 0; i < cnt; i++)
-        {
-            f[i] = complex<double> {f_conjugate[i].real(), -f_conjugate[i].imag()};
-        }
+        for (auto& e : f)
+            e = std::conj(e);
 
         return f;
     }
 
     vector<vector<complex<double>>> Fourier::IFFT(const vector<vector<complex<double>>>& array_in)
     {
-        assert(array_in.size() > 0);
-        assert(array_in[0].size() > 0);
-
         int M = array_in.size();
         int N = array_in[0].size();
 
-        vector<vector<complex<double>>> array_out;
+        auto f = array_in;
 
-        // 先进行行变换
-        for (int i = 0; i < M; i++)
-        {
-            array_out.push_back(std::move(IFFT(array_in[i])));
-        }
+        for (auto& e : f)
+            for (auto& h : e)
+                h = std::conj(h);
 
-        // 再进行列变换
-        vector<complex<double>> tmp(M, {0, 0});
-        for (int j = 0; j < N; j++)
-        {
-            for (int k = 0; k < M; k++)
-            {
-                tmp[k] = array_out[k][j];
-            }
-            auto dft_col = std::move(IFFT(tmp));
+        f = FFT(f);
 
-            for (int k = 0; k < M; k++)
-            {
-                array_out[k][j] = dft_col[k];
-            }
-        }
-        return array_out;
+        for (auto& e : f)
+            for (auto& h : e)
+                h *= (1.0 / (M * N));
+
+        for (auto& e : f)
+            for (auto& h : e)
+                h = std::conj(h);
+
+        return f;
+
+        // assert(array_in.size() > 0);
+        // assert(array_in[0].size() > 0);
+        //
+        // int M = array_in.size();
+        // int N = array_in[0].size();
+        //
+        // vector<vector<complex<double>>> array_out;
+        //
+        // // 先进行行变换
+        // for (int i = 0; i < M; i++)
+        // {
+        //     array_out.push_back(std::move(IFFT(array_in[i])));
+        // }
+        //
+        // // 再进行列变换
+        // vector<complex<double>> tmp(M, {0, 0});
+        // for (int j = 0; j < N; j++)
+        // {
+        //     for (int k = 0; k < M; k++)
+        //     {
+        //         tmp[k] = array_out[k][j];
+        //     }
+        //     auto dft_col = std::move(IFFT(tmp));
+        //
+        //     for (int k = 0; k < M; k++)
+        //     {
+        //         array_out[k][j] = dft_col[k];
+        //     }
+        // }
+        // return array_out;
     }
 
     vector<vector<complex<double>>> Fourier::DFT(const vector<vector<double>>& array_in)
@@ -332,6 +339,7 @@ namespace IPL
             {
                 tmp[k] = array_out[k][j];
             }
+
             auto dft_col = std::move(DFT(tmp));
 
             for (int k = 0; k < M; k++)
@@ -346,74 +354,63 @@ namespace IPL
     {
 
         // 原始版本
-        /*assert(array_in.size() > 0);
-        assert(array_in[0].size() > 0);
-
-        int M = array_in.size();
-        int N = array_in[0].size();
-
-
-        vector<vector<complex<double>>> array_out_com(M, vector<complex<double>>(N,
-        complex<double>()));
-
-        for (int x = 0; x < M; x++)
-        {
-            for (int y = 0; y < N; y++)
-            {
-                complex<double> tmp;
-
-                for (int u = 0; u < M; u++)
-                {
-                    for (int v = 0; v < N; v++)
-                    {
-                        Eulerform el(1, 2.0*PI*(u*x / (double)M + v * y / (double)N));
-                        tmp += (array_in[u][v] * el.GetComplex());
-                    }
-                }
-
-                array_out_com[x][y] = { tmp.real() / M / N, tmp.imag() / M / N };
-
-            }
-        }
-
-        return array_out_com;*/
+        // assert(array_in.size() > 0);
+        // assert(array_in[0].size() > 0);
+        //
+        // int M = array_in.size();
+        // int N = array_in[0].size();
+        //
+        //
+        // vector<vector<complex<double>>> array_out_com(M, vector<complex<double>>(N,
+        // complex<double>()));
+        //
+        // for (int x = 0; x < M; x++)
+        // {
+        //     for (int y = 0; y < N; y++)
+        //     {
+        //         complex<double> tmp;
+        //
+        //         for (int u = 0; u < M; u++)
+        //         {
+        //             for (int v = 0; v < N; v++)
+        //             {
+        //                 EulerTransform el(1, 2.0*PI*(u*x / (double)M + v * y / (double)N));
+        //                 tmp += (array_in[u][v] * el.NativeComplex());
+        //             }
+        //         }
+        //
+        //         array_out_com[x][y] = { tmp.real() / M / N, tmp.imag() / M / N };
+        //
+        //     }
+        // }
+        //
+        // return array_out_com;
 
         /*
          *
          *  离散傅里叶逆变换的优化版本 公式：数字图像处理第三版 P187
          *
          */
-
-        assert(array_in.size() > 0);
-        assert(array_in[0].size() > 0);
-
-        int M = array_in.size();
-        int N = array_in[0].size();
-
-        vector<vector<complex<double>>> array_out;
-
-        // 先进行行变换
+        int  M = array_in.size();
+        int  N = array_in[0].size();
+        auto f = array_in;
         for (int i = 0; i < M; i++)
         {
-            array_out.push_back(std::move(IDFT(array_in[i])));
+            for (int j = 0; j < N; j++)
+            {
+                f[i][j] = std::conj(f[i][j]);
+            }
         }
 
-        // 再进行列变换
-        vector<complex<double>> tmp(M, {0, 0});
-        for (int j = 0; j < N; j++)
+        f = DFT(f);
+        for (int i = 0; i < M; i++)
         {
-            for (int k = 0; k < M; k++)
+            for (int j = 0; j < N; j++)
             {
-                tmp[k] = array_out[k][j];
-            }
-            auto dft_col = std::move(IDFT(tmp));
-
-            for (int k = 0; k < M; k++)
-            {
-                array_out[k][j] = dft_col[k];
+                f[i][j] = std::conj(f[i][j]) * (1.0 / (M * N));
             }
         }
-        return array_out;
+        return f;
     }
 
     bool Is2Power(int n)

@@ -36,3 +36,8 @@ find_package(OpenMP REQUIRED COMPONENTS CXX)
 
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(sample)
+
+#-------------------------------------------------
+# unit tests
+#-------------------------------------------------
+add_subdirectory(test)
