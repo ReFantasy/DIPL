@@ -2,17 +2,45 @@
 
 std::vector<std::vector<double>> IPL::Mat2Vector2D(const cv::Mat& mat)
 {
-    auto dst = std::vector<std::vector<double>>(mat.rows, std::vector<double>(mat.cols, 0));
+    if (mat.empty())
+        return {};
 
-    int rows = mat.rows;
-    int cols = mat.cols;
+    // cvtColor 只支持 8U/16U/32F，CV_64F 彩色图要先降到 32F
+    cv::Mat src = mat;
+    if (src.channels() > 1 && src.depth() == CV_64F)
+    {
+        cv::Mat tmp;
+        src.convertTo(tmp, CV_MAKETYPE(CV_32F, src.channels()));
+        src = tmp;
+    }
 
+    cv::Mat gray;
+    switch (src.channels())
+    {
+        case 1:
+            gray = src; // 已是灰度，直接复用头部
+            break;
+        case 3:
+            cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
+            break;
+        case 4:
+            cv::cvtColor(src, gray, cv::COLOR_BGRA2GRAY); // 丢弃 alpha
+            break;
+        default:
+            CV_Error(cv::Error::StsBadArg, "Mat2Vector2D: unsupported channel count");
+    }
+
+    cv::Mat plane;
+    gray.convertTo(plane, CV_64F);
+
+    const int rows = plane.rows;
+    const int cols = plane.cols;
+
+    std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
     for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < cols; j++)
-        {
-            dst[i][j] = mat.data[i * cols + j];
-        }
+        const double* row = plane.ptr<double>(i);
+        std::copy(row, row + cols, dst[i].begin());
     }
     return dst;
 }
