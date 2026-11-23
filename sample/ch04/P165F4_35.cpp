@@ -10,8 +10,8 @@ int P165F4_35()
     std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0431(d)(blown_ic_crop).tif";
     Mat         src        = imread(image_path, 0);
     // 寻找最佳图像尺寸
-    int optimal_rows = IPL::Nearst2Power(src.rows);
-    int optimal_cols = IPL::Nearst2Power(src.cols);
+    int optimal_rows = IPL::NearestPowerOfTwo(src.rows);
+    int optimal_cols = IPL::NearestPowerOfTwo(src.cols);
     resize(src, src, {optimal_cols, optimal_rows});
 
     auto                   src_vec = IPL::Mat2Vector2D(src);

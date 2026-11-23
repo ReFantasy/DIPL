@@ -19,8 +19,8 @@ int P163F4_32()
     int old_rows = src_fft.rows;
     int old_cols = src_fft.cols;
     // 寻找最佳图像尺寸
-    int optimal_rows = IPL::Nearst2Power(src_fft.rows);
-    int optimal_cols = IPL::Nearst2Power(src_fft.cols);
+    int optimal_rows = IPL::NearestPowerOfTwo(src_fft.rows);
+    int optimal_cols = IPL::NearestPowerOfTwo(src_fft.cols);
     resize(src_fft, src_fft, {optimal_cols, optimal_rows});
 
     // 生成滤波核
@@ -37,8 +37,8 @@ int P163F4_32()
         }
     old_rows     = src_multi.rows;
     old_cols     = src_multi.cols;
-    optimal_rows = IPL::Nearst2Power(src_multi.rows);
-    optimal_cols = IPL::Nearst2Power(src_multi.cols);
+    optimal_rows = IPL::NearestPowerOfTwo(src_multi.rows);
+    optimal_cols = IPL::NearestPowerOfTwo(src_multi.cols);
     resize(src_multi, src_multi, {optimal_cols, optimal_rows});
     kernel = IPL::GLPF(src_multi.rows, src_multi.cols, 21);
     Mat c  = fourier_filter(src_multi, kernel);

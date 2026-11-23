@@ -98,12 +98,12 @@ namespace IPL
         std::complex<double> _complex;
     };
 
-    /** \brief check n = pow(2,k), k=1,2,3...
+    /** \brief check whether n is 2^k, k=1,2,3...
      *  \param[in] n value to be checked
      *  \return if n = pow(2,k),return true, or false
      */
-    bool Is2Power(int n);
-    int  Nearst2Power(int n);
+    bool IsPowerOfTwo(int n);
+    int  NearestPowerOfTwo(int n);
 
 } // namespace IPL
 

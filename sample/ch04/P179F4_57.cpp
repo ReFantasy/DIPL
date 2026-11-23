@@ -13,8 +13,8 @@ int P179F4_57()
     int old_rows = src.rows;
     int old_cols = src.cols;
     // 寻找最佳图像尺寸
-    int optimal_rows = IPL::Nearst2Power(src.rows);
-    int optimal_cols = IPL::Nearst2Power(src.cols);
+    int optimal_rows = IPL::NearestPowerOfTwo(src.rows);
+    int optimal_cols = IPL::NearestPowerOfTwo(src.cols);
     resize(src, src, {optimal_cols, optimal_rows});
 
     // 生成滤波核

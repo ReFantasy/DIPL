@@ -1,4 +1,5 @@
 ﻿#include "algorithm/fourier.h"
+#include <bit>
 #include <cassert>
 #include <complex>
 
@@ -67,7 +68,7 @@ namespace IPL
 
     vector<complex<double>> Fourier::FFT(const vector<complex<double>>& in)
     {
-        assert(Is2Power(in.size()));
+        assert(IsPowerOfTwo(in.size()));
 
         std::vector<std::complex<double>> out(in.size());
 
@@ -413,31 +414,13 @@ namespace IPL
         return f;
     }
 
-    bool Is2Power(int n)
+    bool IsPowerOfTwo(int n)
     {
-        if (n <= 1)
-            return false;
-
-        constexpr int bits_per_byte = 8;
-        int           max_bits      = sizeof(int) * bits_per_byte;
-
-        int bit = 0x1;
-        for (int i = 0; i < max_bits; i++)
-        {
-            if (!(bit ^ n))
-            {
-                return true;
-            }
-            else
-            {
-                bit <<= 1;
-            }
-        }
-
-        return false;
+        // std::has_single_bit(1) 也为 true，而这里要求 k 从 1 起算，故排除 n <= 1
+        return n > 1 && std::has_single_bit(static_cast<unsigned>(n));
     }
 
-    int Nearst2Power(int n)
+    int NearestPowerOfTwo(int n)
     {
         int         max_bits = sizeof(int) * 8;
         vector<int> table(max_bits, 0);

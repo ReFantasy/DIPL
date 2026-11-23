@@ -76,8 +76,8 @@ void FourierFilterExampel(const Mat& src)
     int old_rows = src_fft.rows;
     int old_cols = src_fft.cols;
     // 寻找最佳图像尺寸
-    int optimal_rows = IPL::Nearst2Power(src_fft.rows);
-    int optimal_cols = IPL::Nearst2Power(src_fft.cols);
+    int optimal_rows = IPL::NearestPowerOfTwo(src_fft.rows);
+    int optimal_cols = IPL::NearestPowerOfTwo(src_fft.cols);
     resize(src_fft, src_fft, {optimal_cols, optimal_rows});
 
     // 生成滤波核
