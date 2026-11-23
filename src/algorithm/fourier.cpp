@@ -255,16 +255,15 @@ namespace IPL
         assert(array_in.size() > 0);
         assert(array_in[0].size() > 0);
 
-        int                                            M = array_in.size();
-        int                                            N = array_in[0].size();
+        int M = array_in.size();
+        int N = array_in[0].size();
+
         std::vector<std::vector<std::complex<double>>> tmp(
             array_in.size(), std::vector<std::complex<double>>(array_in[0].size(), {0, 0}));
         for (int i = 0; i < M; i++)
         {
             for (int j = 0; j < N; j++)
             {
-                /*tmp[i][j]._Val[0] = array_in[i][j];
-                tmp[i][j]._Val[1] = 0;*/
                 tmp[i][j] = {array_in[i][j], 0};
             }
         }

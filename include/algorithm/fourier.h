@@ -52,6 +52,8 @@ namespace IPL
         static std::vector<std::vector<std::complex<double>>>
         IDFT(const std::vector<std::vector<std::complex<double>>>& array_in);
 
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         /** \brief One dimensional fast Fourier transform
          *  \param[in] array_in one-dimensional complex vector
          *  \return one-dimensional complex vector
