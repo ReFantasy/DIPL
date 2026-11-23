@@ -422,34 +422,16 @@ namespace IPL
 
     int NearestPowerOfTwo(int n)
     {
-        int         max_bits = sizeof(int) * 8;
-        vector<int> table(max_bits, 0);
+        if (n <= 2)
+            return 2;
 
-        int bit = 0x1;
-        for (int i = 0; i < max_bits; i++)
-        {
-            table[i] = bit;
-            bit <<= 1;
-        }
+        const unsigned u = static_cast<unsigned>(n);
+        if (u > (1u << 30)) // int 能表示的最大 2 的幂就是 2^30
+            return 1 << 30;
 
-        vector<int> distance(max_bits, 0);
-        for (int i = 0; i < max_bits; i++)
-        {
-            distance[i] = abs(table[i] - n);
-        }
-
-        int index = 0;
-        int minv  = distance[0];
-        for (int i = 1; i < max_bits; i++)
-        {
-            if (minv > distance[i])
-            {
-                minv  = distance[i];
-                index = i;
-            }
-        }
-
-        return table[index];
+        const unsigned lo = std::bit_floor(u); // 最大的 2^k <= u
+        const unsigned hi = std::bit_ceil(u);  // 最小的 2^k >= u（u 本身是 2 的幂时二者相等）
+        return static_cast<int>(u - lo <= hi - u ? lo : hi);
     }
 
     EulerTransform::EulerTransform(double theta) { _complex = std::complex<double>(cos(theta), sin(theta)); }

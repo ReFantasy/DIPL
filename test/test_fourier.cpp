@@ -3,7 +3,9 @@
 #include "dipl.h"
 #include "utility/Timer.h"
 #include "utility/common.h"
+#include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <vector>
 
 TEST_CASE("parallel for", "[parallel]")
@@ -102,4 +104,32 @@ TEST_CASE("parallel for", "[parallel]")
         }
     }
     std::cout << "inv_fft and inv_dft error:" << sum << std::endl;
+}
+
+TEST_CASE("IsPowerOfTwo", "[Fourier]")
+{
+    REQUIRE_FALSE(IPL::IsPowerOfTwo(0));
+    REQUIRE_FALSE(IPL::IsPowerOfTwo(1));
+    REQUIRE_FALSE(IPL::IsPowerOfTwo(-4));
+    REQUIRE_FALSE(IPL::IsPowerOfTwo(3));
+    REQUIRE_FALSE(IPL::IsPowerOfTwo(6));
+    REQUIRE_FALSE(IPL::IsPowerOfTwo(std::numeric_limits<int>::max()));
+
+    for (int k = 1; k <= 30; ++k)
+    {
+        const int n = 1 << k; // 1..30 位，最高 2^30，不会溢出
+        INFO("k = " << k);
+        REQUIRE(IPL::IsPowerOfTwo(n));
+        if (k < 30)
+        {
+            const int odd = n + 1;
+            INFO("n = " << n);
+            REQUIRE_FALSE(IPL::IsPowerOfTwo(odd));
+            REQUIRE_FALSE(IPL::IsPowerOfTwo(n + n / 2)); // 3·2^(k-1)，同样必然不是 2 的幂
+        }
+    }
+
+    REQUIRE(IPL::NearestPowerOfTwo(33) == 32);
+    REQUIRE(IPL::NearestPowerOfTwo(47) == 32);
+    REQUIRE(IPL::NearestPowerOfTwo(49) == 64);
 }
