@@ -16,7 +16,7 @@ int P155F4_25()
     auto a = vector<vector<double>>(rows_a, vector<double>(cols_a, 0));
     auto c = vector<vector<double>>(rows_a, vector<double>(cols_a, 0));
 
-    c = IPL::Mat2CentreVector2D(src_a);
+    c = IPL::MatToPreCenteredVector2D(src_a);
 
     auto fres_centre = IPL::Fourier::FFT(c);
 

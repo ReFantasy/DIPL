@@ -14,7 +14,7 @@ int P156F4_27()
     int          cols = src.cols;
     IPL::Fourier fourier;
 
-    auto a           = IPL::Mat2Vector2D(src);
+    auto a           = IPL::MatToVector2D(src);
     auto src_fourier = fourier.FFT(a);
 
     // 获取相角
@@ -66,7 +66,7 @@ int P156F4_27()
     // fig 4.24谱和妇女的相位角
     image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0424(a)(rectangle).tif";
     Mat                             fig4_24  = imread(image_path, 0);
-    auto                            _fig4_24 = IPL::Mat2Vector2D(fig4_24);
+    auto                            _fig4_24 = IPL::MatToVector2D(fig4_24);
     vector<vector<complex<double>>> _e(rows, vector<complex<double>>(cols, {0, 0}));
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)

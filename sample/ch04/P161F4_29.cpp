@@ -16,7 +16,7 @@ int P161F4_29()
     int          cols = src.cols;
     IPL::Fourier fourier;
 
-    auto a = IPL::Mat2CentreVector2D(src);
+    auto a = IPL::MatToPreCenteredVector2D(src);
 
     cout << "please wait ..." << endl;
     auto src_fourier = fourier.DFT(a);

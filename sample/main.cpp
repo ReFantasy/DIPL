@@ -2,7 +2,7 @@
 
 void PrintRegisteredFunctions()
 {
-    int n = GetTerminalWidth() / 25;
+    int n = IPL::GetTerminalWidth() / 25;
 
     auto& reg  = FunctionRegistry::instance();
     auto  list = reg.list();

@@ -1,4 +1,4 @@
-﻿#include <vector>
+#include <vector>
 // #include "Fourier.h"
 // #include "image_convert.h"
 #include "dipl.h"
@@ -18,8 +18,8 @@ int P155F4_24()
     auto img        = vector<vector<double>>(rows, vector<double>(cols, 0));
     auto img_centre = vector<vector<double>>(rows, vector<double>(cols, 0));
 
-    img        = IPL::Mat2Vector2D(src);
-    img_centre = IPL::Mat2CentreVector2D(src);
+    img        = IPL::MatToVector2D(src);
+    img_centre = IPL::MatToPreCenteredVector2D(src);
 
     auto fres        = IPL::Fourier::FFT(img);
     auto fres_centre = IPL::Fourier::FFT(img_centre);
@@ -46,7 +46,7 @@ int P155F4_24()
     for (int i = 0; i < rows; i++)
         for (int j = 1; j < cols; j++)
         {
-            double tmp           = log(1 + abs(fres_centre[i][j]));
+            double tmp           = std::log1p(abs(fres_centre[i][j])); // log(1 + abs(fres_centre[i][j]));
             d.data[i * cols + j] = tmp;
         }
 

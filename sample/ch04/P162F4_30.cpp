@@ -16,7 +16,7 @@ int P162F4_30()
     int          cols = src.cols;
     IPL::Fourier fourier;
 
-    auto a = IPL::Mat2CentreVector2D(src);
+    auto a = IPL::MatToPreCenteredVector2D(src);
 
     cout << "please wait ..." << endl;
 

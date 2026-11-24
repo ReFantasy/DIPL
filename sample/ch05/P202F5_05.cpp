@@ -10,7 +10,7 @@ int P202F5_05()
 {
     Mat s = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH05/Fig0505(a)(applo17_boulder_noisy).tif", 0);
 
-    auto src         = IPL::Mat2CentreVector2D(s);
+    auto src         = IPL::MatToPreCenteredVector2D(s);
     auto src_fourier = IPL::Fourier::DFT(src);
 
     int rows = s.rows;

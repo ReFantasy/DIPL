@@ -6,9 +6,9 @@ void P77F3_20()
 {
 
     cv::Mat a   = cv::imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH03/Fig0316(4)(bottom_left).tif", 0);
-    auto    src = IPL::HistogramEqualization(IPL::Mat2Vector2D(a));
+    auto    src = IPL::HistogramEqualization(IPL::MatToVector2D(a));
     auto    dst = IPL::HistogramEqualization(src);
-    auto    b   = IPL::Vector2D2Mat(dst);
+    auto    b   = IPL::Vector2DToMatU8(dst);
 
     auto a_hist = DrawHistogram(ComputeHistogram(a));
     auto b_hist = DrawHistogram(ComputeHistogram(b));

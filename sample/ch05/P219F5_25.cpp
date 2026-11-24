@@ -14,7 +14,7 @@ namespace
         int rows = src.rows;
         int cols = src.cols;
 
-        auto src_vec     = IPL::Mat2Vector2D(src);
+        auto src_vec     = IPL::MatToVector2D(src);
         auto src_fourier = IPL::Fourier::FFT(src_vec);
         for (int i = 0; i < rows; i++)
         {

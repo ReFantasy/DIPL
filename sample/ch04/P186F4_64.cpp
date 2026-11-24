@@ -12,7 +12,7 @@ int P186F4_64()
     int cols = a.cols;
 
     // 傅里叶变换并显示傅里叶谱
-    auto src_vec     = IPL::Mat2CentreVector2D(a);
+    auto src_vec     = IPL::MatToPreCenteredVector2D(a);
     auto src_fourier = IPL::Fourier::DFT(src_vec);
     Mat  b(rows, cols, CV_64FC1);
     for (int i = 0; i < rows; i++)

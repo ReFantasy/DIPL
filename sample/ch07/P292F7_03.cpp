@@ -7,7 +7,7 @@ int P292F7_03()
 {
     Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH07/vase.tif", 0);
 
-    auto src_vec = IPL::Mat2Vector2D(src);
+    auto src_vec = IPL::MatToVector2D(src);
 
     std::vector<std::vector<double>> approximate;
     std::vector<std::vector<double>> residual;

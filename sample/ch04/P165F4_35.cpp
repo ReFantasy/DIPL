@@ -14,7 +14,7 @@ int P165F4_35()
     int optimal_cols = IPL::NearestPowerOfTwo(src.cols);
     resize(src, src, {optimal_cols, optimal_rows});
 
-    auto                   src_vec = IPL::Mat2Vector2D(src);
+    auto                   src_vec = IPL::MatToVector2D(src);
     IPL::Fourier           fourier;
     auto                   src_fourier = fourier.FFT(src_vec);
     vector<vector<double>> fourier_power(optimal_rows, vector<double>(optimal_cols, 0));

@@ -62,7 +62,7 @@ TEST_CASE("parallel for", "[parallel]")
     }
 
     auto   fft2d     = IPL::Fourier::FFT(img);
-    auto   inv_fft2d = Complex2Real(IPL::Fourier::IFFT(fft2d));
+    auto   inv_fft2d = IPL::Complex2Real(IPL::Fourier::IFFT(fft2d));
     double sum       = 0;
     for (int i = 0; i < src.rows; i++)
     {
@@ -94,7 +94,7 @@ TEST_CASE("parallel for", "[parallel]")
     }
     std::cout << "fft and dft error:" << sum << std::endl;
 
-    auto inv_dft2d = Complex2Real(IPL::Fourier::IDFT(dft_2d));
+    auto inv_dft2d = IPL::Complex2Real(IPL::Fourier::IDFT(dft_2d));
     sum            = 0;
     for (int i = 0; i < src.rows; i++)
     {

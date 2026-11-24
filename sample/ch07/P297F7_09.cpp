@@ -68,7 +68,7 @@ namespace
     {
         Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH07/vase.tif", 0);
 
-        auto src_vec = IPL::Mat2Vector2D(src);
+        auto src_vec = IPL::MatToVector2D(src);
 
         auto h0m = ConvHoriz(src_vec, H0, K);
         h0m      = IPL::PryDownByRow(h0m);

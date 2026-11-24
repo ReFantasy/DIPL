@@ -89,7 +89,7 @@ namespace
 
         Mat src = imread(std::string(DATA_DIR) + "/DIP3E_Original_Images_CH07/vase.tif", 0);
         resize(src, src, {512, 512});
-        auto src_vec = IPL::Mat2Vector2D(src);
+        auto src_vec = IPL::MatToVector2D(src);
 
         auto src_vec_fourier = IPL::Fourier::FFT(src_vec);
 

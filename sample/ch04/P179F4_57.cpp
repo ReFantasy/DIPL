@@ -21,7 +21,7 @@ int P179F4_57()
     auto kernel_fft = IPL::BHPF(src.rows, src.cols, 50, 4);
 
     IPL::Fourier fourier;
-    auto         _src_fourier = IPL::Mat2CentreVector2D(src);
+    auto         _src_fourier = IPL::MatToPreCenteredVector2D(src);
     auto         src_fourier  = fourier.FFT(_src_fourier);
     for (int i = 0; i < optimal_rows; i++)
     {

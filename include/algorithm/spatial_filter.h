@@ -1,8 +1,6 @@
-/*
- *  �ռ��˲�
- *
+/**
+ * 空间滤波
  */
-
 #ifndef __SPATIAL_FILTER_H__
 #define __SPATIAL_FILTER_H__
 #include <vector>
@@ -85,7 +83,6 @@ namespace IPL
     NearestNeighborInterpolation(const std::vector<std::vector<double>>& src, int new_rows, int new_cols);
 
     bool IsOdd(int num);
-
 
     std::vector<std::vector<double>> HistogramEqualization(const std::vector<std::vector<double>>& src);
 

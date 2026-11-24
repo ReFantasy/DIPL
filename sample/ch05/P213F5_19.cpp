@@ -16,7 +16,7 @@ namespace
         int rows = a.rows;
         int cols = a.cols;
 
-        auto a_vec     = IPL::Mat2CentreVector2D(a);
+        auto a_vec     = IPL::MatToPreCenteredVector2D(a);
         auto a_fourier = IPL::Fourier::FFT(a_vec);
 
         auto b = IPL::ShowFourier(a_fourier);

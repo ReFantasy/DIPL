@@ -1,12 +1,11 @@
-﻿#include "utility/filter.h"
-#include "utility/image_convert.h"
+#include "utility/filter.h"
 #include "algorithm/spatial_filter.h"
+#include "utility/common.h"
 
 using namespace cv;
 namespace IPL
 {
-    cv::Mat FourierFilter::operator()(const cv::Mat &src, const vector<vector<double>> &gauss,
-                                      int ft_type)
+    cv::Mat FourierFilter::operator()(const cv::Mat& src, const vector<vector<double>>& gauss, int ft_type)
     {
         assert(src.type() == CV_8UC1);
 
@@ -14,8 +13,8 @@ namespace IPL
         if (ft_type == 0)
         {
 
-            int rows = src.rows;
-            int cols = src.cols;
+            int  rows     = src.rows;
+            int  cols     = src.cols;
             auto src_data = ImageData(src);
 
             // 傅里叶变换
@@ -29,15 +28,15 @@ namespace IPL
 
             // 输出图像
             auto dst_image_data = ConvertToImage(_dst_data);
-            auto res = Out8UC1(dst_image_data);
+            auto res            = Out8UC1(dst_image_data);
 
             return res;
         }
         // DFT
         else
         {
-            int rows = src.rows;
-            int cols = src.cols;
+            int  rows     = src.rows;
+            int  cols     = src.cols;
             auto src_data = ImageData(src);
 
             // 傅里叶变换
@@ -62,8 +61,7 @@ namespace IPL
         int n = getOptimalDFTSize(srcImage.cols);
         // 将添加的像素初始化为0。
         cv::Mat padded;
-        copyMakeBorder(srcImage, padded, 0, m - srcImage.rows, 0, n - srcImage.cols,
-                       BORDER_CONSTANT, Scalar::all(0));
+        copyMakeBorder(srcImage, padded, 0, m - srcImage.rows, 0, n - srcImage.cols, BORDER_CONSTANT, Scalar::all(0));
 
         // 3.为傅里叶变换的结果（实部和虚部）分配空间。
         // 将planes数组组合合并成一个多通道的数组complexI
@@ -75,7 +73,7 @@ namespace IPL
         dft(complexI, complexI);
 
         // 5.将复数转换为幅值，即 log(1+sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
-        split(complexI, planes); // 将多通道数组complexI分离成几个单通道数组，[0]=Re,[1]=Im
+        split(complexI, planes);                    // 将多通道数组complexI分离成几个单通道数组，[0]=Re,[1]=Im
         magnitude(planes[0], planes[1], planes[0]); // planes[0] = magnitude
         Mat magnitudeImage = planes[0];
 
@@ -85,8 +83,7 @@ namespace IPL
 
         // 7.剪切和重分布幅度图象限
         // 若有奇数行或奇数列，进行频谱裁剪
-        magnitudeImage =
-            magnitudeImage(Rect(0, 0, magnitudeImage.cols & -2, magnitudeImage.rows & -2));
+        magnitudeImage = magnitudeImage(Rect(0, 0, magnitudeImage.cols & -2, magnitudeImage.rows & -2));
 
         // 重新排列傅里叶图像中的象限，使得原点位于图像中心
         int cx = magnitudeImage.cols / 2;
@@ -120,7 +117,7 @@ namespace IPL
         }
     }
 
-    vector<vector<double>> FourierFilter::ImageData(const Mat &img)
+    vector<vector<double>> FourierFilter::ImageData(const Mat& img)
     {
         vector<vector<double>> src_data(img.rows, vector<double>(img.cols, 0));
         for (int i = 0; i < img.rows; i++)
@@ -134,7 +131,7 @@ namespace IPL
         return src_data;
     }
 
-    vector<vector<double>> FourierFilter::ConvertToImage(const Complex2D &dst_fourier)
+    vector<vector<double>> FourierFilter::ConvertToImage(const Complex2D& dst_fourier)
     {
         int rows = dst_fourier.size();
         int cols = dst_fourier[0].size();
@@ -151,7 +148,7 @@ namespace IPL
         return dst_data;
     }
 
-    cv::Mat FourierFilter::Out8UC1(const vector<vector<double>> &d)
+    cv::Mat FourierFilter::Out8UC1(const vector<vector<double>>& d)
     {
         int rows = d.size();
         int cols = d[0].size();
@@ -163,9 +160,9 @@ namespace IPL
             {
                 double tmp = 0;
 
-                tmp = d[i][j];
-                tmp = (tmp > 255 ? 255 : tmp);
-                tmp = (tmp < 0 ? 0 : tmp);
+                tmp                    = d[i][j];
+                tmp                    = (tmp > 255 ? 255 : tmp);
+                tmp                    = (tmp < 0 ? 0 : tmp);
                 dst.data[i * cols + j] = tmp;
             }
         }
@@ -173,9 +170,8 @@ namespace IPL
         return dst;
     }
 
-    vector<vector<std::complex<double>>> FourierFilter::filter(
-        const vector<vector<std::complex<double>>> &fourier,
-        const vector<vector<double>> &gauss)
+    vector<vector<std::complex<double>>> FourierFilter::filter(const vector<vector<std::complex<double>>>& fourier,
+                                                               const vector<vector<double>>&               gauss)
     {
         int rows = fourier.size();
         int cols = fourier[0].size();
@@ -193,12 +189,12 @@ namespace IPL
         return tmp;
     }
 
-    cv::Mat NormalizeVec2DToMat(const vector<vector<double>> &vec2d)
+    cv::Mat NormalizeVec2DToMat(const vector<vector<double>>& vec2d)
     {
         assert(vec2d.size() > 0);
         assert(vec2d[0].size() > 0);
-        int rows = vec2d.size();
-        int cols = vec2d[0].size();
+        int     rows = vec2d.size();
+        int     cols = vec2d[0].size();
         cv::Mat dst(rows, cols, CV_64FC1);
         for (int i = 0; i < rows; i++)
         {
@@ -213,12 +209,12 @@ namespace IPL
         return dst;
     }
 
-    cv::Mat ShowFourier(const vector<vector<std::complex<double>>> &vec2d)
+    cv::Mat ShowFourier(const vector<vector<std::complex<double>>>& vec2d)
     {
         assert(vec2d.size() > 0);
         assert(vec2d[0].size() > 0);
-        int rows = vec2d.size();
-        int cols = vec2d[0].size();
+        int     rows = vec2d.size();
+        int     cols = vec2d[0].size();
         cv::Mat dst(rows, cols, CV_64FC1);
         for (int i = 0; i < rows; i++)
         {
@@ -233,58 +229,58 @@ namespace IPL
         return dst;
     }
 
-    cv::Mat BlurArithmetic(const cv::Mat &_src, int kern_size)
+    cv::Mat BlurArithmetic(const cv::Mat& _src, int kern_size)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurArithmetic(src, kern_size);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurGeometry(const cv::Mat &_src, int kern_size)
+    cv::Mat BlurGeometry(const cv::Mat& _src, int kern_size)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurGeometry(src, kern_size);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurHarmonic(const Mat &_src, int kern_size)
+    cv::Mat BlurHarmonic(const Mat& _src, int kern_size)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurHarmonic(src, kern_size);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurInverseHarmonic(const Mat &_src, int kern_size, double Q)
+    cv::Mat BlurInverseHarmonic(const Mat& _src, int kern_size, double Q)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurInverseHarmonic(src, kern_size, Q);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurMedian(const Mat &_src, int kern_size)
+    cv::Mat BlurMedian(const Mat& _src, int kern_size)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurMedian(src, kern_size);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurMaxMin(const Mat &_src, int kern_size, int type)
+    cv::Mat BlurMaxMin(const Mat& _src, int kern_size, int type)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurMaxMin(src, kern_size, type);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurMiddle(const Mat &_src, int kern_size /*= 3*/)
+    cv::Mat BlurMiddle(const Mat& _src, int kern_size /*= 3*/)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurMiddle(src, kern_size);
         return NormalizeVec2DToMat(_blur);
     }
 
-    cv::Mat BlurModifiedAlpha(const Mat &_src, int kern_size, int d)
+    cv::Mat BlurModifiedAlpha(const Mat& _src, int kern_size, int d)
     {
-        auto src = IPL::Mat2Vector2D(_src);
+        auto src   = IPL::MatToVector2D(_src);
         auto _blur = BlurModifiedAlpha(src, kern_size, d);
         return NormalizeVec2DToMat(_blur);
     }
