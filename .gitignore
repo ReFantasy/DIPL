@@ -108,3 +108,4 @@ imgui.ini
 build/
 CMakeFiles/
 .envrc
+.venv/

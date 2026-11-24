@@ -1,5 +1,5 @@
 #include "algorithm/fourier.h"
-#include "catch_amalgamated.hpp"
+#include "catch_amalgamated.hpp.txt"
 #include "dipl.h"
 #include "utility/Timer.h"
 #include "utility/common.h"

@@ -7,7 +7,8 @@
 namespace IPL
 {
 
-    int GetTerminalWidth(int fallback = 80);
+    int  GetTerminalWidth(int fallback = 80);
+    void PrintMatInfo(cv::Mat mat);
 
     /************************************************************************
      *     实数数组与复数数组之间的转换
@@ -91,17 +92,6 @@ namespace IPL
      */
     cv::Mat Vector2DToMat(const std::vector<std::vector<double>>& src);
 
-    /** \brief  二维 double 向量量化为 CV_8UC1 灰度图
-     *  \details 逐元素做饱和截断 + 四舍五入（等价 cv::saturate_cast<uchar>）：
-     *           负数→0，大于 255→255，127.6→128。
-     *  \param[in] src 输入二维向量，各行长度必须相同
-     *  \return CV_8UC1 单通道图像；src 为空时返回空 Mat
-     *  \note   用于 imshow / imwrite / ComputeHistogram 等只接受 8 位灰度图的场景
-     *  \note   有损转换：需要保留精度请用 Vector2DToMat
-     *  \sa     Vector2DToMat
-     */
-    cv::Mat Vector2DToMatU8(const std::vector<std::vector<double>>& src);
-
     /** \brief  灰度化并做棋盘调制 g(x,y) = f(x,y) * (-1)^(x+y)，为 DFT 中心化做准备
      *  \details 在空域乘 (-1)^(x+y) 后，DFT 的零频分量（DC）会落在频谱中心，
      *           等价于频域的 fftshift，但省去一次频谱重排；
@@ -116,5 +106,7 @@ namespace IPL
      *  \sa     MatToVector2D, Fourier::FFT, Fourier::DFT
      */
     std::vector<std::vector<double>> MatToPreCenteredVector2D(const cv::Mat& mat);
+
+    cv::Mat ShowVector2D(const std::vector<std::vector<double>>& src, bool b = true);
 
 } // namespace IPL

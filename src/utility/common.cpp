@@ -1,4 +1,7 @@
 #include "utility/common.h"
+#include <cassert>
+#include <opencv2/core/hal/interface.h>
+#include <opencv2/imgproc.hpp>
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -7,6 +10,8 @@
 #include <unistd.h>
 #endif
 #include <cmath>
+#include <iostream>
+
 namespace IPL
 {
 
@@ -30,6 +35,12 @@ namespace IPL
 #endif
         return fallback;
     }
+
+    void PrintMatInfo(cv::Mat mat)
+    {
+        std::cout << "Image rows:" << mat.rows << "  cols:" << mat.cols << "  channels:" << mat.channels() << std::endl;
+    }
+
     std::vector<std::complex<double>> Real2Complex(const std::vector<double>& vec)
     {
         std::vector<std::complex<double>> res;
@@ -63,14 +74,17 @@ namespace IPL
                 return MapVector(src, [](const std::complex<double>& z) { return z.real(); });
             case ComplexComponent::Imag:
                 return MapVector(src, [](const std::complex<double>& z) { return z.imag(); });
-            case ComplexComponent::Magnitude:
+            case ComplexComponent::Magnitude: // √(re² + im²)
                 return MapVector(src, [](const std::complex<double>& z) { return std::abs(z); });
-            case ComplexComponent::SquaredMagnitude:
+            case ComplexComponent::SquaredMagnitude: // |z|² = re² + im²
                 return MapVector(src, [](const std::complex<double>& z) { return std::norm(z); });
             case ComplexComponent::Phase:
                 return MapVector(src, [](const std::complex<double>& z) { return std::arg(z); });
             case ComplexComponent::LogMagnitude:
-                return MapVector(src, [](const std::complex<double>& z) { return std::log1p(std::abs(z)); });
+                return MapVector(src, [](const std::complex<double>& z) {
+                    // return std::log1p(std::abs(z));
+                    return log(1.0 + std::abs(z));
+                });
         }
         return {}; // 枚举值非法时返回空向量（编译器的 -Wswitch 仍会提示遗漏的枚举项）
     }
@@ -90,46 +104,24 @@ namespace IPL
         return dst;
     }
 
-    std::vector<std::vector<double>> MatToVector2D(const cv::Mat& mat)
+    std::vector<std::vector<double>> MatToVector2D(const cv::Mat& single_img)
     {
-        if (mat.empty())
+
+        if (single_img.empty() || (single_img.channels() != 1))
             return {};
 
-        // cvtColor 只支持 8U/16U/32F，CV_64F 彩色图要先降到 32F
-        cv::Mat src = mat;
-        if (src.channels() > 1 && src.depth() == CV_64F)
-        {
-            cv::Mat tmp;
-            src.convertTo(tmp, CV_MAKETYPE(CV_32F, src.channels()));
-            src = tmp;
-        }
+        cv::Mat float64_img;
 
-        cv::Mat gray;
-        switch (src.channels())
-        {
-            case 1:
-                gray = src; // 已是灰度，直接复用头部
-                break;
-            case 3:
-                cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
-                break;
-            case 4:
-                cv::cvtColor(src, gray, cv::COLOR_BGRA2GRAY); // 丢弃 alpha
-                break;
-            default:
-                CV_Error(cv::Error::StsBadArg, "MatToVector2D: unsupported channel count");
-        }
+        // 转换为 64 位浮点型，通道数保持不变（依然是单通道）
+        single_img.convertTo(float64_img, CV_64F);
 
-        cv::Mat plane;
-        gray.convertTo(plane, CV_64F);
-
-        const int rows = plane.rows;
-        const int cols = plane.cols;
+        const int rows = float64_img.rows;
+        const int cols = float64_img.cols;
 
         std::vector<std::vector<double>> dst(rows, std::vector<double>(cols, 0.0));
         for (int i = 0; i < rows; i++)
         {
-            const double* row = plane.ptr<double>(i);
+            const double* row = float64_img.ptr<double>(i);
             std::copy(row, row + cols, dst[i].begin());
         }
         return dst;
@@ -149,17 +141,7 @@ namespace IPL
             CV_Assert(src[i].size() == static_cast<std::size_t>(cols));
             std::copy(src[i].begin(), src[i].end(), buf.ptr<double>(i));
         }
-
         return buf;
-    }
-
-    cv::Mat Vector2DToMatU8(const std::vector<std::vector<double>>& src)
-    {
-        if (src.empty())
-            return {};
-        cv::Mat dst;
-        Vector2DToMat(src).convertTo(dst, CV_8UC1); // saturate_cast：clamp + 四舍五入
-        return dst;
     }
 
     std::vector<std::vector<double>> MatToPreCenteredVector2D(const cv::Mat& mat)
@@ -175,5 +157,29 @@ namespace IPL
             }
         }
         return dst;
+    }
+
+    cv::Mat ShowVector2D(const std::vector<std::vector<double>>& src, bool b)
+    {
+
+        cv::Mat img = Vector2DToMat(src);
+        if (b)
+        {
+            normalize(img, img, 0, 1, cv::NORM_MINMAX);
+            img *= 255.0;
+        }
+
+        int rows = img.rows;
+        int cols = img.cols;
+
+        cv::Mat res(img.rows, img.cols, CV_8UC1);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                res.at<uchar>(i, j) = (uchar)img.at<double>(i, j);
+            }
+        }
+        return res;
     }
 } // namespace IPL

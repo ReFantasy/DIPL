@@ -1,4 +1,5 @@
 #include "dipl.h"
+#include <cstdlib>
 
 void PrintRegisteredFunctions()
 {
@@ -18,6 +19,9 @@ void PrintRegisteredFunctions()
 
 int main()
 {
+    FunctionRegistry::instance().invoke("P155F4_24");
+    exit(0);
+    
     while (true)
     {
 #ifdef _WIN32
