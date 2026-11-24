@@ -19,9 +19,9 @@ void PrintRegisteredFunctions()
 
 int main()
 {
-    FunctionRegistry::instance().invoke("P155F4_24");
+    FunctionRegistry::instance().invoke("P156F4_27");
     exit(0);
-    
+
     while (true)
     {
 #ifdef _WIN32

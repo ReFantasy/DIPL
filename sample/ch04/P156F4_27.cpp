@@ -1,5 +1,7 @@
-﻿#include "dipl.h"
+#include "dipl.h"
+#include "utility/common.h"
 #include "utility/reflection.h"
+#include <complex>
 #include <vector>
 using namespace cv;
 using namespace std;
@@ -14,38 +16,18 @@ int P156F4_27()
     int          cols = src.cols;
     IPL::Fourier fourier;
 
-    auto a           = IPL::MatToVector2D(src);
+    auto a           = IPL::MatToPreCenteredVector2D(src); // IPL::MatToVector2D(src);
     auto src_fourier = fourier.FFT(a);
 
     // 获取相角
-    vector<vector<double>> angle(rows, vector<double>(cols, 0));
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-        {
-            angle[i][j] = arg(src_fourier[i][j]);
-        }
-    Mat b(rows, cols, CV_8UC1);
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-        {
-            b.data[i * cols + j] = angle[i][j];
-        }
+    vector<vector<double>> angle = IPL::Complex2Real(src_fourier, IPL::ComplexComponent::Phase);
+    cv::Mat                b     = IPL::CreateMatU8ByVector2D(angle);
 
     // 仅使用相角重建
-    vector<vector<complex<double>>> angle_build(rows, vector<complex<double>>(cols, {0, 0}));
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-        {
-            angle_build[i][j] = {cos(angle[i][j]), sin(angle[i][j])};
-        }
-    auto _c = fourier.IFFT(angle_build);
-    Mat  c(rows, cols, CV_64FC1);
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-        {
-            c.at<double>(i, j) = abs(_c[i][j]);
-        }
-    normalize(c, c, 0, 1, NORM_MINMAX);
+    auto angle_build =
+        IPL::MapVector(angle, [](const double& ang) { return std::complex<double> {cos(ang), sin(ang)}; });
+    auto _c = IPL::Complex2Real(fourier.IFFT(angle_build), IPL::ComplexComponent::Real);
+    auto c  = IPL::CreateMatU8ByVector2D(IPL::FreqOffset(_c));
 
     // 仅使用谱重建
     vector<vector<complex<double>>> spectrum(rows, vector<complex<double>>(cols, {0, 0}));

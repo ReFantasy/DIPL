@@ -40,6 +40,19 @@ namespace IPL
     {
         std::cout << "Image rows:" << mat.rows << "  cols:" << mat.cols << "  channels:" << mat.channels() << std::endl;
     }
+    std::vector<std::vector<double>> FreqOffset(const std::vector<std::vector<double>>& data)
+    {
+        auto dst = data;
+        for (std::size_t i = 0; i < dst.size(); ++i)
+        {
+            for (std::size_t j = 0; j < dst[i].size(); ++j)
+            {
+                if ((i + j) & 1) // (-1)^(i+j)：奇数行为 -1
+                    dst[i][j] = -dst[i][j];
+            }
+        }
+        return dst;
+    }
 
     std::vector<std::complex<double>> Real2Complex(const std::vector<double>& vec)
     {
@@ -148,24 +161,25 @@ namespace IPL
     {
         auto dst = MatToVector2D(mat); // 已统一成 CV_64F 灰度，深度/通道无关
 
-        for (std::size_t i = 0; i < dst.size(); ++i)
-        {
-            for (std::size_t j = 0; j < dst[i].size(); ++j)
-            {
-                if ((i + j) & 1) // (-1)^(i+j)：奇数行为 -1
-                    dst[i][j] = -dst[i][j];
-            }
-        }
+        // for (std::size_t i = 0; i < dst.size(); ++i)
+        // {
+        //     for (std::size_t j = 0; j < dst[i].size(); ++j)
+        //     {
+        //         if ((i + j) & 1) // (-1)^(i+j)：奇数行为 -1
+        //             dst[i][j] = -dst[i][j];
+        //     }
+        // }
+        dst = FreqOffset(dst);
         return dst;
     }
 
-    cv::Mat ShowVector2D(const std::vector<std::vector<double>>& src, bool b)
+    cv::Mat CreateMatU8ByVector2D(const std::vector<std::vector<double>>& src, bool normalize)
     {
 
         cv::Mat img = Vector2DToMat(src);
-        if (b)
+        if (normalize)
         {
-            normalize(img, img, 0, 1, cv::NORM_MINMAX);
+            cv::normalize(img, img, 0, 1, cv::NORM_MINMAX);
             img *= 255.0;
         }
 

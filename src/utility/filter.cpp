@@ -117,6 +117,15 @@ namespace IPL
         }
     }
 
+    cv::Mat FourierTransform(cv::Mat srcImage)
+    {
+        auto img_vec   = IPL::MatToPreCenteredVector2D(srcImage);
+        auto freq_data = IPL::Fourier::FFT(img_vec);
+        auto freq_mag  = IPL::Complex2Real(freq_data, IPL::ComplexComponent::LogMagnitude);
+        auto freq_img  = IPL::CreateMatU8ByVector2D(freq_mag);
+        return freq_img;
+    }
+
     vector<vector<double>> FourierFilter::ImageData(const Mat& img)
     {
         vector<vector<double>> src_data(img.rows, vector<double>(img.cols, 0));

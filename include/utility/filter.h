@@ -1,4 +1,4 @@
-﻿/************************************************************************
+/************************************************************************
  *
  *  自定义图像类型与OpenCV图像类型转换
  *
@@ -36,6 +36,8 @@ namespace IPL
     };
 
     void OpencvFouier(cv::Mat srcImage, std::string name);
+
+    cv::Mat FourierTransform(cv::Mat srcImage);
 
     // 归一化的二维浮点数组转为CV_8UC1类型图像
     cv::Mat NormalizeVec2DToMat(const vector<vector<double>>& vec2d);

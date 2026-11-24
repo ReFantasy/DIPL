@@ -7,8 +7,9 @@
 namespace IPL
 {
 
-    int  GetTerminalWidth(int fallback = 80);
-    void PrintMatInfo(cv::Mat mat);
+    int                              GetTerminalWidth(int fallback = 80);
+    void                             PrintMatInfo(cv::Mat mat);
+    std::vector<std::vector<double>> FreqOffset(const std::vector<std::vector<double>>& data);
 
     /************************************************************************
      *     实数数组与复数数组之间的转换
@@ -49,14 +50,32 @@ namespace IPL
      *           例如 [](const std::complex<double>& z) { return std::abs(z) * 255.0; }
      */
     template<class T, class UnaryOp>
-    [[nodiscard]] auto MapVector(const std::vector<T>& src, UnaryOp op)
-        -> std::vector<std::remove_cvref_t<std::invoke_result_t<UnaryOp, const T&>>>
+    [[nodiscard]] auto MapVector(const std::vector<T>& src, UnaryOp&& op)
+        -> std::vector<std::remove_cvref_t<std::invoke_result_t<UnaryOp&, const T&>>>
     {
-        using U = std::remove_cvref_t<std::invoke_result_t<UnaryOp, const T&>>;
+        using U = std::remove_cvref_t<std::invoke_result_t<UnaryOp&, const T&>>;
         std::vector<U> dst;
         dst.reserve(src.size());
         for (const auto& z : src)
             dst.push_back(op(z));
+        return dst;
+    }
+
+    template<class T, class F>
+    [[nodiscard]] auto MapVector(const std::vector<std::vector<T>>& src, F&& op)
+        -> std::vector<std::vector<std::remove_cvref_t<std::invoke_result_t<F&, const T&>>>>
+    {
+        using U = std::remove_cvref_t<std::invoke_result_t<F&, const T&>>;
+        std::vector<std::vector<U>> dst;
+        dst.reserve(src.size());
+        for (const auto& row : src)
+        {
+            std::vector<U> mapped;
+            mapped.reserve(row.size()); // 不再走 1D 重载，行为与 1D 完全一致
+            for (const auto& z : row)
+                mapped.push_back(std::invoke(op, z));
+            dst.push_back(std::move(mapped));
+        }
         return dst;
     }
 
@@ -107,6 +126,6 @@ namespace IPL
      */
     std::vector<std::vector<double>> MatToPreCenteredVector2D(const cv::Mat& mat);
 
-    cv::Mat ShowVector2D(const std::vector<std::vector<double>>& src, bool b = true);
+    cv::Mat CreateMatU8ByVector2D(const std::vector<std::vector<double>>& src, bool normalize = true);
 
 } // namespace IPL
