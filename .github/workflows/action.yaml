@@ -13,7 +13,7 @@ jobs:
           cmake -S . -B build
           cmake --build build -j8 
   Macos-build:
-    runs-on: macos-27
+    runs-on: macos-15
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4

@@ -7,7 +7,12 @@
 #include <opencv2/core/mat.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-#include <opencv2/geometry/2d.hpp>
+#include <opencv2/core/version.hpp>
+
+// 判断主版本号是否大于等于 5
+#if CV_VERSION_MAJOR >= 5
+    #include <opencv2/geometry.hpp>  // OpenCV 5 的路径
+#endif
 #include <vector>
 using namespace cv;
 using namespace std;
