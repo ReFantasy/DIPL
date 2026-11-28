@@ -1,4 +1,7 @@
+#include "algorithm/fourier.h"
 #include "dipl.h"
+#include "utility/common.h"
+#include <opencv2/core/hal/interface.h>
 // #include <opencv2/highgui.hpp>
 // #include "utility/reflection.h"
 
@@ -10,8 +13,15 @@ int P161F4_29()
 
     auto data     = IPL::MatToPreCenteredVector2D(src);
     auto fft_data = IPL::Fourier::DFT(data);
-    auto ft_img   = IPL::CreateMatU8ByVector2D(IPL::Complex2Real(fft_data, IPL::ComplexComponent::LogMagnitude));
-    cv::imshow("b", ft_img);
+    auto ft_img   = IPL::CreateMatU8ByVector2D(IPL::Complex2Real(fft_data, IPL::ComplexComponent::LogMagnitude), false);
+    cv::imshow("b", ft_img * 3);
+
+    // int rows = src.rows;
+    // int cols = src.cols;
+    // fft_data[src.rows/2][src.cols/2] = {0,0};
+    // auto src_idft = IPL::Fourier::IDFT(fft_data);
+    // auto spectrum = IPL::FreqOffset(IPL::Complex2Real(src_idft, IPL::ComplexComponent::Real));
+    // cv::imshow("c", IPL::CreateMatU8ByVector2D(spectrum, false));
 
     cv::waitKey();
 }
