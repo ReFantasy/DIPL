@@ -19,7 +19,7 @@ void PrintRegisteredFunctions()
 
 int main()
 {
-    FunctionRegistry::instance().invoke("P156F4_27");
+    FunctionRegistry::instance().invoke("P161F4_29");
     exit(0);
 
     while (true)

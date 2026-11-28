@@ -1,45 +1,19 @@
-﻿#include "dipl.h"
-#include "utility/reflection.h"
-#include <iostream>
-#include <vector>
-using namespace cv;
-
-using namespace std;
+#include "dipl.h"
+// #include <opencv2/highgui.hpp>
+// #include "utility/reflection.h"
 
 int P161F4_29()
 {
-    // 妇女原图
     std::string image_path = std::string(DATA_DIR) + "/DIP3E_Original_Images_CH04/Fig0429(a)(blown_ic).tif";
-    Mat         src        = imread(image_path, 0);
+    auto        src        = cv::imread(image_path, 0);
+    cv::imshow("a", src);
 
-    int          rows = src.rows;
-    int          cols = src.cols;
-    IPL::Fourier fourier;
+    auto data     = IPL::MatToPreCenteredVector2D(src);
+    auto fft_data = IPL::Fourier::DFT(data);
+    auto ft_img   = IPL::CreateMatU8ByVector2D(IPL::Complex2Real(fft_data, IPL::ComplexComponent::LogMagnitude));
+    cv::imshow("b", ft_img);
 
-    auto a = IPL::MatToPreCenteredVector2D(src);
-
-    cout << "please wait ..." << endl;
-    auto src_fourier = fourier.DFT(a);
-
-    // 获取相角
-    vector<vector<double>> spectrum(rows, vector<double>(cols, 0));
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-        {
-            spectrum[i][j] = log(1 + abs(src_fourier[i][j]));
-        }
-
-    Mat b(rows, cols, CV_64FC1);
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-        {
-            b.at<double>(i, j) = spectrum[i][j];
-        }
-    normalize(b, b, 0, 1, NORM_MINMAX);
-    imshow("a", src);
-    imshow("b", b);
-
-    waitKey();
-    return 0;
+    cv::waitKey();
 }
+
 REGISTER_FUNC("P161F4_29", P161F4_29);

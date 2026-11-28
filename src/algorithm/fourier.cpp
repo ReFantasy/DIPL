@@ -1,4 +1,4 @@
-﻿#include "algorithm/fourier.h"
+#include "algorithm/fourier.h"
 #include <bit>
 #include <cassert>
 #include <complex>
@@ -31,7 +31,7 @@ namespace IPL
             M = N;
 
         auto out = std::vector<std::complex<double>>(M, std::complex<double>(0.0, 0.0));
-
+#pragma omp parallel for
         for (int m = 0; m < M; m++)
         {
             std::complex<double> tmp {0.0, 0.0};
@@ -324,12 +324,13 @@ namespace IPL
         int M = array_in.size();
         int N = array_in[0].size();
 
-        vector<vector<complex<double>>> array_out;
+        vector<vector<complex<double>>> array_out(M);
 
-        // 先进行行变换
+// 先进行行变换
+#pragma omp parallel for
         for (int i = 0; i < M; i++)
         {
-            array_out.push_back(std::move(DFT(array_in[i])));
+            array_out[i] = std::move(DFT(array_in[i]));
         }
 
         // 再进行列变换
